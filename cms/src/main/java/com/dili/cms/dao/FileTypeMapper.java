@@ -7,6 +7,7 @@ package com.dili.cms.dao;
 
 import com.dili.cms.domain.FileType;
 import com.dili.ss.base.MyMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <pre>
@@ -21,5 +22,6 @@ import com.dili.ss.base.MyMapper;
  * 2021/1/20  Tab.Xie  Initial version.
  * </pre>
  */
+@Mapper
 public interface FileTypeMapper extends MyMapper<FileType> {
 }
