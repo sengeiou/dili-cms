@@ -4,7 +4,7 @@
  * FileTypeMapper.java created on 2021/1/20 15:33 by Tab.Xie
  */
 package com.dili.cms.mapper;
-import com.dili.cms.sdk.domain.FileType;
+import com.dili.cms.sdk.domain.IFileType;
 import com.dili.ss.base.MyMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -22,5 +22,5 @@ import org.apache.ibatis.annotations.Mapper;
  * </pre>
  */
 @Mapper
-public interface FileTypeMapper extends MyMapper<FileType> {
+public interface FileTypeMapper extends MyMapper<IFileType> {
 }

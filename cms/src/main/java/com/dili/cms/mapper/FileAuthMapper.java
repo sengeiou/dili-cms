@@ -5,7 +5,7 @@
  */
 package com.dili.cms.mapper;
 
-import com.dili.cms.sdk.domain.FileAuth;
+import com.dili.cms.sdk.domain.IFileAuth;
 import com.dili.ss.base.MyMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -23,5 +23,5 @@ import org.apache.ibatis.annotations.Mapper;
  * </pre>
  */
 @Mapper
-public interface FileAuthMapper extends MyMapper<FileAuth> {
+public interface FileAuthMapper extends MyMapper<IFileAuth> {
 }
