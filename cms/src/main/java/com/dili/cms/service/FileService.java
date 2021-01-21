@@ -7,7 +7,9 @@ package com.dili.cms.service;
 
 
 import com.dili.cms.sdk.domain.IFile;
+import com.dili.cms.sdk.dto.IFileDto;
 import com.dili.ss.base.BaseService;
+import com.dili.ss.domain.BaseOutput;
 
 /**
  * <pre>
@@ -23,4 +25,12 @@ import com.dili.ss.base.BaseService;
  * </pre>
  */
 public interface FileService extends BaseService<IFile, Long> {
+
+    /**
+     * 新增文件：更新文件类型数量和新增文件权限
+     *
+     * @param fileDto
+     * @return
+     */
+    BaseOutput create(IFileDto fileDto);
 }
