@@ -6,13 +6,7 @@
 package com.dili.cms.dto;
 
 import com.dili.cms.domain.Annunciate;
-import com.dili.ss.metadata.FieldEditor;
-import com.dili.ss.metadata.annotation.EditMode;
-import com.dili.ss.metadata.annotation.FieldDef;
-
-import javax.persistence.Column;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * <pre> 

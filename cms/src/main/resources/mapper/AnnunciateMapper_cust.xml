@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.cms.mapper.AnnunciateMapper">
+  <select id="listByQueryParams" resultType="com.dili.cms.dto.AnnunciateVo">
+    select * from (
+      SELECT
+      t.*,GROUP_CONCAT(d.target_range) AS target_range,
+      GROUP_CONCAT(d.target_type) AS target_type
+      FROM annunciate t
+      LEFT JOIN annunciate_target d ON t.id=d.`annunciate_id`
+      WHERE 1 = 1
+      <if test="title != null">
+        AND t.title like CONCAT('%',#{title,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="createTimeStart != null">
+        and res.create_time <![CDATA[>=]]> #{createTimeStart,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTimeEnd != null">
+        and res.create_time <![CDATA[<=]]> #{createTimeEnd,jdbcType=TIMESTAMP}
+      </if>
+      GROUP BY t.id
+      order by ${sort} ${order})tt where 1=1
+    <if test="targetType != null">
+      AND tt.target_type like CONCAT('%',#{targetType,jdbcType=INTEGER},'%')
+    </if>
+  </select>
+</mapper>
