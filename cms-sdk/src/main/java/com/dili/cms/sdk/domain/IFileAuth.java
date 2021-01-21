@@ -53,7 +53,7 @@ public interface IFileAuth extends IBaseDomain {
     @Column(name = "`auth_type`")
     @FieldDef(label = "权限类型(部门，市场)")
     @EditMode(editor = FieldEditor.Text, required = false)
-    Byte getAuthType();
+    Integer getAuthType();
 
-    void setAuthType(Byte authType);
+    void setAuthType(Integer authType);
 }

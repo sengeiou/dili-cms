@@ -11,7 +11,7 @@ import com.dili.ss.metadata.annotation.EditMode;
 import com.dili.ss.metadata.annotation.FieldDef;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <pre>
@@ -61,16 +61,16 @@ public interface IFile extends IBaseDomain {
     @Column(name = "`is_data_auth`")
     @FieldDef(label = "是否有数据权限限制")
     @EditMode(editor = FieldEditor.Text, required = false)
-    Byte getIsDataAuth();
+    Integer getIsDataAuth();
 
-    void setIsDataAuth(Byte isDataAuth);
+    void setIsDataAuth(Integer isDataAuth);
 
     @Column(name = "`is_download`")
     @FieldDef(label = "是否可以下载")
     @EditMode(editor = FieldEditor.Text, required = false)
-    Byte getIsDownload();
+    Integer getIsDownload();
 
-    void setIsDownload(Byte isDownload);
+    void setIsDownload(Integer isDownload);
 
     @Column(name = "`remark`")
     @FieldDef(label = "备注说明", maxLength = 255)
@@ -96,16 +96,16 @@ public interface IFile extends IBaseDomain {
     @Column(name = "`create_time`")
     @FieldDef(label = "创建时间")
     @EditMode(editor = FieldEditor.Datetime, required = false)
-    Date getCreateTime();
+    LocalDateTime getCreateTime();
 
-    void setCreateTime(Date createTime);
+    void setCreateTime(LocalDateTime createTime);
 
     @Column(name = "`update_time`")
     @FieldDef(label = "修改时间")
     @EditMode(editor = FieldEditor.Datetime, required = false)
-    Date getUpdateTime();
+    LocalDateTime getUpdateTime();
 
-    void setUpdateTime(Date updateTime);
+    void setUpdateTime(LocalDateTime updateTime);
 
     @Column(name = "`version`")
     @FieldDef(label = "版本号")
