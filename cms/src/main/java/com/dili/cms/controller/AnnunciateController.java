@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -49,7 +50,9 @@ public class AnnunciateController{
       * @date：2021/1/21 9:38
       */
     @RequestMapping(value="/list.html", method = RequestMethod.GET)
-    public String index(ModelMap modelMap) {
+    public String list(ModelMap modelMap) {
+        modelMap.put("createTimeStart", LocalDate.now().minusDays(6) + " 00:00:00");
+        modelMap.put("createTimeEnd", LocalDate.now() + " 23:59:59");
         return "annunciate/list";
     }
 
@@ -65,6 +68,18 @@ public class AnnunciateController{
     public String listPage(AnnunciateDto annunciateDto) throws Exception {
         PageOutput<List<AnnunciateVo>> output =annunciateService.listByQueryParams(annunciateDto);
         return new EasyuiPageOutput(output.getTotal(), ValueProviderUtils.buildDataByProvider(annunciateDto, output.getData())).toString();
+    }
+
+    /**
+     * 进入信息通告新增页面
+     * @param modelMap:
+     * @return：java.lang.String
+     * @author：Henry.Huang
+     * @date：2021/1/21 9:38
+     */
+    @RequestMapping(value="/add.html", method = RequestMethod.GET)
+    public String add(ModelMap modelMap) {
+        return "annunciate/add";
     }
 
     /**

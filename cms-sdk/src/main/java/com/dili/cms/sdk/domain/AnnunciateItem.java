@@ -1,7 +1,7 @@
 /**
   * Copyright (C) DiliGroup. All Rights Reserved. 
   *
-  * AnnunciateItem.java created on 2021/1/21 14:39 by Henry.Huang 
+  * AnnunciateItem.java created on 2021/1/21 14:44 by Henry.Huang
   */
 package com.dili.cms.sdk.domain;
 

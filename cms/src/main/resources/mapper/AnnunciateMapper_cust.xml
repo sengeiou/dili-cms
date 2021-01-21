@@ -13,10 +13,10 @@
         AND t.title like CONCAT('%',#{title,jdbcType=VARCHAR},'%')
       </if>
       <if test="createTimeStart != null">
-        and res.create_time <![CDATA[>=]]> #{createTimeStart,jdbcType=TIMESTAMP}
+        and t.create_time <![CDATA[>=]]> #{createTimeStart,jdbcType=TIMESTAMP}
       </if>
       <if test="createTimeEnd != null">
-        and res.create_time <![CDATA[<=]]> #{createTimeEnd,jdbcType=TIMESTAMP}
+        and t.create_time <![CDATA[<=]]> #{createTimeEnd,jdbcType=TIMESTAMP}
       </if>
       GROUP BY t.id
       order by ${sort} ${order})tt where 1=1

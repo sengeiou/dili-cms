@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.cms.mapper.AnnunciateItemMapper">
+  <resultMap id="BaseResultMap" type="com.dili.cms.sdk.domain.AnnunciateItem">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="annunciate_id" jdbcType="BIGINT" property="annunciateId" />
+    <result column="target_id" jdbcType="BIGINT" property="targetId" />
+    <result column="read_state" jdbcType="TINYINT" property="readState" />
+    <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
+    <result column="read_time" jdbcType="TIMESTAMP" property="readTime" />
+    <result column="terminal" jdbcType="TINYINT" property="terminal" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, annunciate_id, target_id, read_state, send_time, read_time, terminal, create_time
+  </sql>
+  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from annunciate_item
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="updateBy" parameterType="com.dili.cms.sdk.domain.AnnunciateItem">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update annunciate_item
+    <set>
+      <if test="annunciateId != null">
+        annunciate_id = #{annunciateId,jdbcType=BIGINT},
+      </if>
+      <if test="targetId != null">
+        target_id = #{targetId,jdbcType=BIGINT},
+      </if>
+      <if test="readState != null">
+        read_state = #{readState,jdbcType=INTEGER},
+      </if>
+      <if test="sendTime != null">
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="readTime != null">
+        read_time = #{readTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="terminal != null">
+        terminal = #{terminal,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

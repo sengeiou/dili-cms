@@ -23,13 +23,13 @@ public enum AnnunciateTargetRange {
     /**
      * 信息通告对象
      */
-    ALL_USER("所有用户", 0),
-    APPOINT_USER("指定用户", 1),
-    DEPARTMENT("部门", 2),
-    COMPANY("公司", 3),
-    DRIVER("司机", 4),
-    BUYER("买家", 5),
-    SELLER  ("卖家", 6);
+    ALL_USER("所有用户", 1),
+    APPOINT_USER("指定用户", 2),
+    DEPARTMENT("部门", 3),
+    COMPANY("公司", 4),
+    DRIVER("司机", 5),
+    BUYER("买家", 6),
+    SELLER  ("卖家", 7);
 
     private String name;
     private Integer value;
