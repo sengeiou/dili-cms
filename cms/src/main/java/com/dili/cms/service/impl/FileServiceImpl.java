@@ -9,6 +9,7 @@ import com.dili.cms.mapper.*;
 import com.dili.cms.sdk.domain.IFile;
 import com.dili.cms.sdk.domain.IFileType;
 import com.dili.cms.sdk.dto.IFileDto;
+import com.dili.cms.sdk.glossary.IFileConstant;
 import com.dili.cms.service.FileService;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.BaseOutput;
@@ -56,7 +57,7 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
     public BaseOutput create(IFileDto fileDto) {
         fileDto.setCreateTime(LocalDateTime.now());
         fileDto.setUpdateTime(LocalDateTime.now());
-        fileDto.setIsDataAuth(0);
+        fileDto.setIsDataAuth(IFileConstant.NO_AUTH.getValue());
         //先插入文件数据得到文件的id
         int fileResult = insertSelective(fileDto);
         if (fileResult <= 0) {
@@ -70,7 +71,7 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         fileTypeMapper.updateNodeCountBatch(linkNodeIds);
         //判断有没有权限限制
         if (CollectionUtils.isNotEmpty(fileDto.getAuthList())) {
-            fileDto.setIsDataAuth(1);
+            fileDto.setIsDataAuth(IFileConstant.AUTH.getValue());
             //填入文件的id
             fileDto.getAuthList().forEach(auth -> auth.setFileId(fileDto.getId()));
         }
