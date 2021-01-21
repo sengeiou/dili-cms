@@ -1,0 +1,102 @@
+<#bs4Body>
+
+<div class="container-fluid">
+    <div class="col-sm-12 offset-sm-0">
+        <div class="card">
+            <div class="breadcrumb">
+                筛选查询
+            </div>
+            <form class="form collapse show" id="queryForm" role="form" style="margin-left: 10px" >
+                <div class="row  row-cols-6">
+                    <div class="form-group col">
+                        <label for="title" class="">通告标题</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="">
+                    </div>
+                    <div class="form-group col">
+                        <label for="targetType">发送对象</label>
+                        <select id="targetType" name="targetType" class="form-control">
+                            <option value="">--全部--</option>
+                            <option value="1">系统用户</option>
+                            <option value="2">客户</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-auto" hidden>
+                        <label for="createTimeStart" >创建时间</label>
+                        <div class="form-inline">
+                            <div class="input-group">
+                                <input type="text" name="createTimeStart" id="createTimeStart" value="${createTimeStart!}" class="form-control laydatetime laystart"/>
+                                <div class="input-group-append">
+                                    <label for="createTimeStart"  class="input-group-text fa fa-calendar"></label>
+                                </div>
+                            </div>&nbsp;&nbsp;至&nbsp;&nbsp;
+                            <div class="input-group">
+                                <input type="text" name="createTimeEnd" id="createTimeEnd" value="${createTimeEnd!}" class="form-control laydatetime layend"/>
+                                <div class="input-group-append">
+                                    <label for="createTimeEnd"  class="input-group-text fa fa-calendar"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto align-self-center mt-3">
+                        <button type="button" class="btn btn-outline-primary mr-2" onclick="javascript:$('#queryForm input,select').val('');"><i class="fa fa-refresh"></i> 清空</button>
+                        <button type="button" class="btn btn-outline-primary" onclick="queryDataHandler()"><i class="fa fa-search"></i> 查询</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="col-sm-12 offset-sm-0" style="margin-top: 10px">
+        <div class="card">
+            <div class="breadcrumb">
+                结果列表
+            </div>
+
+            <div id="toolbar" class="btn-group" role="group" aria-label="Toolbar with button groups">
+
+            </div>
+
+            <table id="grid"  data-toggle="table" data-title="信息通告列表" class="table" data-toolbar="#toolbar" data-pagination="true" data-page-number="1" data-page-size="10" data-query-params="queryParams"
+                   data-side-pagination="server" data-method="POST" data-content-type="application/x-www-form-urlencoded" data-single-select="false" data-click-to-select="true" data-checkbox-header="true"
+                   data-unique-id="id" data-sort-name="modifyTime" data-sort-order="desc" data-icons="bui.variable.icons" data-buttons-class="primary" data-show-refresh="true" data-show-fullscreen="true"
+                   data-show-columns="true" >
+                <thead>
+                <tr>
+                    <th data-checkbox="true"></th>
+                    <th data-field="title" data-formatter="view" data-align="center" data-sortable="true" data-sort-name="title">
+                        通告标题
+                    </th>
+                    <th data-field="targetType" data-align="center" data-provider="annunciateTargetTypeProvider">
+                        发送对象
+                    </th>
+                    <th data-field="targetRange" data-align="center" data-provider="annunciateTargetRangeProvider">
+                        发送范围
+                    </th>
+                    <th data-field="readCount" data-formatter="viewReaded" data-align="center" data-sortable="true" data-sort-name="read_count">
+                        已读
+                    </th>
+                    <th data-field="startTime" data-align="center" data-provider="datetimeProvider" data-sortable="true" data-sort-name="start_time">
+                        通告发布时间
+                    </th>
+                    <th data-field="endTime" data-align="center" data-provider="datetimeProvider" data-sortable="true" data-sort-name="end_time">
+                        通告结束时间
+                    </th>
+                    <th data-field="createTime" data-align="center" data-provider="datetimeProvider" data-sortable="true" data-sort-name="create_time">
+                        通告创建时间
+                    </th>
+                    <th data-field="sendState" data-align="center" data-provider="poStateProvider"  data-sortable="true" data-sort-name="send_state">
+                        发布状态
+                    </th>
+                    <th data-align="center" data-field="id" data-formatter="operationFormatter">
+                        操作
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</#bs4Body>
+<#annunciate_listJs.tagJs />
+
+

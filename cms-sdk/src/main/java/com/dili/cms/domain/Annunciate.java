@@ -1,3 +1,8 @@
+/**
+  * Copyright (C) DiliGroup. All Rights Reserved. 
+  *
+  * Annunciate.java created on 2021/1/20 16:46 by Henry.Huang
+  */
 package com.dili.cms.domain;
 
 import com.dili.ss.dto.IBaseDomain;
