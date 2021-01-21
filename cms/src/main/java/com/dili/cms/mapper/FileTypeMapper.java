@@ -1,11 +1,10 @@
 /**
  * Copyright (C) DiliGroup. All Rights Reserved.
  * <p>
- * FileMapper.java created on 2021/1/20 15:32 by Tab.Xie
+ * FileTypeMapper.java created on 2021/1/20 15:33 by Tab.Xie
  */
-package com.dili.cms.dao;
-
-import com.dili.cms.domain.File;
+package com.dili.cms.mapper;
+import com.dili.cms.sdk.domain.FileType;
 import com.dili.ss.base.MyMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -23,5 +22,5 @@ import org.apache.ibatis.annotations.Mapper;
  * </pre>
  */
 @Mapper
-public interface FileMapper extends MyMapper<File> {
+public interface FileTypeMapper extends MyMapper<FileType> {
 }

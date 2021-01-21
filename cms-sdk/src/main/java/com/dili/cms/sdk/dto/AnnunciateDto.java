@@ -3,9 +3,10 @@
  * <p>
  * AnnunciateDto created on 2021/1/20 14:23 by Henry.Huang
  */
-package com.dili.cms.dto;
+package com.dili.cms.sdk.dto;
 
-import com.dili.cms.domain.Annunciate;
+import com.dili.cms.sdk.domain.Annunciate;
+
 import java.time.LocalDateTime;
 
 /**

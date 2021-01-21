@@ -5,10 +5,10 @@
   */
 package com.dili.cms.service.impl;
 
-import com.dili.cms.domain.Annunciate;
-import com.dili.cms.dto.AnnunciateDto;
-import com.dili.cms.dto.AnnunciateVo;
 import com.dili.cms.mapper.AnnunciateMapper;
+import com.dili.cms.sdk.domain.Annunciate;
+import com.dili.cms.sdk.dto.AnnunciateDto;
+import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.cms.service.AnnunciateService;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.PageOutput;

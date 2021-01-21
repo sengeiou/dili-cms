@@ -5,8 +5,8 @@
  */
 package com.dili.cms.service.impl;
 
-import com.dili.cms.dao.FileTypeMapper;
-import com.dili.cms.domain.FileType;
+import com.dili.cms.mapper.FileTypeMapper;
+import com.dili.cms.sdk.domain.FileType;
 import com.dili.cms.service.FileTypeService;
 import com.dili.ss.base.BaseServiceImpl;
 import org.springframework.stereotype.Service;

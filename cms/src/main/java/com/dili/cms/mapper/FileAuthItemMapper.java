@@ -3,9 +3,9 @@
  * <p>
  * FileAuthItemMapper.java created on 2021/1/20 15:32 by Tab.Xie
  */
-package com.dili.cms.dao;
+package com.dili.cms.mapper;
 
-import com.dili.cms.domain.FileAuthItem;
+import com.dili.cms.sdk.domain.FileAuthItem;
 import com.dili.ss.base.MyMapper;
 import org.apache.ibatis.annotations.Mapper;
 

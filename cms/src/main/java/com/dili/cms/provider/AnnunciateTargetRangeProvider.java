@@ -5,8 +5,7 @@
   */
 package com.dili.cms.provider;
 
-import com.dili.cms.domain.AnnunciateTargetRange;
-import com.dili.cms.domain.AnnunciateTargetType;
+import com.dili.cms.sdk.glossary.AnnunciateTargetRange;
 import com.dili.ss.metadata.FieldMeta;
 import com.dili.ss.metadata.ValuePair;
 import com.dili.ss.metadata.ValuePairImpl;

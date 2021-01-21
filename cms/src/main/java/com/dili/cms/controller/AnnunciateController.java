@@ -5,9 +5,9 @@
   */
 package com.dili.cms.controller;
 
-import com.dili.cms.domain.Annunciate;
-import com.dili.cms.dto.AnnunciateDto;
-import com.dili.cms.dto.AnnunciateVo;
+import com.dili.cms.sdk.domain.Annunciate;
+import com.dili.cms.sdk.dto.AnnunciateDto;
+import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.cms.service.AnnunciateService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.EasyuiPageOutput;

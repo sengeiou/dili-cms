@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dili.cms.dao.FileAuthMapper">
-  <resultMap id="BaseResultMap" type="com.dili.cms.domain.FileAuth">
+  <resultMap id="BaseResultMap" type="com.dili.cms.sdk.domain.FileAuth">
     <!--
       WARNING - @mbg.generated
     -->
@@ -16,31 +16,5 @@
     -->
     id, file_id, auth_value, auth_type
   </sql>
-  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    select 
-    <include refid="Base_Column_List" />
-    from file_auth
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <update id="updateBy" parameterType="com.dili.cms.domain.FileAuth">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    update file_auth
-    <set>
-      <if test="fileId != null">
-        file_id = #{fileId,jdbcType=BIGINT},
-      </if>
-      <if test="authValue != null">
-        auth_value = #{authValue,jdbcType=BIGINT},
-      </if>
-      <if test="authType != null">
-        auth_type = #{authType,jdbcType=TINYINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+
 </mapper>

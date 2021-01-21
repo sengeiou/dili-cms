@@ -3,7 +3,7 @@
   *
   * AnnunciateTargetType.java created on 2021/1/20 17:03 by Henry.Huang
   */
-package com.dili.cms.domain;
+package com.dili.cms.sdk.glossary;
 
 /**
   * <pre>

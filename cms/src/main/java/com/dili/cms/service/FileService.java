@@ -5,7 +5,8 @@
  */
 package com.dili.cms.service;
 
-import com.dili.cms.domain.File;
+
+import com.dili.cms.sdk.domain.File;
 import com.dili.ss.base.BaseService;
 
 /**

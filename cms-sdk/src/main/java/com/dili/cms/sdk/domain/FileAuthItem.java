@@ -1,9 +1,9 @@
 /**
  * Copyright (C) DiliGroup. All Rights Reserved.
  * <p>
- * FileAuth.java created on 2021/1/20 15:33 by Tab.Xie
+ * FileAuthItem.java created on 2021/1/20 15:33 by Tab.Xie
  */
-package com.dili.cms.domain;
+package com.dili.cms.sdk.domain;
 
 import com.dili.ss.dto.IBaseDomain;
 import com.dili.ss.metadata.FieldEditor;
@@ -15,7 +15,7 @@ import javax.persistence.*;
 /**
  * <pre>
  * Description
- * TODO 文件权限表
+ * TODO 文件权限子表
  *
  * @author Tab.Xie
  * @since 1.0
@@ -25,8 +25,8 @@ import javax.persistence.*;
  * 2021/1/20  Tab.Xie  Initial version.
  * </pre>
  */
-@Table(name = "`file_auth`")
-public interface FileAuth extends IBaseDomain {
+@Table(name = "`file_auth_item`")
+public interface FileAuthItem extends IBaseDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
@@ -43,17 +43,17 @@ public interface FileAuth extends IBaseDomain {
 
     void setFileId(Long fileId);
 
-    @Column(name = "`auth_value`")
+    @Column(name = "`auth_id`")
     @FieldDef(label = "权限id")
     @EditMode(editor = FieldEditor.Number, required = false)
-    Long getAuthValue();
+    Long getAuthId();
 
-    void setAuthValue(Long authValue);
+    void setAuthId(Long authId);
 
-    @Column(name = "`auth_type`")
-    @FieldDef(label = "权限类型(部门，市场)")
-    @EditMode(editor = FieldEditor.Text, required = false)
-    Byte getAuthType();
+    @Column(name = "`user_id`")
+    @FieldDef(label = "用户id")
+    @EditMode(editor = FieldEditor.Number, required = false)
+    Long getUserId();
 
-    void setAuthType(Byte authType);
+    void setUserId(Long userId);
 }

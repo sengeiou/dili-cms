@@ -3,9 +3,9 @@
  * <p>
  * FileItemMapper.java created on 2021/1/20 15:32 by Tab.Xie
  */
-package com.dili.cms.dao;
+package com.dili.cms.mapper;
 
-import com.dili.cms.domain.FileItem;
+import com.dili.cms.sdk.domain.FileItem;
 import com.dili.ss.base.MyMapper;
 import org.apache.ibatis.annotations.Mapper;
 

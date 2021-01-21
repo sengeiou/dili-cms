@@ -3,7 +3,7 @@
  * <p>
  * File.java created on 2021/1/20 15:33 by Tab.Xie
  */
-package com.dili.cms.domain;
+package com.dili.cms.sdk.domain;
 
 import com.dili.ss.dto.IBaseDomain;
 import com.dili.ss.metadata.FieldEditor;

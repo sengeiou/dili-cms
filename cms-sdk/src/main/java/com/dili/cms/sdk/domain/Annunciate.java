@@ -3,20 +3,15 @@
   *
   * Annunciate.java created on 2021/1/20 16:46 by Henry.Huang
   */
-package com.dili.cms.domain;
+package com.dili.cms.sdk.domain;
 
 import com.dili.ss.dto.IBaseDomain;
 import com.dili.ss.metadata.FieldEditor;
 import com.dili.ss.metadata.annotation.EditMode;
 import com.dili.ss.metadata.annotation.FieldDef;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 import javax.persistence.*;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 /**
   * <pre>

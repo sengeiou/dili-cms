@@ -1,18 +1,18 @@
 /**
  * Copyright (C) DiliGroup. All Rights Reserved.
  * <p>
- * FileAuthMapper.java created on 2021/1/20 15:32 by Tab.Xie
+ * FileMapper.java created on 2021/1/20 15:32 by Tab.Xie
  */
-package com.dili.cms.dao;
+package com.dili.cms.mapper;
 
-import com.dili.cms.domain.FileAuth;
+import com.dili.cms.sdk.domain.File;
 import com.dili.ss.base.MyMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <pre>
  * Description
- * TODO 文件权限Mapper
+ * TODO 文件类型Mapper
  *
  * @author Tab.Xie
  * @since 1.0
@@ -23,5 +23,5 @@ import org.apache.ibatis.annotations.Mapper;
  * </pre>
  */
 @Mapper
-public interface FileAuthMapper extends MyMapper<FileAuth> {
+public interface FileMapper extends MyMapper<File> {
 }
