@@ -6,7 +6,7 @@
 package com.dili.cms.service;
 
 
-import com.dili.cms.sdk.domain.FileType;
+import com.dili.cms.sdk.domain.IFileType;
 import com.dili.ss.base.BaseService;
 
 /**
@@ -22,5 +22,5 @@ import com.dili.ss.base.BaseService;
  * 2021/1/20  Tab.Xie  Initial version.
  * </pre>
  */
-public interface FileTypeService extends BaseService<FileType, Long> {
+public interface FileTypeService extends BaseService<IFileType, Long> {
 }
