@@ -1,7 +1,7 @@
 /**
  * Copyright (C) DiliGroup. All Rights Reserved.
  * <p>
- * FileType.java created on 2021/1/20 15:33 by Tab.Xie
+ * File.java created on 2021/1/20 15:33 by Tab.Xie
  */
 package com.dili.cms.sdk.domain;
 
@@ -16,7 +16,7 @@ import java.util.Date;
 /**
  * <pre>
  * Description
- * TODO 文件类型表
+ * TODO 文件表
  *
  * @author Tab.Xie
  * @since 1.0
@@ -26,8 +26,8 @@ import java.util.Date;
  * 2021/1/20  Tab.Xie  Initial version.
  * </pre>
  */
-@Table(name = "`file_type`")
-public interface FileType extends IBaseDomain {
+@Table(name = "`file`")
+public interface IFile extends IBaseDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
@@ -37,29 +37,43 @@ public interface FileType extends IBaseDomain {
 
     void setId(Long id);
 
-    @Column(name = "`parent_id`")
-    @FieldDef(label = "父节点id：0则是父节点")
-    @EditMode(editor = FieldEditor.Number, required = false)
-    Long getParentId();
-
-    void setParentId(Long parentId);
-
-    @Column(name = "`name`")
-    @FieldDef(label = "类型名称", maxLength = 255)
+    @Column(name = "`file_name`")
+    @FieldDef(label = "文件名称", maxLength = 255)
     @EditMode(editor = FieldEditor.Text, required = false)
-    String getName();
+    String getFileName();
 
-    void setName(String name);
+    void setFileName(String fileName);
 
-    @Column(name = "`node_file_count`")
-    @FieldDef(label = "节点文件数量")
+    @Column(name = "`type_id`")
+    @FieldDef(label = "文件类型id")
     @EditMode(editor = FieldEditor.Number, required = false)
-    Integer getNodeFileCount();
+    Long getTypeId();
 
-    void setNodeFileCount(Integer nodeFileCount);
+    void setTypeId(Long typeId);
+
+    @Column(name = "`cover_img`")
+    @FieldDef(label = "封面图片url", maxLength = 255)
+    @EditMode(editor = FieldEditor.Text, required = false)
+    String getCoverImg();
+
+    void setCoverImg(String coverImg);
+
+    @Column(name = "`is_data_auth`")
+    @FieldDef(label = "是否有数据权限限制")
+    @EditMode(editor = FieldEditor.Text, required = false)
+    Byte getIsDataAuth();
+
+    void setIsDataAuth(Byte isDataAuth);
+
+    @Column(name = "`is_download`")
+    @FieldDef(label = "是否可以下载")
+    @EditMode(editor = FieldEditor.Text, required = false)
+    Byte getIsDownload();
+
+    void setIsDownload(Byte isDownload);
 
     @Column(name = "`remark`")
-    @FieldDef(label = "备注", maxLength = 255)
+    @FieldDef(label = "备注说明", maxLength = 255)
     @EditMode(editor = FieldEditor.Text, required = false)
     String getRemark();
 

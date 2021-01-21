@@ -1,7 +1,7 @@
 /**
  * Copyright (C) DiliGroup. All Rights Reserved.
  * <p>
- * FileAuth.java created on 2021/1/20 15:33 by Tab.Xie
+ * FileItem.java created on 2021/1/20 15:33 by Tab.Xie
  */
 package com.dili.cms.sdk.domain;
 
@@ -15,7 +15,7 @@ import javax.persistence.*;
 /**
  * <pre>
  * Description
- * TODO 文件权限表
+ * TODO 文件信息表
  *
  * @author Tab.Xie
  * @since 1.0
@@ -25,8 +25,8 @@ import javax.persistence.*;
  * 2021/1/20  Tab.Xie  Initial version.
  * </pre>
  */
-@Table(name = "`file_auth`")
-public interface FileAuth extends IBaseDomain {
+@Table(name = "`file_item`")
+public interface IFileItem extends IBaseDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
@@ -43,17 +43,24 @@ public interface FileAuth extends IBaseDomain {
 
     void setFileId(Long fileId);
 
-    @Column(name = "`auth_value`")
-    @FieldDef(label = "权限id")
-    @EditMode(editor = FieldEditor.Number, required = false)
-    Long getAuthValue();
-
-    void setAuthValue(Long authValue);
-
-    @Column(name = "`auth_type`")
-    @FieldDef(label = "权限类型(部门，市场)")
+    @Column(name = "`file_url`")
+    @FieldDef(label = "文件地址", maxLength = 255)
     @EditMode(editor = FieldEditor.Text, required = false)
-    Byte getAuthType();
+    String getFileUrl();
 
-    void setAuthType(Byte authType);
+    void setFileUrl(String fileUrl);
+
+    @Column(name = "`file_type`")
+    @FieldDef(label = "文件类型后缀", maxLength = 35)
+    @EditMode(editor = FieldEditor.Text, required = false)
+    String getFileType();
+
+    void setFileType(String fileType);
+
+    @Column(name = "`file_size`")
+    @FieldDef(label = "文件大小")
+    @EditMode(editor = FieldEditor.Number, required = false)
+    Integer getFileSize();
+
+    void setFileSize(Integer fileSize);
 }

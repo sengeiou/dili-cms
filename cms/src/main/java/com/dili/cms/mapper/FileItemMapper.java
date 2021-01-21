@@ -5,7 +5,7 @@
  */
 package com.dili.cms.mapper;
 
-import com.dili.cms.sdk.domain.FileItem;
+import com.dili.cms.sdk.domain.IFileItem;
 import com.dili.ss.base.MyMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -23,5 +23,5 @@ import org.apache.ibatis.annotations.Mapper;
  * </pre>
  */
 @Mapper
-public interface FileItemMapper extends MyMapper<FileItem> {
+public interface FileItemMapper extends MyMapper<IFileItem> {
 }

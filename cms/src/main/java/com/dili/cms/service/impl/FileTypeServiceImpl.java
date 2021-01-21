@@ -6,7 +6,7 @@
 package com.dili.cms.service.impl;
 
 import com.dili.cms.mapper.FileTypeMapper;
-import com.dili.cms.sdk.domain.FileType;
+import com.dili.cms.sdk.domain.IFileType;
 import com.dili.cms.service.FileTypeService;
 import com.dili.ss.base.BaseServiceImpl;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  * </pre>
  */
 @Service
-public class FileTypeServiceImpl extends BaseServiceImpl<FileType, Long> implements FileTypeService {
+public class FileTypeServiceImpl extends BaseServiceImpl<IFileType, Long> implements FileTypeService {
 
     public FileTypeMapper getActualDao() {
         return (FileTypeMapper) getDao();
