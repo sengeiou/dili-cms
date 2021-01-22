@@ -11,7 +11,7 @@ import com.dili.ss.metadata.annotation.EditMode;
 import com.dili.ss.metadata.annotation.FieldDef;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <pre>
@@ -82,16 +82,16 @@ public interface IFileType extends IBaseDomain {
     @Column(name = "`create_time`")
     @FieldDef(label = "创建时间")
     @EditMode(editor = FieldEditor.Datetime, required = false)
-    Date getCreateTime();
+    LocalDateTime getCreateTime();
 
-    void setCreateTime(Date createTime);
+    void setCreateTime(LocalDateTime createTime);
 
     @Column(name = "`update_time`")
     @FieldDef(label = "修改时间")
     @EditMode(editor = FieldEditor.Datetime, required = false)
-    Date getUpdateTime();
+    LocalDateTime getUpdateTime();
 
-    void setUpdateTime(Date updateTime);
+    void setUpdateTime(LocalDateTime updateTime);
 
     @Column(name = "`version`")
     @FieldDef(label = "版本号")

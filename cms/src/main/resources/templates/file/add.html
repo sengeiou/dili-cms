@@ -1,0 +1,64 @@
+<#bs4Body>
+<div id="app" class="container-fluid">
+    <form id="saveForm" role="form" class="form-inline" novalidate>
+        <div class="col-sm-14 offset-sm-0">
+            <div class="card">
+                <div class="breadcrumb" style="border-radius:0 !important;">
+                    基本信息
+                </div>
+                <div class="card-body">
+                    <div class="row row-cols-4">
+                        <div class="form-group col">
+                            <label for="deliveryDate">文档名称：<i class="red">*</i></label>
+                            <div class="input-group">
+                                <input/>
+                            </div>
+                        </div>
+                        <div class="form-group col">
+                            <label for="opSelected">文档分类：<i class="red">*</i></label>
+                            <div class="input-group">
+                                <input/>
+                            </div>
+                        </div>
+                        <div class="form-group col">
+                            <label for="customerName">配图：<i class="red">*</i></label>
+                            <div class="input-group">
+                                <input/>
+                            </div>
+                        </div>
+                        <div class="form-group col">
+                            <label for="storeName">支持下载：</label>
+                            <div class="input-group">
+                                <input/>
+                            </div>
+                        </div>
+                        <div class="form-group col">
+                            <label for="storeType">访问权限：</label>
+                            <div class="input-group">
+                                <input/>
+                            </div>
+                        </div>
+                        <div class="form-group col">
+                            <label for="receiptPhone">说明：</label>
+                            <div class="input-group">
+                                <input/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div style="height: 70px;"></div>
+        <div class="modal-footer-wrap">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary px-5"
+                        @click="saveOrUpdateHandler" id="formSubmit"
+                        data-hotkey="{key: 'Ctrl+S'}">确定
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+</#bs4Body>
