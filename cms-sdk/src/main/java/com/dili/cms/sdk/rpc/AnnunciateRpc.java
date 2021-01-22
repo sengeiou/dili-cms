@@ -38,7 +38,7 @@ public interface AnnunciateRpc {
      * @date：2021/1/21 16:38
      */
     @RequestMapping(value = "/api/annunciate/readByAnnunciateId", method = {RequestMethod.POST,RequestMethod.GET})
-    public BaseOutput readByAnnunciateId(@RequestBody Long annunciateId);
+    BaseOutput readByAnnunciateId(@RequestBody Long annunciateId);
 
     /**
      * 根据用户id标记该用户所有消息已读
@@ -48,7 +48,7 @@ public interface AnnunciateRpc {
      * @date：2021/1/21 16:38
      */
     @RequestMapping(value = "/api/annunciate/readByUserId", method = {RequestMethod.POST,RequestMethod.GET})
-    public BaseOutput readByUserId(@RequestBody Long userId);
+    BaseOutput readByUserId(@RequestBody Long userId);
 
     /**
      * 根据annunciate_id标记该消息删除
@@ -58,7 +58,7 @@ public interface AnnunciateRpc {
      * @date：2021/1/21 16:38
      */
     @RequestMapping(value = "/api/annunciate/deleteByAnnunciateId", method = {RequestMethod.POST,RequestMethod.GET})
-    public BaseOutput deleteByAnnunciateId(@RequestBody Long annunciateId);
+    BaseOutput deleteByAnnunciateId(@RequestBody Long annunciateId);
 
     /**
      * 根据用户id标记该用户所有消息已删除
@@ -68,7 +68,7 @@ public interface AnnunciateRpc {
      * @date：2021/1/21 16:38
      */
     @RequestMapping(value = "/api/annunciate/deleteByUserId", method = {RequestMethod.POST,RequestMethod.GET})
-    public BaseOutput deleteByUserId(@RequestBody Long userId);
+    BaseOutput deleteByUserId(@RequestBody Long userId);
 
     /**
      * 根据信息通告项id标记该消息已读
@@ -78,7 +78,7 @@ public interface AnnunciateRpc {
      * @date：2021/1/21 16:38
      */
     @RequestMapping(value = "/api/annunciate/readByAnnunciateItemId", method = {RequestMethod.POST,RequestMethod.GET})
-    public BaseOutput readByAnnunciateItemId(@RequestBody Long annunciateItemId);
+    BaseOutput readByAnnunciateItemId(@RequestBody Long annunciateItemId);
 
     /**
      * 根据信息通告项id标记该消息为已删除
@@ -88,7 +88,7 @@ public interface AnnunciateRpc {
      * @date：2021/1/21 16:38
      */
     @RequestMapping(value = "/api/annunciate/deleteByAnnunciateItemId", method = {RequestMethod.POST,RequestMethod.GET})
-    public BaseOutput deleteByAnnunciateItemId(@RequestBody Long annunciateItemId);
+    BaseOutput deleteByAnnunciateItemId(@RequestBody Long annunciateItemId);
 
     /**
      * 根据用户id查询消息列表(不包括富文本消息内容，以节约带宽)
@@ -98,7 +98,7 @@ public interface AnnunciateRpc {
      * @date：2021/1/21 16:38
      */
     @RequestMapping(value = "/api/annunciate/getListByUserId", method = {RequestMethod.POST,RequestMethod.GET})
-    public BaseOutput<List<AnnunciateVo>> getListByUserId(@RequestBody Long userId);
+    BaseOutput<List<AnnunciateVo>> getListByUserId(@RequestBody Long userId);
 
     /**
      * 根据annunciate_id查询富文本消息内容
@@ -108,6 +108,6 @@ public interface AnnunciateRpc {
      * @date：2021/1/21 16:38
      */
     @RequestMapping(value = "/api/annunciate/getContentById", method = {RequestMethod.POST,RequestMethod.GET})
-    public BaseOutput<String> getContentById(@RequestBody Long id);
+    BaseOutput<String> getContentById(@RequestBody Long id);
 
 }
