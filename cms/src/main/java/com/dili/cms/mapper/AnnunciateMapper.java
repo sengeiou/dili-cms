@@ -37,4 +37,29 @@ public interface AnnunciateMapper extends MyMapper<Annunciate> {
       */
     List<AnnunciateVo> listByQueryParams(AnnunciateDto annunciateDto);
 
+    /**
+      * 根据id更新已读数量
+      * @param annunciateDto:
+      * @return：int
+      * @author：Henry.Huang
+      * @date：2021/1/21 17:38
+      */
+    int updateReadCountById(AnnunciateDto annunciateDto);
+
+    /**
+     * 批量更新信息通告已读数量
+     * @param annunciates:
+     * @author：Henry.Huang
+     * @date：2021/1/22 9:33
+     */
+    void bachUpdateReadCountById(List<Annunciate> annunciates);
+
+    /**
+      * 根据用户id获取信息列表，过滤掉已删除的
+      * @param userId:
+      * @return：java.util.List<com.dili.cms.sdk.domain.Annunciate>
+      * @author：Henry.Huang
+      * @date：2021/1/22 15:58
+      */
+    List<AnnunciateVo> getListByUserId(Long userId);
 }

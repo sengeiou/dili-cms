@@ -6,15 +6,30 @@
 package com.dili.cms.service.impl;
 
 import com.dili.cms.mapper.AnnunciateItemMapper;
+import com.dili.cms.sdk.domain.Annunciate;
 import com.dili.cms.sdk.domain.AnnunciateItem;
+import com.dili.cms.sdk.dto.AnnunciateDto;
+import com.dili.cms.sdk.glossary.AnnunciateItemOpType;
+import com.dili.cms.sdk.glossary.ReadType;
 import com.dili.cms.service.AnnunciateItemService;
+import com.dili.cms.service.AnnunciateService;
 import com.dili.ss.base.BaseServiceImpl;
+import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.dto.DTOUtils;
+import com.dili.ss.exception.AppException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
   * <pre> 
   * Description 
-  * TODO file description here 
+  * 信息通告项service
   *
   * @author Henry.Huang 
   * @since 1.0 
@@ -27,7 +42,117 @@ import org.springframework.stereotype.Service;
 @Service
 public class AnnunciateItemServiceImpl extends BaseServiceImpl<AnnunciateItem, Long> implements AnnunciateItemService {
 
+    @Autowired
+    AnnunciateService annunciateService;
+
     public AnnunciateItemMapper getActualDao() {
         return (AnnunciateItemMapper)getDao();
+    }
+
+    private final Integer ONE=1;
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public BaseOutput readByAnnunciateId(Long annunciateId, Integer updateType) throws AppException{
+        if(annunciateId==null){
+            return BaseOutput.failure("未传入annunciateId！");
+        }
+        AnnunciateItem annunciateItem= DTOUtils.newInstance(AnnunciateItem.class);
+        Example example=new Example(AnnunciateItem.class);
+        if(AnnunciateItemOpType.OP_READ.getValue().equals(updateType)){
+            annunciateItem.setReadState(ReadType.READ.getValue());
+            example.createCriteria().andEqualTo("annunciateId",annunciateId)
+                    .andEqualTo("readState",ReadType.NO_READ.getValue());
+            int updateCount=getActualDao().updateByExampleSelective(annunciateItem,example);
+            if(updateCount==0){
+                return BaseOutput.failure("标记已读数量为0");
+            }
+            AnnunciateDto annunciateDto = DTOUtils.newInstance(AnnunciateDto.class);
+            annunciateDto.setId(annunciateId);
+            annunciateDto.setReadCount(updateCount);
+            int updateAnnunciateFlag= annunciateService.updateReadCountById(annunciateDto);
+            if(updateAnnunciateFlag==0){
+                throw new AppException("该通告不存在未读信息！");
+            }
+        }
+        if(AnnunciateItemOpType.OP_DEL.getValue().equals(updateType)){
+            annunciateItem.setReadState(ReadType.DELETE.getValue());
+            example.createCriteria().andEqualTo("annunciateId",annunciateId)
+                    .andNotEqualTo("readState",ReadType.DELETE.getValue());
+            getActualDao().updateByExampleSelective(annunciateItem,example);
+        }
+        return BaseOutput.success();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public BaseOutput readByUserId(Long userId, Integer updateType) throws AppException{
+        if(userId==null){
+            return BaseOutput.failure("未传入userId！");
+        }
+        Example example=new Example(AnnunciateItem.class);
+        AnnunciateItem annunciateItem= DTOUtils.newInstance(AnnunciateItem.class);
+        if(AnnunciateItemOpType.OP_READ.getValue().equals(updateType)){
+            example.createCriteria().andEqualTo("targetId",userId)
+                    .andEqualTo("readState",ReadType.NO_READ.getValue());
+            List<AnnunciateItem> annunciateItems=getActualDao().selectByExample(example);
+            if(annunciateItems==null || annunciateItems.size()==0){
+                BaseOutput.failure("该用户不存在未读信息！");
+            }
+            annunciateItem.setReadState(ReadType.READ.getValue());
+            int updateCount=getActualDao().updateByExampleSelective(annunciateItem,example);
+            if(updateCount != annunciateItems.size()){
+                throw new AppException("系统出错，请刷新后重试！");
+            }
+            for (AnnunciateItem obj : annunciateItems) {
+                AnnunciateDto annunciateDto = DTOUtils.newInstance(AnnunciateDto.class);
+                annunciateDto.setId(obj.getAnnunciateId());
+                annunciateDto.setReadCount(ONE);
+                annunciateService.updateReadCountById(annunciateDto);
+            }
+        }
+        if(AnnunciateItemOpType.OP_DEL.getValue().equals(updateType)){
+            annunciateItem.setReadState(ReadType.DELETE.getValue());
+            example.createCriteria().andEqualTo("targetId",userId)
+                    .andNotEqualTo("readState",ReadType.DELETE.getValue());
+            getActualDao().updateByExampleSelective(annunciateItem,example);
+        }
+        return BaseOutput.success();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public BaseOutput readByAnnunciateItemId(Long annunciateItemId, Integer updateType) throws AppException{
+        if(annunciateItemId==null){
+            return BaseOutput.failure("未传入annunciateItemId！");
+        }
+        AnnunciateItem annunciateItem= DTOUtils.newInstance(AnnunciateItem.class);
+        Example example=new Example(AnnunciateItem.class);
+        if(AnnunciateItemOpType.OP_READ.getValue().equals(updateType)){
+            annunciateItem.setReadState(ReadType.READ.getValue());
+            example.createCriteria().andEqualTo("id",annunciateItemId)
+                    .andEqualTo("readState",ReadType.NO_READ.getValue());
+            int updateCount=getActualDao().updateByExampleSelective(annunciateItem,example);
+            if(updateCount != ONE){
+                throw new AppException("标记已读出错，请刷新重试！");
+            }
+            //获取annunciateID修改已读数量
+            AnnunciateItem annunciateItemOld=getActualDao().selectByPrimaryKey(annunciateItemId);
+            AnnunciateDto annunciateDto = DTOUtils.newInstance(AnnunciateDto.class);
+            annunciateDto.setId(annunciateItemOld.getAnnunciateId());
+            annunciateDto.setReadCount(ONE);
+            int updateAnnunciateFlag= annunciateService.updateReadCountById(annunciateDto);
+            if(updateAnnunciateFlag == 0){
+                throw new AppException("该通告不存在未读信息！");
+            }
+        }
+        if(AnnunciateItemOpType.OP_DEL.getValue().equals(updateType)){
+            annunciateItem.setReadState(ReadType.DELETE.getValue());
+            example.createCriteria().andEqualTo("id",annunciateItemId)
+                    .andNotEqualTo("readState",ReadType.DELETE.getValue());
+            getActualDao().updateByExampleSelective(annunciateItem,example);
+        }
+        return BaseOutput.success();
     }
 }
