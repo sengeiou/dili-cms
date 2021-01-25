@@ -11,10 +11,12 @@ import com.dili.cms.sdk.dto.AnnunciateDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.cms.service.AnnunciateService;
 import com.dili.ss.base.BaseServiceImpl;
+import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.PageOutput;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,7 +40,6 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
         return (AnnunciateMapper)getDao();
     }
 
-
     @Override
     public PageOutput<List<AnnunciateVo>> listByQueryParams(AnnunciateDto annunciateDto) {
         Integer page = annunciateDto.getPage();
@@ -53,5 +54,24 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
         PageOutput<List<AnnunciateVo>> output = PageOutput.success();
         output.setData(list).setPageNum(pageNum).setTotal(total).setPageSize(annunciateDto.getPage()).setPages(totalPage);
         return output;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int updateReadCountById(AnnunciateDto annunciateDto) {
+        return getActualDao().updateReadCountById(annunciateDto);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public BaseOutput bachUpdateReadCountById(List<Annunciate> annunciates) {
+        getActualDao().bachUpdateReadCountById(annunciates);
+        return BaseOutput.success();
+    }
+
+    @Override
+    public BaseOutput<List<AnnunciateVo>> getListByUserId(Long userId) {
+        List<AnnunciateVo> annunciates=getActualDao().getListByUserId(userId);
+        return BaseOutput.successData(annunciates);
     }
 }

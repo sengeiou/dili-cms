@@ -18,13 +18,15 @@
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="read_count" jdbcType="INTEGER" property="readCount" />
     <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="stick_state" jdbcType="INTEGER" property="stickState" />
+    <result column="type" jdbcType="INTEGER" property="type" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, title, content, send_state, start_time, end_time, notes, creator_id, modifier_id, 
-    create_time, modify_time, read_count, version
+    create_time, modify_time, read_count,stick_state,type, version
   </sql>
 
 </mapper>

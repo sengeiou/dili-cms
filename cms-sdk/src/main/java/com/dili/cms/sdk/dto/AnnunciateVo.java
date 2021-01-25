@@ -6,6 +6,11 @@
 package com.dili.cms.sdk.dto;
 
 import com.dili.cms.sdk.domain.Annunciate;
+import com.dili.ss.metadata.FieldEditor;
+import com.dili.ss.metadata.annotation.EditMode;
+import com.dili.ss.metadata.annotation.FieldDef;
+
+import javax.persistence.Column;
 
 /**
  * <pre> 
@@ -41,4 +46,14 @@ public interface AnnunciateVo extends Annunciate {
     String getTargetRange();
 
     void setTargetRange(String targetRange);
+
+    /**
+      * 读取状态
+      * @return：java.lang.Integer
+      * @author：Henry.Huang
+      * @date：2021/1/22 16:03
+      */
+    Integer getReadState();
+
+    void setReadState(Integer readState);
 }

@@ -10,6 +10,7 @@ import com.dili.cms.sdk.domain.Annunciate;
 import com.dili.cms.sdk.dto.AnnunciateDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.ss.base.BaseService;
+import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.PageOutput;
 
 import java.util.List;
@@ -37,4 +38,31 @@ public interface AnnunciateService extends BaseService<Annunciate, Long> {
       * @date：2021/1/21 9:32
       */
     PageOutput<List<AnnunciateVo>> listByQueryParams(AnnunciateDto annunciateDto);
+
+    /**
+      * 根据 annunciateId更新通告已读数量
+      * @param annunciateDto:
+      * @return：int
+      * @author：Henry.Huang
+      * @date：2021/1/21 17:37
+      */
+    int updateReadCountById(AnnunciateDto annunciateDto);
+
+    /**
+     * 批量更新信息通告已读数量
+     * @param annunciates:
+     * @return：com.dili.ss.domain.BaseOutput
+     * @author：Henry.Huang
+     * @date：2021/1/22 9:33
+     */
+    BaseOutput bachUpdateReadCountById(List<Annunciate> annunciates);
+
+    /**
+     * 根据用户id查询消息列表(不包括富文本消息内容，以节约带宽)
+     * @param userId:
+     * @return：com.dili.ss.domain.BaseOutput<List<Annunciate>>
+     * @author：Henry.Huang
+     * @date：2021/1/21 16:38
+     */
+    BaseOutput<List<AnnunciateVo>> getListByUserId(Long userId);
 }

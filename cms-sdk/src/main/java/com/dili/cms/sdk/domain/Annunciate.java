@@ -120,4 +120,18 @@ public interface Annunciate extends IBaseDomain {
     Integer getVersion();
 
     void setVersion(Integer version);
+
+    @Column(name = "`stick_state`")
+    @FieldDef(label="置顶状态")
+    @EditMode(editor = FieldEditor.Text, required = true)
+    Integer getStickState();
+
+    void setStickState(Integer stickState);
+
+    @Column(name = "`type`")
+    @FieldDef(label="消息类型")
+    @EditMode(editor = FieldEditor.Text, required = true)
+    Integer getType();
+
+    void setType(Integer type);
 }

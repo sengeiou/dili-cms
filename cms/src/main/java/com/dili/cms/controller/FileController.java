@@ -8,6 +8,7 @@ package com.dili.cms.controller;
 import com.dili.cms.sdk.dto.IFileDto;
 import com.dili.cms.service.impl.FileServiceImpl;
 import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.domain.EasyuiPageOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +36,18 @@ public class FileController extends BaseController {
     @Autowired
     private FileServiceImpl fileService;
 
+    /**
+     * TODO 列表页面
+     *
+     * @return：java.lang.String
+     * @author：Ron.Peng
+     * @date：2021/1/23 14:14
+     */
+    @RequestMapping(value = "/list.html", method = RequestMethod.GET)
+    public String list() {
+        return "file/list";
+    }
+
 
     /**
      * TODO 新增页面
@@ -60,5 +73,19 @@ public class FileController extends BaseController {
     @ResponseBody
     public BaseOutput insert(@RequestBody IFileDto fileDto) {
         return fileService.create(fileDto);
+    }
+
+    /**
+     * TODO 列表查询
+     *
+     * @param iFileDto:
+     * @return：com.dili.ss.domain.EasyuiPageOutput
+     * @author：Ron.Peng
+     * @date：2021/1/23 15:24
+     */
+    @RequestMapping(value = "/listPage.action", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public EasyuiPageOutput listPage(IFileDto iFileDto) throws Exception {
+        return fileService.listPage(iFileDto, true);
     }
 }
