@@ -49,11 +49,11 @@ public interface AnnunciateItemService extends BaseService<AnnunciateItem, Long>
 
     /**
       * 根据信息通告项id标记该消息已读
-      * @param annunciateItemId:
+      * @param annunciateId:
       * @param updateType:  更新方式 1更新为已读 2更新为已删除
       * @return：com.dili.ss.domain.BaseOutput
       * @author：Henry.Huang
       * @date：2021/1/22 11:39
       */
-    BaseOutput readByAnnunciateItemId(Long annunciateItemId, Integer updateType);
+    BaseOutput readByAnnunciateItemId(Long annunciateId, Long targetId, Integer updateType);
 }

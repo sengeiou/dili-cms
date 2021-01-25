@@ -10,6 +10,7 @@ import com.dili.ss.domain.BaseOutput;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -70,24 +71,26 @@ public interface AnnunciateRpc {
     BaseOutput deleteByUserId(@RequestBody Long userId);
 
     /**
-     * 根据信息通告项id标记该消息已读
-     * @param annunciateItemId:
+     * 根据信息通告id和targetId标记该消息已读
+     * @param annunciateId:
+     * @param targetId
      * @return：com.dili.ss.domain.BaseOutput<java.lang.String>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @PostMapping(value = "/api/annunciate/readByAnnunciateItemId")
-    BaseOutput readByAnnunciateItemId(@RequestBody Long annunciateItemId);
+    @PostMapping(value = "/api/annunciate/readByIdAndTargetId")
+    BaseOutput readByIdAndTargetId(@RequestParam Long annunciateId, @RequestParam Long targetId);
 
     /**
-     * 根据信息通告项id标记该消息为已删除
-     * @param annunciateItemId:
+     * 根据信息通告id和targetId标记该消息删除
+     * @param annunciateId:
+     * @param targetId
      * @return：com.dili.ss.domain.BaseOutput<java.lang.String>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @PostMapping(value = "/api/annunciate/deleteByAnnunciateItemId")
-    BaseOutput deleteByAnnunciateItemId(@RequestBody Long annunciateItemId);
+    @PostMapping(value = "/api/annunciate/deleteByIdAndTargetId")
+    BaseOutput deleteByIdAndTargetId(@RequestParam Long annunciateId, @RequestParam Long targetId);
 
     /**
      * 根据用户id查询消息列表(不包括富文本消息内容，以节约带宽)

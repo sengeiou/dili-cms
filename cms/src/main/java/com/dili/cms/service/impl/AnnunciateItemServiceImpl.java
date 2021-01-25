@@ -123,35 +123,39 @@ public class AnnunciateItemServiceImpl extends BaseServiceImpl<AnnunciateItem, L
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public BaseOutput readByAnnunciateItemId(Long annunciateItemId, Integer updateType) throws AppException{
-        if(annunciateItemId==null){
+    public BaseOutput readByAnnunciateItemId(Long annunciateId, Long targetId, Integer updateType) throws AppException{
+        if(annunciateId==null){
             return BaseOutput.failure("未传入annunciateItemId！");
         }
         AnnunciateItem annunciateItem= DTOUtils.newInstance(AnnunciateItem.class);
         Example example=new Example(AnnunciateItem.class);
         if(AnnunciateItemOpType.OP_READ.getValue().equals(updateType)){
             annunciateItem.setReadState(ReadType.READ.getValue());
-            example.createCriteria().andEqualTo("id",annunciateItemId)
+            example.createCriteria().andEqualTo("annunciateId",annunciateId)
+                    .andEqualTo("targetId",targetId)
                     .andEqualTo("readState",ReadType.NO_READ.getValue());
             int updateCount=getActualDao().updateByExampleSelective(annunciateItem,example);
             if(updateCount != ONE){
                 throw new AppException("标记已读出错，请刷新重试！");
             }
             //获取annunciateID修改已读数量
-            AnnunciateItem annunciateItemOld=getActualDao().selectByPrimaryKey(annunciateItemId);
             AnnunciateDto annunciateDto = DTOUtils.newInstance(AnnunciateDto.class);
-            annunciateDto.setId(annunciateItemOld.getAnnunciateId());
+            annunciateDto.setId(annunciateId);
             annunciateDto.setReadCount(ONE);
             int updateAnnunciateFlag= annunciateService.updateReadCountById(annunciateDto);
             if(updateAnnunciateFlag == 0){
-                throw new AppException("该通告不存在未读信息！");
+                throw new AppException("更改已读失败,请刷新后重试！");
             }
         }
         if(AnnunciateItemOpType.OP_DEL.getValue().equals(updateType)){
             annunciateItem.setReadState(ReadType.DELETE.getValue());
-            example.createCriteria().andEqualTo("id",annunciateItemId)
+            example.createCriteria().andEqualTo("annunciateId",annunciateId)
+                    .andEqualTo("targetId",targetId)
                     .andNotEqualTo("readState",ReadType.DELETE.getValue());
-            getActualDao().updateByExampleSelective(annunciateItem,example);
+            int updateAnnunciateFlag=getActualDao().updateByExampleSelective(annunciateItem,example);
+            if(updateAnnunciateFlag == 0){
+                throw new AppException("更改已读失败,请刷新后重试！");
+            }
         }
         return BaseOutput.success();
     }

@@ -105,32 +105,34 @@ public class AnnunciateApi {
     }
 
     /**
-     * 根据信息通告项id标记该消息已读
-     * @param annunciateItemId:
+     * 根据信息通告id和targetId标记该消息已读
+     * @param annunciateId:
+     * @param targetId:
      * @return：com.dili.ss.domain.BaseOutput<java.lang.String>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @PostMapping(value = "/readByAnnunciateItemId")
-    public BaseOutput readByAnnunciateItemId(@RequestBody Long annunciateItemId) {
+    @PostMapping(value = "/readByIdAndTargetId")
+    public BaseOutput readByIdAndTargetId(@RequestParam Long annunciateId, @RequestParam Long targetId) {
         try{
-            return annunciateItemService.readByAnnunciateItemId(annunciateItemId, AnnunciateItemOpType.OP_READ.getValue());
+            return annunciateItemService.readByAnnunciateItemId(annunciateId, targetId, AnnunciateItemOpType.OP_READ.getValue());
         }catch (AppException e) {
             return BaseOutput.failure(e.getMessage());
         }
     }
 
     /**
-     * 根据信息通告项id标记该消息为已删除
-     * @param annunciateItemId:
+     * 根据信息通告id和targetId标记该消息删除
+     * @param annunciateId:
+     * @param targetId:
      * @return：com.dili.ss.domain.BaseOutput<java.lang.String>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @PostMapping(value = "/deleteByAnnunciateItemId")
-    public BaseOutput deleteByAnnunciateItemId(@RequestBody Long annunciateItemId) {
+    @PostMapping(value = "/deleteByIdAndTargetId")
+    public BaseOutput deleteByIdAndTargetId(@RequestParam Long annunciateId, @RequestParam Long targetId) {
         try{
-            return annunciateItemService.readByAnnunciateItemId(annunciateItemId, AnnunciateItemOpType.OP_DEL.getValue());
+            return annunciateItemService.readByAnnunciateItemId(annunciateId, targetId, AnnunciateItemOpType.OP_DEL.getValue());
         }catch (AppException e) {
             return BaseOutput.failure(e.getMessage());
         }
