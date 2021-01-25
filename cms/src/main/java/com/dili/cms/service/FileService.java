@@ -10,6 +10,7 @@ import com.dili.cms.sdk.domain.IFile;
 import com.dili.cms.sdk.dto.IFileDto;
 import com.dili.ss.base.BaseService;
 import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.domain.EasyuiPageOutput;
 
 /**
  * <pre>
@@ -33,4 +34,13 @@ public interface FileService extends BaseService<IFile, Long> {
      * @return
      */
     BaseOutput create(IFileDto fileDto);
+
+   /**
+    * TODO 文件列表查询
+    * @param iFileDto
+    * @return：
+    * @author：Ron.Peng
+    * @date：2021/1/23 15:19
+    */
+    EasyuiPageOutput listPage(IFileDto iFileDto, Boolean useProvider) throws Exception;
 }
