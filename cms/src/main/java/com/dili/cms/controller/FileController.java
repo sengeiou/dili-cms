@@ -5,16 +5,29 @@
  */
 package com.dili.cms.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.dili.cms.commons.ValidationUtil;
 import com.dili.cms.sdk.dto.IFileDto;
+import com.dili.cms.sdk.validator.ConstantValidator;
 import com.dili.cms.service.impl.FileServiceImpl;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.EasyuiPageOutput;
+import com.dili.ss.dto.DTOUtils;
+import com.dili.uap.sdk.domain.Department;
+import com.dili.uap.sdk.domain.User;
+import com.dili.uap.sdk.domain.dto.DepartmentDto;
+import com.dili.uap.sdk.rpc.DepartmentRpc;
+import com.dili.uap.sdk.rpc.UserRpc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <pre>
@@ -35,6 +48,10 @@ public class FileController extends BaseController {
 
     @Autowired
     private FileServiceImpl fileService;
+    @Resource
+    private UserRpc userRpc;
+    @Resource
+    private DepartmentRpc departmentRpc;
 
     /**
      * TODO 列表页面
@@ -57,7 +74,16 @@ public class FileController extends BaseController {
      * @date：2021/1/21 16:36
      */
     @RequestMapping(value = "add.html", method = RequestMethod.GET)
-    public String add() {
+    public String add(ModelMap modelMap) {
+        DepartmentDto departmentDto = DTOUtils.newInstance(DepartmentDto.class);
+        departmentDto.setFirmId(getFirmId());
+        BaseOutput<List<Department>> departmentList = departmentRpc.listByExample(departmentDto);
+        modelMap.put("departmentList", JSON.toJSONString(departmentList.getData()));
+
+        User user = DTOUtils.newInstance(User.class);
+        user.setFirmCode(getFirmCode());
+        BaseOutput<List<User>> userList = userRpc.list(user);
+        modelMap.put("userList", userList.getData());
         return "file/add";
     }
 
@@ -72,6 +98,10 @@ public class FileController extends BaseController {
     @RequestMapping(value = "insert.action", method = {RequestMethod.POST})
     @ResponseBody
     public BaseOutput insert(@RequestBody IFileDto fileDto) {
+        ValidationUtil.ValidResult validResult = ValidationUtil.validateBean(fileDto, ConstantValidator.Insert.class);
+        if (validResult.hasErrors()) {
+            return BaseOutput.failure(validResult.getErrors());
+        }
         return fileService.create(fileDto);
     }
 
