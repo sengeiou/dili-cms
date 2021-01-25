@@ -5,8 +5,8 @@
  */
 package com.dili.cms.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.dili.uap.sdk.domain.UserTicket;
+import com.dili.uap.sdk.session.SessionContext;
 
 /**
  * <pre>
@@ -22,5 +22,32 @@ import org.slf4j.LoggerFactory;
  * </pre>
  */
 public abstract class BaseController {
-    protected Logger logger = LoggerFactory.getLogger(getClass());
+    protected UserTicket getCurrentUser() {
+        return SessionContext.getSessionContext().getUserTicket();
+    }
+
+
+    protected Long getUserId() {
+        return 0L;//getCurrentUser().getId();
+    }
+
+    protected Long getOrgId() {
+        return 0L;//getCurrentUser().getId();
+    }
+
+    protected String getUserName() {
+        return "0";//getCurrentUser().getUserName();
+    }
+
+    protected String getRealName() {
+        return "0";//getCurrentUser().getRealName();
+    }
+
+    protected Long getFirmId() {
+        return 8L;//getCurrentUser().getFirmCode();
+    }
+
+    protected String getFirmCode() {
+        return "sg";//getCurrentUser().getFirmCode();
+    }
 }
