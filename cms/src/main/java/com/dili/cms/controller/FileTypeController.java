@@ -42,7 +42,7 @@ public class FileTypeController extends BaseController {
      * TODO 树形菜单查询
      *
      * @param iFileTypeDto:
-     * @return：com.dili.ss.domain.EasyuiPageOutput
+     * @return：com.dili.ss.domain.BaseOutput
      * @author：Ron.Peng
      * @date：2021/1/23 15:24
      */
