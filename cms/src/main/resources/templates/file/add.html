@@ -1,64 +1,102 @@
 <#bs4Body>
-<div id="app" class="container-fluid">
-    <form id="saveForm" role="form" class="form-inline" novalidate>
-        <div class="col-sm-14 offset-sm-0">
-            <div class="card">
-                <div class="breadcrumb" style="border-radius:0 !important;">
-                    基本信息
-                </div>
-                <div class="card-body">
-                    <div class="row row-cols-4">
-                        <div class="form-group col">
-                            <label for="deliveryDate">文档名称：<i class="red">*</i></label>
-                            <div class="input-group">
-                                <input/>
-                            </div>
-                        </div>
-                        <div class="form-group col">
-                            <label for="opSelected">文档分类：<i class="red">*</i></label>
-                            <div class="input-group">
-                                <input/>
-                            </div>
-                        </div>
-                        <div class="form-group col">
-                            <label for="customerName">配图：<i class="red">*</i></label>
-                            <div class="input-group">
-                                <input/>
-                            </div>
-                        </div>
-                        <div class="form-group col">
-                            <label for="storeName">支持下载：</label>
-                            <div class="input-group">
-                                <input/>
-                            </div>
-                        </div>
-                        <div class="form-group col">
-                            <label for="storeType">访问权限：</label>
-                            <div class="input-group">
-                                <input/>
-                            </div>
-                        </div>
-                        <div class="form-group col">
-                            <label for="receiptPhone">说明：</label>
-                            <div class="input-group">
-                                <input/>
-                            </div>
-                        </div>
-                    </div>
+<div id="app">
+    <form class="form-horizontal" role="form" id="form">
+        <div class="form-group" id="files">
+            <label for="lastname" class="col-sm-2 control-label">文件：</label>
+            <div class="form-inline col-sm-10" id="file-groups">
+                <#component_imgUpload _cid="bbb" _types="" _maxFileCount="20" _uploadCallback="uploadFileCallback"
+                _uploadUrl="/uploadFile/doUpload.action"/>
+                <div class="col-sm-4 file-group" id="file-group-0">
                 </div>
             </div>
         </div>
 
+        <div class="form-group">
+            <label for="fileName" class="col-sm-2 control-label">文档名称：</label>
+            <div class="col-sm-10">
+                <input id="fileName" name="fileName" type="text" class="form-control" placeholder="请输入文档名称">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">文档分类：</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" placeholder="请输入姓">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">配图：</label>
+            <div class="col-sm-10">
+                <#component_imgUpload _cid="aaa" _types="" _maxFileCount="1" _uploadCallback="uploadImgCallback"
+                _deleteCallback="deleteImgFileHandler" _uploadUrl="/uploadFile/doUpload.action"/>
+            </div>
+        </div>
 
-        <div style="height: 70px;"></div>
-        <div class="modal-footer-wrap">
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary px-5"
-                        @click="saveOrUpdateHandler" id="formSubmit"
-                        data-hotkey="{key: 'Ctrl+S'}">确定
+        <div class="form-group">
+            <label for="isDownload" class="col-sm-2 control-label">支持下载：</label>
+            <div class="col-sm-10">
+                <label class="radio-inline">
+                    <input type="radio" name="isDownload" value="1" :checked="fileDto.isDownload==1"> 支持
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="isDownload" value="0" :checked="fileDto.isDownload==0"> 不支持
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">访问权限：</label>
+            <div class="col-sm-5">
+                <button class="btn btn-primary" type="button">所有
                 </button>
+                <button id="departmentTree" class="btn btn-primary" type="button" data-toggle="collapse"
+                        data-target="#multiCollapseExample2" aria-expanded="false"
+                        aria-controls="multiCollapseExample2">部门
+                </button>
+                <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button"
+                   aria-expanded="false" aria-controls="multiCollapseExample1">人员</a>
+            </div>
+            <div class="col-sm-5" style="margin-top: 10px;">
+                <div class="collapse multi-collapse" id="multiCollapseExample1">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">组织</th>
+                            <th scope="col">姓名</th>
+                            <th scope="col">职位</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <%for(item in userList){%>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td></td>
+                                <td>${item.userName}</td>
+                                <td>${item.position}</td>
+                            </tr>
+                        <%}%>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-5" style="height: 0px;">
+                <#component_treeSelect _el="departmentTree" _id="demo1" _resultData="departmentAuthResult"
+                _dataOptions="" _zNodes="${departmentList!}" _checks=""/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="remark" class="col-sm-2 control-label">说明：</label>
+            <div class="col-sm-10">
+                <textarea id="remark" name="remark" class="form-control" rows="3"></textarea>
             </div>
         </div>
     </form>
+
+    <div class="text-center mt30">
+        <button class="btn-main2 btn-sm" onclick="saveOrUpdate()">提交</button>&nbsp;&nbsp;
+        <button class="btn-greyweak btn-sm" onclick="parent.window['UpStreamIndexObj'].removeAllAndLoadData()">取消
+        </button>
+    </div>
+
 </div>
+<#file_addJs/>
 </#bs4Body>
