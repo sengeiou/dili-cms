@@ -85,7 +85,15 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         //新增文件权限
         fileAuthMapper.insertList(fileDto.getAuthList());
         //得到精确到人的权限，再新增一次具体权限
+
         return BaseOutput.success();
+    }
+
+    @Override
+    public IFileDto getFileById(Long id) {
+        IFileDto fileDto = (IFileDto) get(id);
+
+        return null;
     }
 
 
@@ -99,7 +107,7 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         IFileType fileType = fileTypeMapper.selectByPrimaryKey(nodeId);
         Set<Long> linkNodeIds = new HashSet<>();
         //判断是不是顶级节点
-        if (fileType.getParentId() != 0) {
+        if (Objects.nonNull(fileType) && fileType.getParentId() != 0) {
             //一直向上查找直到找到顶级节点为止
             IFileType parentFileType = fileType;
             while (parentFileType.getParentId() != 0 && !Objects.isNull(parentFileType)) {
