@@ -5,12 +5,15 @@
  */
 package com.dili.cms.sdk.domain;
 
+import com.dili.cms.sdk.validator.ConstantValidator;
 import com.dili.ss.dto.IBaseDomain;
 import com.dili.ss.metadata.FieldEditor;
 import com.dili.ss.metadata.annotation.EditMode;
 import com.dili.ss.metadata.annotation.FieldDef;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -40,6 +43,7 @@ public interface IFile extends IBaseDomain {
     @Column(name = "`file_name`")
     @FieldDef(label = "文件名称", maxLength = 255)
     @EditMode(editor = FieldEditor.Text, required = false)
+    @NotBlank(message = "文件名称不能为空", groups = {ConstantValidator.Insert.class, ConstantValidator.Update.class})
     String getFileName();
 
     void setFileName(String fileName);
@@ -54,6 +58,7 @@ public interface IFile extends IBaseDomain {
     @Column(name = "`cover_img`")
     @FieldDef(label = "封面图片url", maxLength = 255)
     @EditMode(editor = FieldEditor.Text, required = false)
+    @NotBlank(message = "封面图片不能为空", groups = {ConstantValidator.Insert.class, ConstantValidator.Update.class})
     String getCoverImg();
 
     void setCoverImg(String coverImg);
@@ -68,6 +73,7 @@ public interface IFile extends IBaseDomain {
     @Column(name = "`is_download`")
     @FieldDef(label = "是否可以下载")
     @EditMode(editor = FieldEditor.Text, required = false)
+    @NotNull(message = "是否可以下载不能为空", groups = {ConstantValidator.Insert.class, ConstantValidator.Update.class})
     Integer getIsDownload();
 
     void setIsDownload(Integer isDownload);
