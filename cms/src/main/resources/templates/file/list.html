@@ -21,13 +21,13 @@
                     </div>
                 </form>
                 <div id="typeToolbar" class="btn-group" role="group" aria-label="Toolbar with button groups">
-                    <button type="button" class="btn btn-primary btn-sm" onclick="uploadFile()"><i
+                    <button type="button" class="btn btn-primary btn-sm" onclick="addFileTypeHandler()"><i
                             class="fa fa-plus"></i> 新建
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="editFile()"><i
+                    <button type="button" class="btn btn-primary btn-sm" onclick="editFileTypeHandler()"><i
                             class="fa fa-edit"></i> 编辑
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="deleteFile()"><i
+                    <button type="button" class="btn btn-primary btn-sm" onclick="deleteFileTypeHandler()"><i
                             class="fa fa-trash"></i> 删除
                     </button>
                 </div>
@@ -115,11 +115,11 @@
                 <div class="card-body" style="padding-top:0px !important;">
                     <div id="toolbar" class="btn-group" role="group" aria-label="Toolbar with button groups">
 
-                        <button type="button" class="btn btn-primary" onclick="uploadFile()"><i
+                        <button type="button" class="btn btn-primary" onclick="openUploadHandler()"><i
                                 class="fa fa-upload"></i> 上传
                         </button>
 
-                        <button type="button" class="btn btn-primary" onclick="editFile()"><i
+                        <button type="button" class="btn btn-primary" onclick="openEditHandler()"><i
                                 class="fa fa-edit"></i> 编辑
                         </button>
 
@@ -127,11 +127,11 @@
                                 class="fa fa-download"></i> 下载
                         </button>
 
-                        <button type="button" class="btn btn-primary" onclick="fileDetail()"><i
+                        <button type="button" class="btn btn-primary" onclick="openDetailHandler()"><i
                                 class="fa fa-eye"></i> 详情
                         </button>
 
-                        <button type="button" class="btn btn-primary" onclick="deleteFile()"><i
+                        <button type="button" class="btn btn-primary" onclick="deleteHandler()"><i
                                 class="fa fa-trash"></i> 删除
                         </button>
                     </div>

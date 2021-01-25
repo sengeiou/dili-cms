@@ -121,16 +121,110 @@
     function removeHoverDom(treeId, treeNode) {
         $("#addBtn_" + treeNode.tId).unbind().remove();
     };
+
     /**
-     * 打开新增窗口
+     * 新增文档分类
      */
-    function openInsertHandler() {
+    function addFileTypeHandler() {
+        bs4pop.prompt("<em style='color: red'>*</em>分类名称", '',{
+            title: '新增文档分类',
+            hideRemove: true,
+            width: 380,
+        }, function(sure, value){
+            if(sure==true){
+                if($.trim(value)==''){
+                    bs4pop.alert('请输入退回原因', {type: 'error'});
+                    return
+                }
+                addFileType(value);
+            }else{
+                return;
+            }
+        });
+    }
+
+    function addFileType(val) {
+        $.ajax({
+            type: "POST",
+            url: "/fileType/addFileType.action?soId=" + $('#currentId').val(),
+            processData: false,
+            data: val,
+            contentType: false,
+            dataType: "JSON",
+            success: function (res) {
+                bui.loading.hide();
+                if (res.code == "200") {
+                    bs4pop.alert(res.message, {
+                        width: '350px', height: "200px", type: 'success', onHideStart: () => {
+
+                            parent.queryDataHandler();
+                        }
+                    });
+                } else {
+                    bs4pop.alert(res.message, {
+                        onHideStart: () => {
+                            parent.diaSigned.hide()
+                            parent.queryDataHandler();
+                        }
+                    });
+                }
+            },
+            error: function (error) {
+                bui.loading.hide();
+                bs4pop.alert(error.message, {type: 'error'});
+            }
+        });
+    }
+    /**
+     * 打开上传窗口
+     */
+    function openUploadHandler() {
         diaAdd = bs4pop.dialog({
-            title: '新增采购订单',//对话框title
+            title: '上传文件',//对话框title
             className: 'dialog-center',
             content: '${contextPath}/file/add.html', //对话框内容，可以是 string、element，$object
-            width: '95%',//宽度
-            height: '95%',//高度
+            width: '50%',//宽度
+            height: '80%',//高度
+            backdrop: 'static',
+            isIframe: true//默认是页面层，非iframe
+        });
+
+    }
+    /**
+     * 打开编辑窗口
+     */
+    function openEditHandler() {
+        let rows = _grid.bootstrapTable('getSelections');
+        if (null == rows || rows.length == 0) {
+            bs4pop.alert('请选中一条数据');
+            return;
+        }
+        diaEdit = bs4pop.dialog({
+            title: '编辑文件',//对话框title
+            className: 'dialog-center',
+            content: '${contextPath}/file/add.html', //对话框内容，可以是 string、element，$object
+            width: '50%',//宽度
+            height: '80%',//高度
+            backdrop: 'static',
+            isIframe: true//默认是页面层，非iframe
+        });
+
+    }
+    /**
+     * 打开详情窗口
+     */
+    function openDetailHandler() {
+        let rows = _grid.bootstrapTable('getSelections');
+        if (null == rows || rows.length == 0) {
+            bs4pop.alert('请选中一条数据');
+            return;
+        }
+        diaView = bs4pop.dialog({
+            title: '文件详情',//对话框title
+            className: 'dialog-center',
+            content: '${contextPath}/file/add.html', //对话框内容，可以是 string、element，$object
+            width: '50%',//宽度
+            height: '80%',//高度
             backdrop: 'static',
             isIframe: true//默认是页面层，非iframe
         });

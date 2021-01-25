@@ -12,6 +12,7 @@ import com.dili.cms.sdk.validator.ConstantValidator;
 
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -40,4 +41,24 @@ public interface IFileDto extends IFile {
     List<IFileItem> getFileItemList();
 
     void setFileItemList(List<IFileItem> fileItemList);
+
+    @Transient
+    String getLikeFileName();
+
+    void setLikeFileName(String likeFileName);
+
+    @Transient
+    Integer getAuthType();
+
+    void setAuthType(Integer authType);
+
+    @Transient
+    LocalDateTime getCreateTimeStart();
+
+    void setCreateTimeStart(LocalDateTime createTimeStart);
+
+    @Transient
+    LocalDateTime getCreateTimeEnd();
+
+    void setCreateTimeEnd(LocalDateTime createTimeEnd);
 }
