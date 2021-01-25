@@ -13,10 +13,7 @@ import com.dili.cms.service.AnnunciateService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -50,7 +47,7 @@ public class AnnunciateApi {
       * @author：Henry.Huang
       * @date：2021/1/21 16:38
       */
-    @RequestMapping(value = "/readByAnnunciateId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/readByAnnunciateId")
     public BaseOutput readByAnnunciateId(@RequestBody Long annunciateId) {
         try{
             return annunciateItemService.readByAnnunciateId(annunciateId, AnnunciateItemOpType.OP_READ.getValue());
@@ -66,7 +63,7 @@ public class AnnunciateApi {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/readByUserId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/readByUserId")
     public BaseOutput readByUserId(@RequestBody Long userId) {
         try{
             return annunciateItemService.readByUserId(userId,AnnunciateItemOpType.OP_READ.getValue());
@@ -82,7 +79,7 @@ public class AnnunciateApi {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/deleteByAnnunciateId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/deleteByAnnunciateId")
     public BaseOutput deleteByAnnunciateId(@RequestBody Long annunciateId) {
         try{
             return annunciateItemService.readByAnnunciateId(annunciateId,AnnunciateItemOpType.OP_DEL.getValue());
@@ -98,7 +95,7 @@ public class AnnunciateApi {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/deleteByUserId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/deleteByUserId")
     public BaseOutput deleteByUserId(@RequestBody Long userId) {
         try{
             return annunciateItemService.readByUserId(userId,AnnunciateItemOpType.OP_DEL.getValue());
@@ -114,7 +111,7 @@ public class AnnunciateApi {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/readByAnnunciateItemId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/readByAnnunciateItemId")
     public BaseOutput readByAnnunciateItemId(@RequestBody Long annunciateItemId) {
         try{
             return annunciateItemService.readByAnnunciateItemId(annunciateItemId, AnnunciateItemOpType.OP_READ.getValue());
@@ -130,7 +127,7 @@ public class AnnunciateApi {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/deleteByAnnunciateItemId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/deleteByAnnunciateItemId")
     public BaseOutput deleteByAnnunciateItemId(@RequestBody Long annunciateItemId) {
         try{
             return annunciateItemService.readByAnnunciateItemId(annunciateItemId, AnnunciateItemOpType.OP_DEL.getValue());
@@ -146,7 +143,7 @@ public class AnnunciateApi {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/getListByUserId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/getListByUserId")
     public BaseOutput<List<AnnunciateVo>> getListByUserId(@RequestBody Long userId) {
         try{
             return annunciateService.getListByUserId(userId);
@@ -162,7 +159,7 @@ public class AnnunciateApi {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/getContentById", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/getContentById")
     public BaseOutput<String> getContentById(@RequestBody Long id) {
         try{
             Annunciate annunciate=annunciateService.get(id);

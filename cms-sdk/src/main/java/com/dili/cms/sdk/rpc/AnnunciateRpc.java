@@ -8,9 +8,8 @@ package com.dili.cms.sdk.rpc;
 import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.ss.domain.BaseOutput;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ public interface AnnunciateRpc {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/api/annunciate/readByAnnunciateId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/api/annunciate/readByAnnunciateId")
     BaseOutput readByAnnunciateId(@RequestBody Long annunciateId);
 
     /**
@@ -47,7 +46,7 @@ public interface AnnunciateRpc {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/api/annunciate/readByUserId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/api/annunciate/readByUserId")
     BaseOutput readByUserId(@RequestBody Long userId);
 
     /**
@@ -57,7 +56,7 @@ public interface AnnunciateRpc {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/api/annunciate/deleteByAnnunciateId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/api/annunciate/deleteByAnnunciateId")
     BaseOutput deleteByAnnunciateId(@RequestBody Long annunciateId);
 
     /**
@@ -67,7 +66,7 @@ public interface AnnunciateRpc {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/api/annunciate/deleteByUserId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/api/annunciate/deleteByUserId")
     BaseOutput deleteByUserId(@RequestBody Long userId);
 
     /**
@@ -77,7 +76,7 @@ public interface AnnunciateRpc {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/api/annunciate/readByAnnunciateItemId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/api/annunciate/readByAnnunciateItemId")
     BaseOutput readByAnnunciateItemId(@RequestBody Long annunciateItemId);
 
     /**
@@ -87,7 +86,7 @@ public interface AnnunciateRpc {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/api/annunciate/deleteByAnnunciateItemId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/api/annunciate/deleteByAnnunciateItemId")
     BaseOutput deleteByAnnunciateItemId(@RequestBody Long annunciateItemId);
 
     /**
@@ -97,7 +96,7 @@ public interface AnnunciateRpc {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/api/annunciate/getListByUserId", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/api/annunciate/getListByUserId")
     BaseOutput<List<AnnunciateVo>> getListByUserId(@RequestBody Long userId);
 
     /**
@@ -107,7 +106,7 @@ public interface AnnunciateRpc {
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @RequestMapping(value = "/api/annunciate/getContentById", method = {RequestMethod.POST,RequestMethod.GET})
+    @PostMapping(value = "/api/annunciate/getContentById")
     BaseOutput<String> getContentById(@RequestBody Long id);
 
 }
