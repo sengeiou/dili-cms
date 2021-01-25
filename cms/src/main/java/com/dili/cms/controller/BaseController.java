@@ -5,6 +5,8 @@
  */
 package com.dili.cms.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.dili.uap.sdk.domain.UserTicket;
 import com.dili.uap.sdk.session.SessionContext;
 
@@ -22,6 +24,7 @@ import com.dili.uap.sdk.session.SessionContext;
  * </pre>
  */
 public abstract class BaseController {
+    protected Logger logger = LoggerFactory.getLogger(getClass());
     protected UserTicket getCurrentUser() {
         return SessionContext.getSessionContext().getUserTicket();
     }
