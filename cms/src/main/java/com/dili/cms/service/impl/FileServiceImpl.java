@@ -89,13 +89,6 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         return BaseOutput.success();
     }
 
-    @Override
-    public IFileDto getFileById(Long id) {
-        IFileDto fileDto = (IFileDto) get(id);
-
-        return null;
-    }
-
 
     /**
      * 根据一个节点id往上查找所有链路相关的节点id直到顶级节点
