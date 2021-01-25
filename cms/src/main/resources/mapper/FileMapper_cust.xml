@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.cms.mapper.FileMapper">
+    <!--文件列表查询-->
+    <select id="listPage" parameterType="com.dili.cms.sdk.dto.IFileDto" resultType="com.dili.cms.sdk.dto.IFileDto">
+        SELECT f.*,au.auth_type
+        FROM file f
+        JOIN file_auth au
+        ON f.id=au.file_id
+        where 1=1
+        <if test="likeFileName != null and likeFileName != ''">
+            AND f.file_name LIKE CONCAT('%',#{likeFileName},'%')
+        </if>
+        <if test="typeId != null and typeId != ''">
+            AND f.type_id=#{typeId}
+        </if>
+        <if test="authType != null and authType != ''">
+            AND au.auth_type=#{authType}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[ AND #{createTimeStart}<=f.create_time ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[AND f.create_time <=#{createTimeEnd}]]>
+        </if>
+        ORDER BY f.id DESC
+    </select>
+
+</mapper>

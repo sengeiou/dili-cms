@@ -13,14 +13,21 @@ import com.dili.cms.sdk.glossary.IFileConstant;
 import com.dili.cms.service.FileService;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.exception.AppException;
+import com.dili.ss.metadata.ValueProviderUtils;
+import com.dili.ss.util.POJOUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -102,5 +109,19 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         }
         linkNodeIds.add(nodeId);
         return linkNodeIds;
+    }
+
+    @Override
+    public EasyuiPageOutput listPage(IFileDto iFileDto, Boolean useProvider) throws Exception {
+        if (iFileDto.getRows() != null && iFileDto.getRows() >= 1) {
+            PageHelper.startPage(iFileDto.getPage(), iFileDto.getRows());
+        }
+        if (StringUtils.isNotBlank(iFileDto.getSort())) {
+            iFileDto.setSort(POJOUtils.humpToLineFast(iFileDto.getSort()));
+        }
+        List<IFileDto> iFileDtos = this.getActualDao().listPage(iFileDto);
+        long total = iFileDtos instanceof Page ? ((Page) iFileDtos).getTotal() : (long) iFileDtos.size();
+        List results = useProvider ? ValueProviderUtils.buildDataByProvider(iFileDto, iFileDtos) : iFileDtos;
+        return new EasyuiPageOutput(total, results);
     }
 }

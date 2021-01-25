@@ -8,8 +8,12 @@ package com.dili.cms.sdk.dto;
 import com.dili.cms.sdk.domain.IFile;
 import com.dili.cms.sdk.domain.IFileAuth;
 import com.dili.cms.sdk.domain.IFileItem;
+import com.dili.ss.domain.annotation.Operator;
 
+import javax.persistence.Column;
 import javax.persistence.Transient;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,4 +40,24 @@ public interface IFileDto extends IFile {
     List<IFileItem> getFileItemList();
 
     void setFileItemList(List<IFileItem> fileItemList);
+
+    @Transient
+    String getLikeFileName();
+
+    void setLikeFileName(String likeFileName);
+
+    @Transient
+    Integer getAuthType();
+
+    void setAuthType(Integer authType);
+
+    @Transient
+    LocalDateTime getCreateTimeStart();
+
+    void setCreateTimeStart(LocalDateTime createTimeStart);
+
+    @Transient
+    LocalDateTime getCreateTimeEnd();
+
+    void setCreateTimeEnd(LocalDateTime createTimeEnd);
 }
