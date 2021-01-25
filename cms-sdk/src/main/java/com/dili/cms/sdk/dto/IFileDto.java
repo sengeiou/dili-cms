@@ -8,8 +8,10 @@ package com.dili.cms.sdk.dto;
 import com.dili.cms.sdk.domain.IFile;
 import com.dili.cms.sdk.domain.IFileAuth;
 import com.dili.cms.sdk.domain.IFileItem;
+import com.dili.cms.sdk.validator.ConstantValidator;
 
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -33,6 +35,7 @@ public interface IFileDto extends IFile {
     void setAuthList(List<IFileAuth> authList);
 
     @Transient
+    @Size(min = 1, message = "文件不能为空", groups = {ConstantValidator.Insert.class, ConstantValidator.Update.class})
     List<IFileItem> getFileItemList();
 
     void setFileItemList(List<IFileItem> fileItemList);
