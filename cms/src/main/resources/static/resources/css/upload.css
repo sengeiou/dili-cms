@@ -1,0 +1,95 @@
+#uploadBtn {
+    width: 100px;
+    height: 100px;
+    border: 2px dashed lightblue;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
+    /* height: 15rem; */
+    background: #eee;
+    position: relative;
+}
+
+.upload {
+    width: 100px;
+    height: 100px;
+    border: 2px dashed lightblue;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-inline {
+    padding-top: 5px;
+}
+
+
+.img-responsive {
+    display: inline-block;
+    height: auto;
+    max-width: 100%;
+}
+
+.progress {
+    padding: 0 !important;
+    height: 4px;
+    background-color: inherit;
+}
+
+.bar {
+    width: 0%;
+    height: 100%;
+    background: lightblue;
+}
+
+container {
+    width: 60px;
+    height: 60px;
+    border: 1px dotted red;
+    position: relative;
+}
+
+.content {
+    position: relative;
+    top: 20px;
+}
+
+/*使用a控制a的兄弟元素 c(同级元素)*/
+.hover-menu:hover i {
+    display: block;
+}
+
+.son {
+    display: none;
+}
+
+.file-item {
+    margin-right: 1rem;
+    /* height: 15rem; */
+    background: #eee;
+    position: relative;
+}
+
+.file-item:hover .recommends-content-item__info {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.recommends-content-item__info {
+    position: absolute;
+    bottom: 0;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(34, 34, 34, 0.35);
+    padding: 0 0.5rem;
+    line-height: 25px;
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+    transition: 0.3s;
+    opacity: 0;
+    transform: translateY(100%);
+}
