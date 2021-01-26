@@ -36,6 +36,7 @@ public interface IFile extends IBaseDomain {
     @Column(name = "`id`")
     @FieldDef(label = "id")
     @EditMode(editor = FieldEditor.Number, required = true)
+    @NotNull(message = "id不能为空", groups = {ConstantValidator.Update.class})
     Long getId();
 
     void setId(Long id);
@@ -51,6 +52,7 @@ public interface IFile extends IBaseDomain {
     @Column(name = "`type_id`")
     @FieldDef(label = "文件类型id")
     @EditMode(editor = FieldEditor.Number, required = false)
+    @NotNull(message = "文件类型不能为空", groups = {ConstantValidator.Insert.class, ConstantValidator.Update.class})
     Long getTypeId();
 
     void setTypeId(Long typeId);
@@ -63,9 +65,10 @@ public interface IFile extends IBaseDomain {
 
     void setCoverImg(String coverImg);
 
-    @Column(name = "`is_data_auth`")
-    @FieldDef(label = "是否有数据权限限制")
+    @Column(name = "`auth_type_id`")
+    @FieldDef(label = "数据权限类型")
     @EditMode(editor = FieldEditor.Text, required = false)
+    @NotNull(message = "数据权限类型不能为空", groups = {ConstantValidator.Insert.class, ConstantValidator.Update.class})
     Integer getAuthTypeId();
 
     void setAuthTypeId(Integer authTypeId);
