@@ -14,9 +14,13 @@
             return false;
         }
         // 获取部门权限
-        departmentAuthResult.val().forEach(item => {
-            fileDto.fileAuthList.push({authType: 10, authValue: item});
-        });
+        if ($('input:radio[name="authTypeId"]').val() == 10) {
+            departmentAuthResult.getCheckedObject().forEach(item => {
+                fileDto.fileAuthList.push({authType: 10, authValue: item.id});
+            });
+        }
+        console.log(departmentAuthResult.getCheckedObject());
+        return;
         let formData = Object.assign(fileDto, _form.serializeObject());
         let url = fileDto.id ? "update" : "insert";
         $.ajax({
@@ -82,6 +86,7 @@
         });
         //权限类型改变监听事件 如果当前是部门权限重新选择了其它权限则需要重新初始化权限
         $('input:radio[name="authTypeId"]').click(function () {
+            fileDto.fileAuthList = [];
         });
         //加载文件类型树
         fileTypeTree.zNodes =${fileTypeList!};
@@ -229,7 +234,7 @@
         }
         //设置封面图片url
         fileDto.coverImg = data.data.data;
-        appendFileHtml({coverImg: data.coverImg, fid: data.fid});
+        appendImgHtml({coverImg: fileDto.coverImg, fid: data.fid});
     }
 
     //在页面上添加一个图片
