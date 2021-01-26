@@ -8,7 +8,6 @@ package com.dili.cms.sdk.dto;
 import com.dili.cms.sdk.domain.Annunciate;
 import com.dili.cms.sdk.domain.AnnunciateItem;
 import com.dili.cms.sdk.domain.AnnunciateTarget;
-import com.dili.uap.sdk.domain.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
