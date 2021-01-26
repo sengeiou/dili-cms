@@ -7,13 +7,16 @@ package com.dili.cms.service.impl;
 
 import com.dili.cms.mapper.*;
 import com.dili.cms.sdk.domain.IFile;
+import com.dili.cms.sdk.domain.IFileAuth;
+import com.dili.cms.sdk.domain.IFileItem;
 import com.dili.cms.sdk.domain.IFileType;
 import com.dili.cms.sdk.dto.IFileDto;
-import com.dili.cms.sdk.glossary.IFileConstant;
+import com.dili.cms.sdk.glossary.FileAuthType;
 import com.dili.cms.service.FileService;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.EasyuiPageOutput;
+import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.exception.AppException;
 import com.dili.ss.metadata.ValueProviderUtils;
 import com.dili.ss.util.POJOUtils;
@@ -21,9 +24,11 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -64,7 +69,6 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
     public BaseOutput create(IFileDto fileDto) {
         fileDto.setCreateTime(LocalDateTime.now());
         fileDto.setUpdateTime(LocalDateTime.now());
-        fileDto.setIsDataAuth(IFileConstant.NO_AUTH.getValue());
         //先插入文件数据得到文件的id
         int fileResult = insertSelective(fileDto);
         if (fileResult <= 0) {
@@ -75,18 +79,73 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         fileItemMapper.insertList(fileDto.getFileItemList());
         //增加文件类型的节点文件数量（需要一直往上查找得到链路id）
         Set<Long> linkNodeIds = findFileTypeLinkNode(fileDto.getTypeId());
-        fileTypeMapper.updateNodeCountBatch(linkNodeIds);
+        fileTypeMapper.updateNodeCountBatch(linkNodeIds, 1);
         //判断有没有权限限制
-        if (CollectionUtils.isNotEmpty(fileDto.getAuthList())) {
-            fileDto.setIsDataAuth(IFileConstant.AUTH.getValue());
+        if (CollectionUtils.isNotEmpty(fileDto.getFileAuthList())) {
             //填入文件的id
-            fileDto.getAuthList().forEach(auth -> auth.setFileId(fileDto.getId()));
+            fileDto.getFileAuthList().forEach(auth -> auth.setFileId(fileDto.getId()));
         }
         //新增文件权限
-        fileAuthMapper.insertList(fileDto.getAuthList());
+        fileAuthMapper.insertList(fileDto.getFileAuthList());
         //得到精确到人的权限，再新增一次具体权限
-
         return BaseOutput.success();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public BaseOutput edit(IFileDto fileDto) {
+        IFile file = get(fileDto.getId());
+        if (Objects.isNull(file)) {
+            throw new AppException("文件不存在!");
+        }
+        int update = update(fileDto);
+        if (update <= 0) {
+            throw new AppException("编辑失败!");
+        }
+        //判断文件类型有没有改变
+        if (!fileDto.getTypeId().equals(file.getTypeId())) {
+            //先将原先的类型数量减一
+            Set<Long> oldTypeIds = findFileTypeLinkNode(file.getTypeId());
+            fileTypeMapper.updateNodeCountBatch(oldTypeIds, -1);
+            //在将现在的文件类型加一
+            Set<Long> newTypeIds = findFileTypeLinkNode(fileDto.getTypeId());
+            fileTypeMapper.updateNodeCountBatch(newTypeIds, 1);
+        }
+        Example example = new Example(IFileItem.class);
+        example.createCriteria().andEqualTo("fileId", fileDto.getId());
+        //删除原先的文件
+        fileItemMapper.deleteByExample(example);
+        //如果原来有权限则要先删除原来的权限
+        if (!file.getAuthTypeId().equals(FileAuthType.NOT_AUTH.getValue())) {
+            fileAuthMapper.deleteByExample(example);
+        }
+        //新增文件信息
+        fileDto.getFileItemList().forEach(fileItem -> fileItem.setFileId(fileDto.getId()));
+        fileItemMapper.insertList(fileDto.getFileItemList());
+        //新增文件权限
+        if (CollectionUtils.isNotEmpty(fileDto.getFileAuthList())) {
+            fileDto.getFileAuthList().forEach(auth -> auth.setFileId(fileDto.getId()));
+            fileAuthMapper.insertList(fileDto.getFileAuthList());
+        }
+        return BaseOutput.success();
+    }
+
+    @Override
+    public IFileDto getDetailById(Long id) {
+        IFile file = get(id);
+        if (Objects.isNull(file)) {
+            throw new AppException("文件不存在!");
+        }
+        IFileDto fileDto = DTOUtils.newInstance(IFileDto.class);
+        BeanUtils.copyProperties(file, fileDto);
+        Example example = new Example(IFileItem.class);
+        example.createCriteria().andEqualTo("fileId", id);
+        List<IFileItem> fileItems = fileItemMapper.selectByExample(example);
+        fileDto.setFileItemList(fileItems);
+
+        List<IFileAuth> fileAuthList = fileAuthMapper.selectByExample(example);
+        fileDto.setFileAuthList(fileAuthList);
+        return fileDto;
     }
 
 
