@@ -4,7 +4,7 @@
 <body>
 <#impFileupload/>
 
-<div id="${_cid!}" class='form-inline'>
+<div id="${_cid!}" class="${_class!}">
     <div id="uploadBtn">
         <i class="fa fa-cloud-upload fa-3x"></i>
     </div>
@@ -52,7 +52,7 @@
             //添加文件上传按钮
             addUploadElement: function () {
                 if ($(this.componentIdSelect() + " #uploadBtn").length <= 0) {
-                    let uploadHtml = "<div class='col-sm-1' id='uploadBtn'>" +
+                    let uploadHtml = "<div id='uploadBtn'>" +
                         "<i class='fa fa-cloud-upload fa-3x'></i>" +
                         " </div>";
                     $(this.componentIdSelect()).prepend(uploadHtml);
