@@ -12,6 +12,7 @@
            data-url="${_uploadUrl!}">
 </div>
 <script>
+
     $(function () {
         var $data = {
             //组件的唯一标识
@@ -35,7 +36,7 @@
                 }
             },
             // 已经上传成功的数量
-            uploadSuccCount: 0,
+            uploadSuccCount: Number("${_uploadInitCount!}"),
             // 组件的id
             componentIdSelect: function () {
                 return "#" + this.$cid;
@@ -54,13 +55,9 @@
                     let uploadHtml = "<div class='col-sm-1' id='uploadBtn'>" +
                         "<i class='fa fa-cloud-upload fa-3x'></i>" +
                         " </div>";
-                    $(this.currentFileItemsIdSelect()).prepend(uploadHtml);
+                    $(this.componentIdSelect()).prepend(uploadHtml);
                     window.addUploadBtnClick();
                 }
-            },
-            // 当前上传的文件容器的id选择器
-            currentFileItemsIdSelect: function () {
-                return this.componentIdSelect() + ' .file-items';
             },
             //获取当前组件中的文件上传组件元素对象
             getFileUploadIdSelect: function () {
@@ -69,8 +66,22 @@
             //检查大小和类型限制
             filterFile: function (file) {
                 return this.$types.has(file.type) || this.$types.size == 0
+            },
+            checkFileCount: function () {
+                //判断文件上传的数量有没有超过限制
+                if (this.uploadSuccCount >= this.$maxFileCount) {
+                    this.deleteUploadElement();
+                } else {
+                    this.addUploadElement();
+                }
             }
-        }
+        };
+        //检测数量
+        $data.checkFileCount();
+        $($data.componentIdSelect()).on("updateCount", function () {
+            $data.uploadSuccCount--;
+            $data.checkFileCount();
+        });
 
         //申明文件上传按钮点击事件
         let addUploadBtnClick = () => {
@@ -83,7 +94,7 @@
         window.addUploadBtnClick();
 
         //申明文件添加上传按钮事件
-        window.add${_cid!}UploadElement = $data.addUploadElement();
+        //window.add${_cid!}UploadElement = $data.addUploadElement();
 
         $($data.getFileUploadIdSelect()).fileupload({
             dataType: 'json',
@@ -115,9 +126,7 @@
                     $data.$uploadCallback(true, result);
                 });
                 //判断文件上传的数量有没有超过限制
-                if ($data.uploadSuccCount >= $data.$maxFileCount) {
-                    $data.deleteUploadElement();
-                }
+                $data.checkFileCount();
             },
             fail: function (e, data) {
                 let resultData = {
