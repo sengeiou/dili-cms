@@ -9,7 +9,7 @@
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
     <result column="type_id" jdbcType="BIGINT" property="typeId" />
     <result column="cover_img" jdbcType="VARCHAR" property="coverImg" />
-    <result column="is_data_auth" jdbcType="TINYINT" property="isDataAuth" />
+    <result column="auth_type_id" jdbcType="TINYINT" property="isDataAuth" />
     <result column="is_download" jdbcType="TINYINT" property="isDownload" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="firm_code" jdbcType="VARCHAR" property="firmCode" />
