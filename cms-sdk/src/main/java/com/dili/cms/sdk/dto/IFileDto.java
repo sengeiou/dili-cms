@@ -32,9 +32,9 @@ public interface IFileDto extends IFile {
 
 
     @Transient
-    List<IFileAuth> getAuthList();
+    List<IFileAuth> getFileAuthList();
 
-    void setAuthList(List<IFileAuth> authList);
+    void setFileAuthList(List<IFileAuth> fileAuthList);
 
     @Transient
     @Size(min = 1, message = "文件不能为空", groups = {ConstantValidator.Insert.class, ConstantValidator.Update.class})
