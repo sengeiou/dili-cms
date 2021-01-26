@@ -37,11 +37,11 @@ public interface AnnunciateTarget extends IBaseDomain {
     void setId(Long id);
 
     @Column(name = "`annunciate_id`")
-    @FieldDef(label="通告id", maxLength = 4000)
-    @EditMode(editor = FieldEditor.Text, required = false)
-    String getAnnunciateId();
+    @FieldDef(label="通告id")
+    @EditMode(editor = FieldEditor.Number, required = false)
+    Long getAnnunciateId();
 
-    void setAnnunciateId(String annunciateId);
+    void setAnnunciateId(Long annunciateId);
 
     @Column(name = "`target_type`")
     @FieldDef(label="对象类型")

@@ -62,4 +62,13 @@ public interface AnnunciateMapper extends MyMapper<Annunciate> {
       * @date：2021/1/22 15:58
       */
     List<AnnunciateVo> getListByUserId(Long userId);
+
+    /**
+      * 将条件内的所有消息改为非置顶 条件：发布时间未结束 发布状态为已发布 市场id
+      * @param noStickAnnunciate:
+      * @return：void
+      * @author：Henry.Huang
+      * @date：2021/1/23 17:45
+      */
+    void updateAllNoStick(Annunciate noStickAnnunciate);
 }

@@ -24,7 +24,7 @@ public enum ReadType {
      */
     NO_READ("未读", 1),
     READ("已读", 2),
-    DELETE("已删除", 3);
+    DELETE("已撤销", 3);
 
     private String name;
     private Integer value;

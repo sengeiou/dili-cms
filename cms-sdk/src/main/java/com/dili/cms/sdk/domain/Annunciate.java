@@ -58,6 +58,13 @@ public interface Annunciate extends IBaseDomain {
 
     void setSendState(Integer sendState);
 
+    @Column(name = "`publish_type`")
+    @FieldDef(label="发布类型")
+    @EditMode(editor = FieldEditor.Text, required = true)
+    Integer getPublishType();
+
+    void setPublishType(Integer publishType);
+
     @Column(name = "`start_time`")
     @FieldDef(label="开始时间")
     @EditMode(editor = FieldEditor.Datetime, required = false)
@@ -134,4 +141,11 @@ public interface Annunciate extends IBaseDomain {
     Integer getType();
 
     void setType(Integer type);
+
+    @Column(name = "`firm_id`")
+    @FieldDef(label="市场id")
+    @EditMode(editor = FieldEditor.Number, required = false)
+    Long getFirmId();
+
+    void setFirmId(Long firmId);
 }

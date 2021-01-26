@@ -29,7 +29,7 @@ public enum AnnunciateTargetRange {
     COMPANY("公司", 4),
     DRIVER("司机", 5),
     BUYER("买家", 6),
-    SELLER  ("卖家", 7);
+    SELLER  ("经营户", 7);
 
     private String name;
     private Integer value;

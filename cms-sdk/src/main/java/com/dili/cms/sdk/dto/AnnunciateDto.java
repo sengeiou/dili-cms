@@ -6,8 +6,12 @@
 package com.dili.cms.sdk.dto;
 
 import com.dili.cms.sdk.domain.Annunciate;
+import com.dili.cms.sdk.domain.AnnunciateItem;
+import com.dili.cms.sdk.domain.AnnunciateTarget;
+import com.dili.uap.sdk.domain.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <pre> 
@@ -43,4 +47,44 @@ public interface AnnunciateDto extends Annunciate {
     Integer getTargetType();
 
     void setTargetType(Integer targetType);
+
+    /**
+     * 通告项数据List
+     * @return
+     */
+    List<AnnunciateItem> getAnnunciateItems();
+
+    void  setAnnunciateItems(List<AnnunciateItem> annunciateItems);
+
+    /**
+     * 通告目标List
+     * @return
+     */
+    List<AnnunciateTarget> getAnnunciateTargets();
+
+    void setAnnunciateTargets(List<AnnunciateTarget> annunciateTargets);
+
+    /**
+     * 更新状态 1为未发布更新 2位已撤销更新
+     * @return
+     */
+    Integer getUpateType();
+
+    void setUpateType(Integer upateType);
+
+    /**
+     * 客户id
+     * @return
+     */
+    Long getCustomerId();
+
+    void setCustomerId(Long customerId);
+
+    /**
+     * 查看终端
+     * @return
+     */
+    Integer getTerminal();
+
+    void setTerminal(Integer terminal);
 }

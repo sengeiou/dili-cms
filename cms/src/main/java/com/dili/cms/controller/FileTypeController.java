@@ -10,9 +10,11 @@ import com.dili.cms.sdk.dto.IFileTypeDto;
 import com.dili.cms.service.FileTypeService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.dto.DTOUtils;
+import com.dili.ss.exception.AppException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -60,6 +62,42 @@ public class FileTypeController extends BaseController {
             });
             return BaseOutput.successData(iFileTypeDtoShowList);
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return BaseOutput.failure(e.getMessage());
+        }
+    }
+
+    /**
+     * TODO 新增或修改文档分类
+     * @param iFileType:
+     * @return：com.dili.ss.domain.BaseOutput
+     * @author：Ron.Peng
+     * @date：2021/1/25 17:24
+     */
+    @RequestMapping(value = "/saveOrUpdateFileType.action", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public BaseOutput saveOrUpdateFileType(@RequestBody IFileType iFileType) {
+        try {
+            return this.fileTypeService.saveOrUpdateFileType(iFileType);
+        } catch (AppException e) {
+            logger.error(e.getMessage(), e);
+            return BaseOutput.failure(e.getMessage());
+        }
+    }
+
+    /**
+     * TODO 删除文档分类
+     * @param iFileType:
+     * @return：com.dili.ss.domain.BaseOutput
+     * @author：Ron.Peng
+     * @date：2021/1/26 9:34
+     */
+    @RequestMapping(value = "/deleteFileType.action", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public BaseOutput deleteFileType(@RequestBody IFileType iFileType) {
+        try {
+            return this.fileTypeService.deleteFileType(iFileType);
+        } catch (AppException e) {
             logger.error(e.getMessage(), e);
             return BaseOutput.failure(e.getMessage());
         }

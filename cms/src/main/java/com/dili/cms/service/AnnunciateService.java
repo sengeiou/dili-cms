@@ -12,6 +12,7 @@ import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.ss.base.BaseService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.PageOutput;
+import com.dili.uap.sdk.domain.User;
 
 import java.util.List;
 
@@ -65,4 +66,50 @@ public interface AnnunciateService extends BaseService<Annunciate, Long> {
      * @date：2021/1/21 16:38
      */
     BaseOutput<List<AnnunciateVo>> getListByUserId(Long userId);
+
+    /**
+      * 新增Annunciate
+      * @param annunciateDto:
+      * @return：com.dili.ss.domain.BaseOutput
+      * @author：Henry.Huang
+      * @date：2021/1/22 17:27
+      */
+    BaseOutput insertAnnunciate(AnnunciateDto annunciateDto);
+
+    /**
+      * 信息通告修改
+      * @param annunciateDto:
+      * @param users:
+      * @return：com.dili.ss.domain.BaseOutput
+      * @author：Henry.Huang
+      * @date：2021/1/23 15:46
+      */
+    BaseOutput updateAnnunciate(AnnunciateDto annunciateDto, List<User> users);
+
+    /**
+      * 信息通告删除
+      * @param id:  
+      * @return：com.dili.ss.domain.BaseOutput 
+      * @author：Henry.Huang 
+      * @date：2021/1/23 16:47
+      */
+    BaseOutput deleteAnnunciate(Long id);
+
+    /**
+     * 信息通告置顶
+     * @param id:
+     * @return：com.dili.ss.domain.BaseOutput
+     * @author：Henry.Huang
+     * @date：2021/1/23 16:47
+     */
+    BaseOutput stick(Long id);
+
+    /**
+     * 信息通告撤销
+     * @param annunciate:
+     * @return：com.dili.ss.domain.BaseOutput
+     * @author：Henry.Huang
+     * @date：2021/1/23 16:47
+     */
+    BaseOutput revoke(Annunciate annunciate);
 }
