@@ -3,92 +3,92 @@
     <link rel="stylesheet" href="/resources/css/zTree/treeSelectStyle.css">
 </head>
 <#bs4Body>
-<div id="app">
-    <form class="form-horizontal" role="form" id="form">
-        <div class="form-group" id="files">
-            <label for="lastname" class="col-sm-2 control-label"><i class="red">*</i>文件：</label>
-            <div class="form-inline col-sm-10" id="file-groups">
-                <#component_imgUpload _cid="bbb" _types="" _maxFileCount="2" _uploadInitCount="1" _uploadCallback="uploadFileCallback"
-                _uploadUrl="/uploadFile/doUpload.action"/>
-                <div class="col-sm-4 file-group" id="file-group-0">
-                </div>
+<form class="form-horizontal" role="form" id="form">
+    <div class="form-group" id="files">
+        <label for="lastname" class="col-sm-2 control-label"><i class="red">*</i>文件：</label>
+        <div class="form-inline col-sm-10" id="file-groups">
+            <#component_upload _cid="bbb" _types="" _maxFileCount="2" _uploadInitCount="${fileCount!}"
+            _uploadCallback="uploadFileCallback"
+            _deleteCallback="deleteFileHandler" _uploadUrl="/uploadFile/doUpload.action"/>
+            <div class="col-sm-4 file-group" id="file-group-0">
             </div>
-        </div>
-
-        <div class="form-group">
-            <label for="fileName" class="col-sm-2 control-label"><i class="red">*</i>文档名称：</label>
-            <div class="col-sm-10">
-                <input id="fileName" name="fileName" type="text" class="form-control" placeholder="请输入文档名称" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label"><i class="red">*</i>文档分类：</label>
-            <div class="col-sm-10">
-                <input id="fileType" type="text" class="form-control" placeholder="请选择" readonly>
-                <div style="width: 300px;overflow:hidden;cursor: pointer" id="fileTypeTree"></div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label"><i class="red">*</i>配图：</label>
-            <div class="col-sm-10">
-                <#component_imgUpload _cid="aaa" _types="" _maxFileCount="1" _uploadInitCount="1" _uploadCallback="uploadImgCallback"
-                _deleteCallback="deleteImgFileHandler" _uploadUrl="/uploadFile/doUpload.action"/>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="isDownload" class="col-sm control-label"><i class="red">*</i>支持下载：
-                <div class="form-check form-check-inline">
-                    <label class="radio-inline">
-                        <input type="radio" name="isDownload" value="1"> 支持
-                    </label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <label class="radio-inline">
-                        <input type="radio" name="isDownload" value="0"> 不支持
-                    </label>
-                </div>
-            </label>
-        </div>
-        <div class="form-group">
-            <label for="authTypeId" class="col-sm control-label"><i class="red">*</i>访问权限：
-                <div class="form-check form-check-inline">
-                    <label class="radio-inline">
-                        <input type="radio" name="authTypeId" value="0"> 所有
-                    </label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <label class="radio-inline">
-                        <input type="radio" id="department" name="authTypeId" value="10"> 部门
-                    </label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <label class="radio-inline">
-                        <input type="radio" onclick="openUserPageHandler()" name="authTypeId" value="20">人员
-                    </label>
-                </div>
-            </label>
-            <div class="col-sm-5">
-                <div style="width: 300px;overflow:hidden;cursor: pointer" id="departmentTree"></div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="remark" class="col-sm-2 control-label">说明：</label>
-            <div class="col-sm-10">
-                <textarea id="remark" name="remark" class="form-control" rows="3"></textarea>
-            </div>
-        </div>
-    </form>
-
-    <div style="height: 60px;"></div>
-    <div class="modal-footer-wrap" style="z-index: 999!important;">
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary px-5" onclick="saveOrUpdate()">提交
-            </button>
         </div>
     </div>
 
+    <div class="form-group">
+        <label for="fileName" class="col-sm-2 control-label"><i class="red">*</i>文档名称：</label>
+        <div class="col-sm-10">
+            <input id="fileName" name="fileName" type="text" class="form-control" placeholder="请输入文档名称" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><i class="red">*</i>文档分类：</label>
+        <div class="col-sm-10">
+            <input id="fileType" type="text" class="form-control" placeholder="请选择" readonly>
+            <div style="width: 300px;overflow:hidden;cursor: pointer" id="fileTypeTree"></div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label"><i class="red">*</i>配图：</label>
+        <div class="col-sm-10">
+            <#component_upload _class="form-inline" _cid="aaa" _types="" _maxFileCount="1" _uploadInitCount=""
+            _uploadCallback="uploadImgCallback"
+            _deleteCallback="deleteImgFileHandler" _uploadUrl="/uploadFile/doUpload.action"/>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="isDownload" class="col-sm control-label"><i class="red">*</i>支持下载：
+            <div class="form-check form-check-inline">
+                <label class="radio-inline">
+                    <input type="radio" name="isDownload" value="1"> 支持
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="radio-inline">
+                    <input type="radio" name="isDownload" value="0"> 不支持
+                </label>
+            </div>
+        </label>
+    </div>
+    <div class="form-group">
+        <label for="authTypeId" class="col-sm control-label"><i class="red">*</i>访问权限：
+            <div class="form-check form-check-inline">
+                <label class="radio-inline">
+                    <input type="radio" name="authTypeId" value="0"> 所有
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="radio-inline">
+                    <input type="radio" id="department" name="authTypeId" value="10"> 部门
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="radio-inline">
+                    <input type="radio" onclick="openUserPageHandler()" name="authTypeId" value="20">人员
+                </label>
+            </div>
+        </label>
+        <div class="col-sm-5">
+            <div style="width: 300px;overflow:hidden;cursor: pointer" id="departmentTree"></div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="remark" class="col-sm-2 control-label">说明：</label>
+        <div class="col-sm-10">
+            <textarea id="remark" name="remark" class="form-control" rows="3"></textarea>
+        </div>
+    </div>
+</form>
+
+<div style="height: 60px;"></div>
+<div class="modal-footer-wrap" style="z-index: 999!important;">
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary px-5" onclick="saveOrUpdate()">提交
+        </button>
+    </div>
 </div>
+
 <!--https://www.jq22.com/jquery-info22644-->
 <script src="/resources/js/jquery.ztree.all.js"></script>
 <script src="/resources/js/treeSelect.2.0.js"></script>
