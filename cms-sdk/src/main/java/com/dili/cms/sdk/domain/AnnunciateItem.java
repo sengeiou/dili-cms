@@ -5,12 +5,14 @@
   */
 package com.dili.cms.sdk.domain;
 
+import com.dili.cms.sdk.validator.ConstantValidator;
 import com.dili.ss.dto.IBaseDomain;
 import com.dili.ss.metadata.FieldEditor;
 import com.dili.ss.metadata.annotation.EditMode;
 import com.dili.ss.metadata.annotation.FieldDef;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 /**
@@ -50,6 +52,13 @@ public interface AnnunciateItem extends IBaseDomain {
     Long getTargetId();
 
     void setTargetId(Long targetId);
+
+    @Column(name = "`target_name`")
+    @FieldDef(label = "目标名称", maxLength = 20)
+    @EditMode(editor = FieldEditor.Text, required = false)
+    String getTargetName();
+
+    void setTargetName(String targetName);
 
     @Column(name = "`read_state`")
     @FieldDef(label="读取状态")
