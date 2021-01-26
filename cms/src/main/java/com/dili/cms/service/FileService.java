@@ -35,12 +35,31 @@ public interface FileService extends BaseService<IFile, Long> {
      */
     BaseOutput create(IFileDto fileDto);
 
-   /**
-    * TODO 文件列表查询
-    * @param iFileDto
-    * @return：
-    * @author：Ron.Peng
-    * @date：2021/1/23 15:19
-    */
+
+    /**
+     * 新编辑文件：更新文件类型数量和新增文件权限
+     *
+     * @param fileDto
+     * @return
+     */
+    BaseOutput edit(IFileDto fileDto);
+
+
+    /**
+     * 根据id获取文件详细信息
+     *
+     * @param id
+     * @return
+     */
+    IFileDto getDetailById(Long id);
+
+    /**
+     * TODO 文件列表查询
+     *
+     * @param iFileDto
+     * @return：
+     * @author：Ron.Peng
+     * @date：2021/1/23 15:19
+     */
     EasyuiPageOutput listPage(IFileDto iFileDto, Boolean useProvider) throws Exception;
 }
