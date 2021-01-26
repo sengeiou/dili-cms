@@ -27,11 +27,8 @@
         $(window).resize(function () {
             _grid.bootstrapTable('resetView')
         });
-        let size = ($(window).height() - $('#queryForm').height() - 210) / 40;
-        size = size > 10 ? size : 10;
         _grid.bootstrapTable('refreshOptions', {
             url: '/file/listPage.action',
-            pageSize: parseInt(size)
         });
         _grid.on('load-success.bs.table', function () {
             $('[data-toggle="tooltip"]').tooltip()

@@ -103,7 +103,7 @@ public class FileTypeServiceImpl extends BaseServiceImpl<IFileType, Long> implem
         updateFileType.setId(iFileType.getId());
         updateFileType.setName(iFileType.getName());
         updateFileType.setUpdateTime(LocalDateTime.now());
-        updateFileType.setVersion(iFileTypeByQuery.getVersion()+1);
+        updateFileType.setVersion(iFileTypeByQuery.getVersion() + 1);
         int updateOrderResult = this.getActualDao().updateByExampleSelective(updateFileType, fileTypeExample);
         if (updateOrderResult <= 0) {
             throw new AppException("更新文档类型失败，当前文档类型或已被编辑");
