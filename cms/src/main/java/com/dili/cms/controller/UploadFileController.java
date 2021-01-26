@@ -52,7 +52,6 @@ public class UploadFileController extends BaseController {
      */
     @Value("${upload.config.accessToken}")
     private String accessToken;
-    private String splitChat = "/";
 
     /**
      * TODO 上传文件
@@ -73,6 +72,8 @@ public class UploadFileController extends BaseController {
             if (StringUtils.isNotBlank(resultUrl)) {
                 JSONObject resultUrlJsonObj = JSON.parseObject(resultUrl);
                 if (resultUrlJsonObj.get("code").equals("200")) {
+                    //换成可以直接访问的url
+                    resultUrlJsonObj.put("data", "https://dfs.diligrp.com/file/download/" + resultUrlJsonObj.get("data"));
                     return BaseOutput.success().setData(resultUrlJsonObj);
                 }
             }
