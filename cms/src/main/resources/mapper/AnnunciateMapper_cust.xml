@@ -13,6 +13,9 @@
       <if test="title != null">
         AND t.title like CONCAT('%',#{title,jdbcType=VARCHAR},'%')
       </if>
+    <if test="sendState != null">
+      AND t.send_state =#{sendState,jdbcType=VARCHAR}
+    </if>
       <if test="createTimeStart != null">
         and t.create_time <![CDATA[>=]]> #{createTimeStart,jdbcType=TIMESTAMP}
       </if>
@@ -43,7 +46,7 @@
     </foreach>
   </update>
   <select id="getListByUserId" resultType="com.dili.cms.sdk.dto.AnnunciateVo">
-    SELECT t1.id,t1.title,t1.create_time,t2.read_state FROM annunciate t1
+    SELECT t1.id,t1.title,t1.create_time,t2.read_state,t1.type FROM annunciate t1
     LEFT JOIN annunciate_item t2
     ON t1.id=t2.annunciate_id
     WHERE 1=1 and t2.read_state!=3 and t2.target_id=#{targetType,jdbcType=BIGINT}

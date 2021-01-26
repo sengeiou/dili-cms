@@ -187,7 +187,7 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
         List<Integer> sendList=new ArrayList<>(2);
         sendList.add(AnnunciateSendState.CREATED.getValue());
         sendList.add(AnnunciateSendState.REVOKE.getValue());
-        Example example=new Example(AnnunciateDto.class);
+        Example example=new Example(Annunciate.class);
         example.createCriteria().andEqualTo("id",id)
                 .andIn("sendState",sendList);
         int deleteFlag=getActualDao().deleteByExample(example);
@@ -198,7 +198,7 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
         deleteItem.setAnnunciateId(id);
         annunciateItemService.deleteByExample(deleteItem);
         AnnunciateTarget deleteTarget=DTOUtils.newInstance(AnnunciateTarget.class);
-        deleteItem.setAnnunciateId(id);
+        deleteTarget.setAnnunciateId(id);
         annunciateTargetService.deleteByExample(deleteTarget);
         return BaseOutput.success();
     }
@@ -234,7 +234,7 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
 
     @Override
     public BaseOutput revoke(Annunciate annunciate) throws AppException{
-        Example example=new Example(AnnunciateDto.class);
+        Example example=new Example(Annunciate.class);
         example.createCriteria().andEqualTo("id",annunciate.getId())
                 .andEqualTo("sendState",AnnunciateSendState.PUBLISH.getValue());
         int revokeFlag=getActualDao().updateByExampleSelective(annunciate,example);

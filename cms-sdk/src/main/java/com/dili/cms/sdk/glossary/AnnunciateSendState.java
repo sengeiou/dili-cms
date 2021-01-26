@@ -22,7 +22,7 @@ public enum AnnunciateSendState {
     /**
      * 信息通告发送状态
      */
-    CREATED("已创建", 1),
+    CREATED("未发布", 1),
     PUBLISH("已发布", 2),
     REVOKE("已撤销", 3),
     END("已结束", 4);

@@ -8,6 +8,16 @@
             <form class="form collapse show" id="queryForm" role="form" style="margin-left: 10px" >
                 <div class="row  row-cols-6">
                     <div class="form-group col">
+                        <label for="sendState">发送状态</label>
+                        <select id="sendState" name="sendState" class="form-control">
+                            <option value="">--全部--</option>
+                            <option value="1">未发布</option>
+                            <option value="2">已发布</option>
+                            <option value="3">已撤销</option>
+                            <option value="4">已结束</option>
+                        </select>
+                    </div>
+                    <div class="form-group col">
                         <label for="title" class="">通告标题</label>
                         <input type="text" class="form-control" id="title" name="title" placeholder="">
                     </div>
@@ -58,13 +68,25 @@
                             class="fa fa-plus"></i> 新增
                     </button>
                 </#resource>
-                <#resource code="annunciate_add">
-                    <button id="btn_add" type="button" class="ml-1 btn btn-primary" onclick="openInsertHandler()"><i
-                            class="fa fa-plus"></i> 新增
+                <#resource code="annunciate_edit">
+                    <button id="btn_edit" type="button" class="ml-1 btn btn-primary" onclick="openEditHandler()"><i
+                            class="fa fa-edit"></i> 编辑
+                    </button>
+                </#resource>
+                <#resource code="annunciate_view">
+                    <button id="btn_view" type="button" class="ml-1 btn btn-primary" onclick="openViewBtnHandler()"><i
+                            class="fa fa-eye"></i> 详情
+                    </button>
+                </#resource>
+                <#resource code="annunciate_delete">
+                    <button id="btn_delete" type="button" class="ml-1 btn btn-primary" onclick="deleteHandler()"> 删除
+                    </button>
+                </#resource>
+                <#resource code="annunciate_revoke">
+                    <button id="btn_revoke" type="button" class="ml-1 btn btn-primary" onclick="revokeHandler()">撤销
                     </button>
                 </#resource>
             </div>
-
             <table id="grid"  data-toggle="table" data-title="信息通告列表" class="table" data-toolbar="#toolbar" data-pagination="true" data-page-number="1" data-page-size="10" data-query-params="queryParams"
                    data-side-pagination="server" data-method="POST" data-content-type="application/x-www-form-urlencoded" data-single-select="false" data-click-to-select="true" data-checkbox-header="true"
                    data-unique-id="id" data-sort-name="modify_time" data-sort-order="desc" data-icons="bui.variable.icons" data-buttons-class="primary" data-show-refresh="true" data-show-fullscreen="true"
