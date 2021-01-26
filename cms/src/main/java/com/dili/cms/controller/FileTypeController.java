@@ -68,7 +68,7 @@ public class FileTypeController extends BaseController {
     }
 
     /**
-     * TODO 新增文件类型
+     * TODO 新增或修改文档分类
      * @param iFileType:
      * @return：com.dili.ss.domain.BaseOutput
      * @author：Ron.Peng
@@ -79,6 +79,24 @@ public class FileTypeController extends BaseController {
     public BaseOutput saveOrUpdateFileType(@RequestBody IFileType iFileType) {
         try {
             return this.fileTypeService.saveOrUpdateFileType(iFileType);
+        } catch (AppException e) {
+            logger.error(e.getMessage(), e);
+            return BaseOutput.failure(e.getMessage());
+        }
+    }
+
+    /**
+     * TODO 删除文档分类
+     * @param iFileType:
+     * @return：com.dili.ss.domain.BaseOutput
+     * @author：Ron.Peng
+     * @date：2021/1/26 9:34
+     */
+    @RequestMapping(value = "/deleteFileType.action", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public BaseOutput deleteFileType(@RequestBody IFileType iFileType) {
+        try {
+            return this.fileTypeService.deleteFileType(iFileType);
         } catch (AppException e) {
             logger.error(e.getMessage(), e);
             return BaseOutput.failure(e.getMessage());

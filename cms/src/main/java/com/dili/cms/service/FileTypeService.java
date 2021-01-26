@@ -25,11 +25,20 @@ import com.dili.ss.domain.BaseOutput;
  */
 public interface FileTypeService extends BaseService<IFileType, Long> {
     /**
-     * TODO 新增文件类型
+     * TODO 新增或修改文档分类
      * @param iFileType:
      * @return：
      * @author：Ron.Peng
      * @date：2021/1/25 17:28
      */
     BaseOutput saveOrUpdateFileType(IFileType iFileType);
+
+    /**
+     * TODO 删除文档分类
+     * @param iFileType:
+     * @return：
+     * @author：Ron.Peng
+     * @date：2021/1/26 9:36
+     */
+    BaseOutput deleteFileType(IFileType iFileType);
 }

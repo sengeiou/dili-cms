@@ -6,7 +6,10 @@
 package com.dili.cms.service.impl;
 
 import com.dili.cms.mapper.FileTypeMapper;
+import com.dili.cms.sdk.domain.IFile;
 import com.dili.cms.sdk.domain.IFileType;
+import com.dili.cms.sdk.glossary.IFileConstant;
+import com.dili.cms.service.FileService;
 import com.dili.cms.service.FileTypeService;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.BaseOutput;
@@ -14,12 +17,14 @@ import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.exception.AppException;
 import com.dili.uap.sdk.domain.UserTicket;
 import com.dili.uap.sdk.session.SessionContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -41,6 +46,9 @@ public class FileTypeServiceImpl extends BaseServiceImpl<IFileType, Long> implem
     public static final Integer DEFAULT_NODE_COUNT = 0;
     public static final Integer DEFAULT_VERSION = 0;
 
+    @Autowired
+    private FileService fileService;
+
     public FileTypeMapper getActualDao() {
         return (FileTypeMapper) getDao();
     }
@@ -54,6 +62,34 @@ public class FileTypeServiceImpl extends BaseServiceImpl<IFileType, Long> implem
             this.updateFileType(iFileType);
             return BaseOutput.success("编辑文档分类成功");
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public BaseOutput deleteFileType(IFileType iFileType) {
+        IFileType iFileTypeByQuery = this.get(iFileType.getId());
+        if (!Objects.nonNull(iFileTypeByQuery)) {
+            throw new AppException("文档类型不存在或该文档类型已删除");
+        }
+        //删除文档类型
+        int deleteTypeResult = this.delete(iFileType.getId());
+        if (deleteTypeResult <= 0) {
+            throw new AppException("删除文档分类失败！");
+        }
+        //找到该类型下的所有文件，并将该分类下的文档对应的类型关联到父级节点
+        Example iFileQuery = new Example(IFile.class);
+        iFileQuery.createCriteria().andEqualTo("typeId", iFileType.getId()).andEqualTo("isDataAuth", IFileConstant.AUTH.getValue());
+        List<IFile> iFileExample = fileService.selectByExample(iFileQuery);
+        iFileExample.forEach(f -> {
+            f.setTypeId(iFileType.getParentId());
+            f.setUpdateTime(LocalDateTime.now());
+            f.setVersion(f.getVersion() + 1);
+        });
+        int batchUpdateResult = fileService.batchUpdate(iFileExample);
+        if (batchUpdateResult < iFileExample.size()) {
+            throw new AppException("相关文件更新失败！");
+        }
+        return BaseOutput.success("删除文档分类成功！");
     }
 
     /**

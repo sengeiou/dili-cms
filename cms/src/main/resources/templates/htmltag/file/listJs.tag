@@ -4,8 +4,6 @@
         // 如 let itemIndex = 0;
     let _grid = $('#grid');
     let _form = $('#_form');
-    var dia;
-
 
     //时间范围
     lay('.laydatetime').each(function () {
@@ -72,6 +70,8 @@
             },
             callback: {
                 onClick: zTreeOnClick,
+                onCheck: zTreeOnCheck,
+                beforeEditName: zTreeBeforeEditName,
                 beforeRemove: beforeRemove,
                 beforeRename: beforeRename,
             }
@@ -101,45 +101,55 @@
             url: '/file/listPage.action',
         });
     }
-
-    function beforeRemove(treeId, treeNode) {
-        var zTree = $.fn.zTree.getZTreeObj("fileTree");
-        zTree.selectNode(treeNode);
-        alert(treeNode.Action);
-        return confirm("确认删除 节点 -- " + treeNode.name + " 吗？");
+    /**
+     * 勾选时触发事件
+     */
+    function zTreeOnCheck(event, treeId, treeNode) {
+        var checked = treeNode.checked;
+        if(checked){
+            $("#fileType").val(treeNode.id);
+        }else{
+            $("#fileType").val(null);
+        }
+    }
+    /**
+     * 编辑名称前回调函数
+     */
+    function zTreeBeforeEditName(treeId, treeNode) {
+        treeNode.treeShow = treeNode.name;
     }
 
+    /**
+     * 删除时回调
+     */
+    function beforeRemove(treeId, treeNode) {
+        bs4pop.confirm(" 确定删除" + treeNode.name + "分类吗？", {title: "信息确认"}, function (sure) {
+            if (sure) {
+                deleteFileType(treeNode);
+            }
+        });
+    }
+
+    /**
+     * 编辑名称前回调
+     */
     function beforeRename(treeId, treeNode, newName) {
         if (newName.length == 0) {
-            alert("节点名称不能为空!");
-            return false;
+            bs4pop.alert('请输入分类名称', {type: 'error'});
+            return;
         }
-        return true;
+        saveOrUpdateFileType(newName, treeNode);
     }
 
-    var newCount = 1;
-
-    function addHoverDom(treeId, treeNode) {
-        var sObj = $("#" + treeNode.tId + "_span");
-        if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
-        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
-            + "' title='add node' onfocus='this.blur();' ></span>";
-        sObj.after(addStr);
-        var btn = $("#addBtn_" + treeNode.tId);
-        if (btn) btn.bind("click", function () {
-            var zTree = $.fn.zTree.getZTreeObj("fileTree");
-            zTree.addNodes(treeNode, {
-                id: (treeNode.id + newCount),
-                parentid: treeNode.id,
-                name: "new node" + (newCount++)
-            });
-            return false;
-        });
-    };
-
-    function removeHoverDom(treeId, treeNode) {
-        $("#addBtn_" + treeNode.tId).unbind().remove();
-    };
+    /**
+     * 选择查询类型，选中后勾选树节点
+     */
+    function chooseType() {
+        var id = $("#fileType").val();
+        var zTree = $.fn.zTree.getZTreeObj("fileTree");
+        var node = zTree.getNodeByParam("id", id);//根据ID找到该节点
+        zTree.checkNode(node)
+    }
 
     /**
      * 新增文档分类
@@ -155,48 +165,13 @@
                     bs4pop.alert('请输入分类名称', {type: 'error'});
                     return;
                 }
-                saveOrUpdateFileType(value,null);
+                saveOrUpdateFileType(value, null);
             } else {
                 return;
             }
         });
     }
 
-    /**
-     * 添加分类
-     */
-    function addFileType(val) {
-        let iFileType = JSON.stringify({name: val});
-        $.ajax({
-            type: "POST",
-            url: "/fileType/addFileType.action",
-            processData: false,
-            data: iFileType,
-            contentType: false,
-            dataType: "JSON",
-            success: function (res) {
-                bui.loading.hide();
-                if (res.code == "200") {
-                    bs4pop.alert(res.message, {
-                        width: '350px', height: "200px", type: 'success', onHideStart: () => {
-                            treeInit();
-                        }
-                    });
-                } else {
-                    bs4pop.alert(res.message, {
-                        onHideStart: () => {
-                            addPrompt.hide()
-                            treeInit();
-                        }
-                    });
-                }
-            },
-            error: function (error) {
-                bui.loading.hide();
-                bs4pop.alert(error.message, {type: 'error'});
-            }
-        });
-    }
     /**
      * 编辑文档分类
      */
@@ -207,7 +182,7 @@
             bs4pop.alert('请选中一个节点');
             return;
         }
-        addPrompt = bs4pop.prompt("<em style='color: red'>*</em>分类名称", nodes[0].name, {
+        editPrompt = bs4pop.prompt("<em style='color: red'>*</em>分类名称", nodes[0].name, {
             title: '编辑文档分类',
             hideRemove: true,
             width: 380,
@@ -225,13 +200,31 @@
     }
 
     /**
+     * 删除文档分类
+     */
+    function deleteFileTypeHandler() {
+        var zTree = $.fn.zTree.getZTreeObj("fileTree");
+        var nodes = zTree.getCheckedNodes(true);
+        if (null == nodes || nodes.length == 0) {
+            bs4pop.alert('请选中一个节点');
+            return;
+        }
+        bs4pop.confirm(" 确定删除" + nodes[0].name + "分类吗？", {title: "信息确认"}, function (sure) {
+            if (sure) {
+                deleteFileType(nodes[0]);
+            }
+        });
+    }
+
+    /**
      * 新增或修改分类
      */
-    function saveOrUpdateFileType(val,nodes) {
-        if(null!=nodes){
+    function saveOrUpdateFileType(val, nodes) {
+        bui.loading.show('努力提交中，请稍候。。。');
+        if (null != nodes) {
             nodes.name = val;
             var iFileType = JSON.stringify(nodes);
-        }else{
+        } else {
             var iFileType = JSON.stringify({name: val});
         }
         $.ajax({
@@ -246,13 +239,57 @@
                 if (res.code == "200") {
                     bs4pop.alert(res.message, {
                         width: '350px', height: "200px", type: 'success', onHideStart: () => {
+                            $("#fileType").val(null);
                             treeInit();
                         }
                     });
                 } else {
                     bs4pop.alert(res.message, {
                         onHideStart: () => {
-                            addPrompt.hide()
+                            $("#fileType").val(null);
+                            treeInit();
+                        }
+                    });
+                }
+            },
+            error: function (error) {
+                bui.loading.hide();
+                bs4pop.alert(error.message, {type: 'error'});
+            }
+        });
+    }
+
+    /**
+     * 新增或修改分类
+     */
+    function deleteFileType(nodes) {
+        bui.loading.show('努力提交中，请稍候。。。');
+        if (null != nodes) {
+            var iFileType = JSON.stringify(nodes);
+        } else {
+            bs4pop.alert("提交数据不能为空", {type: 'error'});
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/fileType/deleteFileType.action",
+            processData: false,
+            data: iFileType,
+            contentType: false,
+            dataType: "JSON",
+            success: function (res) {
+                bui.loading.hide();
+                if (res.code == "200") {
+                    bs4pop.alert(res.message, {
+                        width: '350px', height: "200px", type: 'success', onHideStart: () => {
+                            $("#fileType").val(null);
+                            treeInit();
+                        }
+                    });
+                } else {
+                    bs4pop.alert(res.message, {
+                        onHideStart: () => {
+                            $("#fileType").val(null);
                             treeInit();
                         }
                     });
@@ -331,16 +368,6 @@
     }
 
     /**
-     * 虚浮处理
-     */
-    function suspensionFun(value, row, index, field) {
-        if (typeof (value) == "undefined") {
-            value = '';
-        }
-        return "<span data-toggle='tooltip' data-placement='left' data-original-title='" + value + "'>" + value + "</span>";
-    }
-
-    /**
      * table参数组装
      * 可修改queryParams向服务器发送其余的参数
      * @param params
@@ -357,7 +384,7 @@
 
     function imgFormatter(value, row, index) {
         var operationValue = '';
-        operationValue += '<img src="' + value + '" alt="" style="height: 100px;width: 100px" />';
+        operationValue += '<img src="' + value + '" alt="" style="height: 70px;width: 70px" />';
         return operationValue;
     }
 
