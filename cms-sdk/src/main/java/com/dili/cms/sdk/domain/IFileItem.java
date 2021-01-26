@@ -43,6 +43,13 @@ public interface IFileItem extends IBaseDomain {
 
     void setFileId(Long fileId);
 
+    @Column(name = "`file_name`")
+    @FieldDef(label = "文件名称", maxLength = 255)
+    @EditMode(editor = FieldEditor.Text, required = false)
+    String getFileName();
+
+    void setFileName(String fileName);
+
     @Column(name = "`file_url`")
     @FieldDef(label = "文件地址", maxLength = 255)
     @EditMode(editor = FieldEditor.Text, required = false)
