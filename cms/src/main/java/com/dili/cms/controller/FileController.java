@@ -7,9 +7,11 @@ package com.dili.cms.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.dili.cms.commons.ValidationUtil;
+import com.dili.cms.sdk.domain.IFileType;
 import com.dili.cms.sdk.dto.IFileDto;
 import com.dili.cms.sdk.validator.ConstantValidator;
 import com.dili.cms.service.impl.FileServiceImpl;
+import com.dili.cms.service.impl.FileTypeServiceImpl;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.dto.DTOUtils;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <pre>
@@ -48,6 +51,8 @@ public class FileController extends BaseController {
 
     @Autowired
     private FileServiceImpl fileService;
+    @Autowired
+    private FileTypeServiceImpl fileTypeService;
     @Resource
     private UserRpc userRpc;
     @Resource
@@ -74,7 +79,7 @@ public class FileController extends BaseController {
      * @date：2021/1/21 16:36
      */
     @RequestMapping(value = "add.html", method = RequestMethod.GET)
-    public String add(ModelMap modelMap) {
+    public String add(Long id, ModelMap modelMap) {
         DepartmentDto departmentDto = DTOUtils.newInstance(DepartmentDto.class);
         departmentDto.setFirmId(getFirmId());
         BaseOutput<List<Department>> departmentList = departmentRpc.listByExample(departmentDto);
@@ -84,6 +89,15 @@ public class FileController extends BaseController {
         user.setFirmCode(getFirmCode());
         BaseOutput<List<User>> userList = userRpc.list(user);
         modelMap.put("userList", userList.getData());
+
+        List<IFileType> fileTypeList = fileTypeService.list(null);
+        modelMap.put("fileTypeList", JSON.toJSONString(fileTypeList));
+
+        //如果参数id不为空 则是编辑
+        if (Objects.nonNull(id)) {
+            IFileDto fileDto = fileService.getDetailById(id);
+            modelMap.put("fileInfo", JSON.toJSONString(fileDto));
+        }
         return "file/add";
     }
 
@@ -103,6 +117,24 @@ public class FileController extends BaseController {
             return BaseOutput.failure(validResult.getErrors());
         }
         return fileService.create(fileDto);
+    }
+
+    /**
+     * TODO 编辑
+     *
+     * @param fileDto:
+     * @return：com.dili.ss.domain.BaseOutput
+     * @author：Tab.Xie
+     * @date：2021/1/21 15:25
+     */
+    @RequestMapping(value = "update.action", method = {RequestMethod.POST})
+    @ResponseBody
+    public BaseOutput update(@RequestBody IFileDto fileDto) {
+        ValidationUtil.ValidResult validResult = ValidationUtil.validateBean(fileDto, ConstantValidator.Update.class);
+        if (validResult.hasErrors()) {
+            return BaseOutput.failure(validResult.getErrors());
+        }
+        return fileService.edit(fileDto);
     }
 
     /**
