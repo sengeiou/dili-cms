@@ -8,6 +8,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="annunciate_id" jdbcType="BIGINT" property="annunciateId" />
     <result column="target_id" jdbcType="BIGINT" property="targetId" />
+    <result column="target_name" jdbcType="VARCHAR" property="targetName" />
     <result column="read_state" jdbcType="TINYINT" property="readState" />
     <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
     <result column="read_time" jdbcType="TIMESTAMP" property="readTime" />
