@@ -66,9 +66,9 @@ public interface IFile extends IBaseDomain {
     @Column(name = "`is_data_auth`")
     @FieldDef(label = "是否有数据权限限制")
     @EditMode(editor = FieldEditor.Text, required = false)
-    Integer getIsDataAuth();
+    Integer getAuthTypeId();
 
-    void setIsDataAuth(Integer isDataAuth);
+    void setAuthTypeId(Integer authTypeId);
 
     @Column(name = "`is_download`")
     @FieldDef(label = "是否可以下载")
