@@ -20,6 +20,10 @@ package com.dili.cms.sdk.glossary;
  */
 public enum FileAuthType {
     /**
+     * 没有权限
+     */
+    NOT_AUTH("没有权限", 0),
+    /**
      * 部门
      */
     DEPARTMENT("部门", 10),
