@@ -4,7 +4,7 @@
 
     <update id="updateNodeCountBatch" parameterType="java.util.Set">
         update file_type
-        set node_file_count = node_file_count + 1,
+        set node_file_count = node_file_count + #{num,jdbcType=INTEGER},
         version = version + 1
         where id in
         <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
