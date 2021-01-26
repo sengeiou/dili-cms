@@ -26,9 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -89,6 +89,7 @@ public class AnnunciateController{
      */
     @RequestMapping(value="/add.html", method = RequestMethod.GET)
     public String add(ModelMap modelMap) {
+        modelMap.addAttribute("userList",new ArrayList<>());
         return "annunciate/add";
     }
 

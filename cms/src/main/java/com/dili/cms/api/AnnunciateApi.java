@@ -58,15 +58,15 @@ public class AnnunciateApi {
 
     /**
      * 根据用户id标记该用户所有消息已读
-     * @param userId:
+     * @param targetId:
      * @return：com.dili.ss.domain.BaseOutput<java.lang.String>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @PostMapping(value = "/readByUserId")
-    public BaseOutput readByUserId(@RequestBody Long userId) {
+    @PostMapping(value = "/readByTargetId")
+    public BaseOutput readByTargetId(@RequestBody Long targetId) {
         try{
-            return annunciateItemService.readByUserId(userId,AnnunciateItemOpType.OP_READ.getValue());
+            return annunciateItemService.readByUserId(targetId,AnnunciateItemOpType.OP_READ.getValue());
         }catch (AppException e) {
             return BaseOutput.failure(e.getMessage());
         }
@@ -90,15 +90,15 @@ public class AnnunciateApi {
 
     /**
      * 根据用户id标记该用户所有消息已删除
-     * @param userId:
+     * @param targetId:
      * @return：com.dili.ss.domain.BaseOutput<java.lang.String>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @PostMapping(value = "/deleteByUserId")
-    public BaseOutput deleteByUserId(@RequestBody Long userId) {
+    @PostMapping(value = "/deleteByTargetId")
+    public BaseOutput deleteByTargetId(@RequestBody Long targetId) {
         try{
-            return annunciateItemService.readByUserId(userId,AnnunciateItemOpType.OP_DEL.getValue());
+            return annunciateItemService.readByUserId(targetId,AnnunciateItemOpType.OP_DEL.getValue());
         }catch (AppException e) {
             return BaseOutput.failure(e.getMessage());
         }
@@ -140,15 +140,15 @@ public class AnnunciateApi {
 
     /**
      * 根据用户id查询消息列表(不包括富文本消息内容，以节约带宽)
-     * @param userId:
+     * @param targetId:
      * @return：com.dili.ss.domain.BaseOutput<List<Annunciate>>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @PostMapping(value = "/getListByUserId")
-    public BaseOutput<List<AnnunciateVo>> getListByUserId(@RequestBody Long userId) {
+    @PostMapping(value = "/getListByTargetId")
+    public BaseOutput<List<AnnunciateVo>> getListByTargetId(@RequestBody Long targetId) {
         try{
-            return annunciateService.getListByUserId(userId);
+            return annunciateService.getListByUserId(targetId);
         }catch (AppException e) {
             return BaseOutput.failure(e.getMessage());
         }
