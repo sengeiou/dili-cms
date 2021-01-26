@@ -8,6 +8,7 @@ package com.dili.cms.service;
 
 import com.dili.cms.sdk.domain.IFileType;
 import com.dili.ss.base.BaseService;
+import com.dili.ss.domain.BaseOutput;
 
 /**
  * <pre>
@@ -23,4 +24,12 @@ import com.dili.ss.base.BaseService;
  * </pre>
  */
 public interface FileTypeService extends BaseService<IFileType, Long> {
+    /**
+     * TODO 新增文件类型
+     * @param iFileType:
+     * @return：
+     * @author：Ron.Peng
+     * @date：2021/1/25 17:28
+     */
+    BaseOutput saveOrUpdateFileType(IFileType iFileType);
 }

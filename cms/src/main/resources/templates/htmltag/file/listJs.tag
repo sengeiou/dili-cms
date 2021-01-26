@@ -23,41 +23,7 @@
 
     /******************************驱动执行区 begin***************************/
     $(function () {
-        var treeUrl = "${contextPath}/fileType/getAllFileToTree.action";
-        var setting  = {
-            view: {
-                selectedMulti: false,
-                showIcon:true,
-            },
-            edit: {
-                enable: false,
-            },
-            data : {
-                key:{
-                    name:"treeShow"
-                },
-                simpleData : {
-                    enable : true,
-                    idKey  : "id",
-                    pIdKey : "parentId",
-                }
-            },
-            callback: {
-                onClick: zTreeOnClick,
-                beforeRemove: beforeRemove,
-                beforeRename: beforeRename,
-            }
-        };
-        $.ajax({
-            url : treeUrl,
-            dataType : 'json',
-            type : 'post',
-            async : false,
-            success : function(data) {
-                var treeObj =  $.fn.zTree.init($("#fileTree"), setting , data.data);
-                treeObj.expandAll(true);
-            }
-        });
+        treeInit();
         $(window).resize(function () {
             _grid.bootstrapTable('resetView')
         });
@@ -78,6 +44,54 @@
     /*****************************************函数区 begin************************************/
 
     /**
+     * 树初始化
+     */
+    function treeInit() {
+        var treeUrl = "${contextPath}/fileType/getAllFileToTree.action";
+        var setting = {
+            view: {
+                selectedMulti: false,
+                showIcon: true,
+                selectedMulti: false,
+            },
+            edit: {
+                enable: true,
+            },
+            check: {
+                enable: true,
+                chkStyle: "radio",
+                chkboxType: {"Y": "", "N": ""},
+                radioType: "all"
+            },
+            data: {
+                key: {
+                    name: "treeShow"
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "parentId",
+                }
+            },
+            callback: {
+                onClick: zTreeOnClick,
+                beforeRemove: beforeRemove,
+                beforeRename: beforeRename,
+            }
+        };
+        $.ajax({
+            url: treeUrl,
+            dataType: 'json',
+            type: 'post',
+            async: false,
+            success: function (data) {
+                var treeObj = $.fn.zTree.init($("#fileTree"), setting, data.data);
+                treeObj.expandAll(true);
+            }
+        });
+    }
+
+    /**
      * 点击树形节点加载右侧列表数据
      */
     function zTreeOnClick(event, menuTree, treeNode) {
@@ -90,12 +104,14 @@
             url: '/file/listPage.action',
         });
     }
+
     function beforeRemove(treeId, treeNode) {
         var zTree = $.fn.zTree.getZTreeObj("fileTree");
         zTree.selectNode(treeNode);
-        alert(treeNode.Action);//哈哈 出来了
+        alert(treeNode.Action);
         return confirm("确认删除 节点 -- " + treeNode.name + " 吗？");
     }
+
     function beforeRename(treeId, treeNode, newName) {
         if (newName.length == 0) {
             alert("节点名称不能为空!");
@@ -105,6 +121,7 @@
     }
 
     var newCount = 1;
+
     function addHoverDom(treeId, treeNode) {
         var sObj = $("#" + treeNode.tId + "_span");
         if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
@@ -114,10 +131,15 @@
         var btn = $("#addBtn_" + treeNode.tId);
         if (btn) btn.bind("click", function () {
             var zTree = $.fn.zTree.getZTreeObj("fileTree");
-            zTree.addNodes(treeNode, { id: (treeNode.id + newCount), parentid: treeNode.id, name: "new node" + (newCount++) });
+            zTree.addNodes(treeNode, {
+                id: (treeNode.id + newCount),
+                parentid: treeNode.id,
+                name: "new node" + (newCount++)
+            });
             return false;
         });
     };
+
     function removeHoverDom(treeId, treeNode) {
         $("#addBtn_" + treeNode.tId).unbind().remove();
     };
@@ -126,29 +148,33 @@
      * 新增文档分类
      */
     function addFileTypeHandler() {
-        bs4pop.prompt("<em style='color: red'>*</em>分类名称", '',{
+        addPrompt = bs4pop.prompt("<em style='color: red'>*</em>分类名称", '', {
             title: '新增文档分类',
             hideRemove: true,
             width: 380,
-        }, function(sure, value){
-            if(sure==true){
-                if($.trim(value)==''){
-                    bs4pop.alert('请输入退回原因', {type: 'error'});
-                    return
+        }, function (sure, value) {
+            if (sure == true) {
+                if ($.trim(value) == '') {
+                    bs4pop.alert('请输入分类名称', {type: 'error'});
+                    return;
                 }
-                addFileType(value);
-            }else{
+                saveOrUpdateFileType(value,null);
+            } else {
                 return;
             }
         });
     }
 
+    /**
+     * 添加分类
+     */
     function addFileType(val) {
+        let iFileType = JSON.stringify({name: val});
         $.ajax({
             type: "POST",
-            url: "/fileType/addFileType.action?soId=" + $('#currentId').val(),
+            url: "/fileType/addFileType.action",
             processData: false,
-            data: val,
+            data: iFileType,
             contentType: false,
             dataType: "JSON",
             success: function (res) {
@@ -156,15 +182,14 @@
                 if (res.code == "200") {
                     bs4pop.alert(res.message, {
                         width: '350px', height: "200px", type: 'success', onHideStart: () => {
-
-                            parent.queryDataHandler();
+                            treeInit();
                         }
                     });
                 } else {
                     bs4pop.alert(res.message, {
                         onHideStart: () => {
-                            parent.diaSigned.hide()
-                            parent.queryDataHandler();
+                            addPrompt.hide()
+                            treeInit();
                         }
                     });
                 }
@@ -175,6 +200,74 @@
             }
         });
     }
+    /**
+     * 编辑文档分类
+     */
+    function editFileTypeHandler() {
+        var zTree = $.fn.zTree.getZTreeObj("fileTree");
+        var nodes = zTree.getCheckedNodes(true);
+        if (null == nodes || nodes.length == 0) {
+            bs4pop.alert('请选中一个节点');
+            return;
+        }
+        addPrompt = bs4pop.prompt("<em style='color: red'>*</em>分类名称", nodes[0].name, {
+            title: '编辑文档分类',
+            hideRemove: true,
+            width: 380,
+        }, function (sure, value) {
+            if (sure == true) {
+                if ($.trim(value) == '') {
+                    bs4pop.alert('请输入分类名称', {type: 'error'});
+                    return;
+                }
+                saveOrUpdateFileType(value, nodes[0]);
+            } else {
+                return;
+            }
+        });
+    }
+
+    /**
+     * 新增或修改分类
+     */
+    function saveOrUpdateFileType(val,nodes) {
+        if(null!=nodes){
+            nodes.name = val;
+            var iFileType = JSON.stringify(nodes);
+        }else{
+            var iFileType = JSON.stringify({name: val});
+        }
+        $.ajax({
+            type: "POST",
+            url: "/fileType/saveOrUpdateFileType.action",
+            processData: false,
+            data: iFileType,
+            contentType: false,
+            dataType: "JSON",
+            success: function (res) {
+                bui.loading.hide();
+                if (res.code == "200") {
+                    bs4pop.alert(res.message, {
+                        width: '350px', height: "200px", type: 'success', onHideStart: () => {
+                            treeInit();
+                        }
+                    });
+                } else {
+                    bs4pop.alert(res.message, {
+                        onHideStart: () => {
+                            addPrompt.hide()
+                            treeInit();
+                        }
+                    });
+                }
+            },
+            error: function (error) {
+                bui.loading.hide();
+                bs4pop.alert(error.message, {type: 'error'});
+            }
+        });
+    }
+
     /**
      * 打开上传窗口
      */
@@ -190,6 +283,7 @@
         });
 
     }
+
     /**
      * 打开编辑窗口
      */
@@ -210,6 +304,7 @@
         });
 
     }
+
     /**
      * 打开详情窗口
      */
@@ -242,8 +337,8 @@
      * 虚浮处理
      */
     function suspensionFun(value, row, index, field) {
-        if(typeof(value)=="undefined"){
-            value='';
+        if (typeof (value) == "undefined") {
+            value = '';
         }
         return "<span data-toggle='tooltip' data-placement='left' data-original-title='" + value + "'>" + value + "</span>";
     }
@@ -263,12 +358,12 @@
         return $.extend(temp, bui.util.bindGridMeta2Form('grid', 'queryForm'));
     }
 
-    /** 点击编号查看事件*/
-    function view(value, row, index) {
-        return [
-            '<a href=javascript:openViewHandler('+row.id+')>'+value+'</a>'
-        ].join("")
+    function imgFormatter(value, row, index) {
+        var operationValue = '';
+        operationValue += '<img src="' + value + '" alt="" style="height: 100px;width: 100px" />';
+        return operationValue;
     }
+
     /*****************************************函数区 end**************************************/
 
 </script>
