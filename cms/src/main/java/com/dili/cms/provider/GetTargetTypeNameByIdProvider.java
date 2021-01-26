@@ -1,11 +1,14 @@
 /**
  * Copyright (C) DiliGroup. All Rights Reserved.
  * <p>
- * FileTypeProvide created on 2021/1/26 11:09 by Ron.Peng
+ * GetTargetNameByIdProvider created on 2021/1/26 19:23 by Ron.Peng
  */
 package com.dili.cms.provider;
 
+import com.dili.cms.sdk.domain.AnnunciateTarget;
 import com.dili.cms.sdk.domain.IFileType;
+import com.dili.cms.sdk.glossary.AnnunciateTargetType;
+import com.dili.cms.service.AnnunciateTargetService;
 import com.dili.cms.service.FileTypeService;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.metadata.FieldMeta;
@@ -16,17 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * <pre>
  * Description
- * TODO 文件类型Provider
+ * TODO file description here
  *
  * @author Ron.Peng
  * @since 1.0
@@ -38,29 +39,21 @@ import java.util.stream.Stream;
  */
 @Component
 @Scope("prototype")
-public class FileTypeProvider implements ValueProvider {
+public class GetTargetTypeNameByIdProvider implements ValueProvider {
     @Autowired
-    private FileTypeService fileTypeService;
+    private AnnunciateTargetService annunciateTargetService;
 
     @Override
     public List<ValuePair<?>> getLookupList(Object val, Map metaMap, FieldMeta fieldMeta) {
-        List<IFileType> list = fileTypeService.listByExample(DTOUtils.newInstance(IFileType.class));
-        List<ValuePair<?>> resultList = list.stream().map(f -> {
-            return (ValuePair<?>) new ValuePairImpl(f.getName(), f.getId());
-        }).collect(Collectors.toList());
-        return resultList;
+        return null;
     }
 
     @Override
     public String getDisplayText(Object object, Map metaMap, FieldMeta fieldMeta) {
-        List<ValuePair<?>> lookupList = getLookupList(object, metaMap, fieldMeta);
         if (null == object) {
             return null;
         }
-        ValuePair<?> valuePair = lookupList.stream().filter(val -> object.toString().equals(val.getValue().toString())).findFirst().orElseGet(null);
-        if (null != valuePair) {
-            return valuePair.getText();
-        }
-        return null;
+        AnnunciateTarget annunciateTarget = annunciateTargetService.get(Long.valueOf(object.toString()));
+        return AnnunciateTargetType.getNameByValue(annunciateTarget.getTargetType()).orElseGet(null).getName();
     }
 }

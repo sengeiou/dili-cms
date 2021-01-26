@@ -1,0 +1,98 @@
+<#bs4Body>
+<div class="container-fluid">
+    <div class="card">
+        <div class="breadcrumb" style="border-radius:0 !important;">
+            筛选查询
+        </div>
+        <div class="card-body">
+            <form class="form collapse show" id="queryForm" role="form">
+                <div class="row  row-cols-4">
+                    <div class="form-group col">
+                        <label for="terminal" class="">阅读终端</label>
+                        <div class="input-group">
+                            <select id="terminal" name="terminal" class="form-control"></select>
+                            <#select _id="terminal" _provider="terminalTypeProvider" _selectIndex="0"/>
+                        </div>
+                    </div>
+                    <div class="form-group col">
+                        <label for="readState" class="">状态</label>
+                        <div class="input-group">
+                            <select id="readState" name="readState" class="form-control"></select>
+                            <#select _id="readState" _provider="readStateProvider" _selectIndex="0"/>
+                        </div>
+                    </div>
+                    <div class="form-group col-auto">
+                        <label for="readTime">阅读时间</label>
+                        <div class="form-inline">
+                            <div class="input-group">
+                                <input type="text" name="readTimeStart" id="readTimeStart" value="${readTimeStart!}"
+                                       class="form-control laydatetime laystart"/>
+                                <div class="input-group-append">
+                                    <label for="readTimeStart" class="input-group-text fa fa-calendar"></label>
+                                </div>
+                            </div>&nbsp;&nbsp;至&nbsp;&nbsp;
+                            <div class="input-group">
+                                <input type="text" name="readTimeEnd" id="readTimeEnd" value="${readTimeEnd!}"
+                                       class="form-control laydatetime layend"/>
+                                <div class="input-group-append">
+                                    <label for="readTimeEnd" class="input-group-text fa fa-calendar"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-auto align-self-center mt-3">
+                        <button type="button" class="btn btn-outline-primary mr-2" onclick="javascript:$('#queryForm input,select').val('');"><i class="fa fa-refresh"></i> 清空</button>
+                        <button type="button" class="btn btn-outline-primary" onclick="queryDataHandler()"><i class="fa fa-search"></i> 查询</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+        <div class="breadcrumb" style="border-radius:0 !important;">
+            结果列表
+        </div>
+        <div class="card-body" style="padding-top:0px !important;">
+            <table id="grid" data-toggle="table" data-title="已签收列表" class="table" data-toolbar="#toolbar"
+                   data-pagination="true" data-page-number="1" data-page-size="10" data-query-params="queryParams"
+                   data-side-pagination="server" data-method="POST"
+                   data-content-type="application/x-www-form-urlencoded"
+                   data-click-to-select="true"
+                   data-single-select="true"
+                   data-unique-id="id" data-sort-name="id" data-sort-order="desc" data-icons="bui.variable.icons"
+                   data-buttons-class="primary" data-show-refresh="true" data-show-fullscreen="true"
+                   data-show-columns="true" data-show-footer="true">
+                <thead>
+                <tr>
+                    <th data-field="targetId" data-align="center" data-sortable="true" data-provider="getTargetTypeNameByIdProvider"
+                        data-sort-name="target_id">
+                        对象类型
+                    </th>
+                    <th data-field="targetName" data-align="center" data-sortable="true"
+                        data-sort-name="target_name">
+                        名称
+                    </th>
+                    <th data-field="readState" data-align="center" data-sortable="true" data-provider="readStateProvider"
+                        data-sort-name="read_state">
+                        已读状态
+                    </th>
+                    <th data-field="terminal" data-align="center" data-sortable="true" data-provider="terminalTypeProvider"
+                        data-sort-name="terminal">
+                        阅读终端
+                    </th>
+                    <th data-field="readTime" data-align="center" data-provider="datetimeProvider"
+                        data-sortable="true"
+                        data-sort-name="read_time">
+                        阅读时间
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+</#bs4Body>
+<#annunciate_viewReadedJs/>
+
+

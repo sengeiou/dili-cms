@@ -1,23 +1,26 @@
 /**
-  * Copyright (C) DiliGroup. All Rights Reserved.
-  *
-  * AnnunciateTargetType.java created on 2021/1/20 17:03 by Henry.Huang
-  */
+ * Copyright (C) DiliGroup. All Rights Reserved.
+ * <p>
+ * AnnunciateTargetType.java created on 2021/1/20 17:03 by Henry.Huang
+ */
 package com.dili.cms.sdk.glossary;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 /**
-  * <pre>
-  * Description
-  * 信息通告对象
-  *
-  * @author Henry.Huang
-  * @since 1.0
-  *
-  * Change History
-  * Date Modifier DESC.
-  * 2021/1/20 Henry.Huang Initial version.
-  * </pre>
-  */
+ * <pre>
+ * Description
+ * 信息通告对象
+ *
+ * @author Henry.Huang
+ * @since 1.0
+ *
+ * Change History
+ * Date Modifier DESC.
+ * 2021/1/20 Henry.Huang Initial version.
+ * </pre>
+ */
 public enum AnnunciateTargetType {
     /**
      * 信息通告对象
@@ -39,5 +42,9 @@ public enum AnnunciateTargetType {
 
     public Integer getValue() {
         return value;
+    }
+
+    public static Optional<AnnunciateTargetType> getNameByValue(Integer value) {
+        return Arrays.stream(AnnunciateTargetType.values()).filter(e -> e.getValue().equals(value)).findFirst();
     }
 }

@@ -106,6 +106,20 @@ public class AnnunciateController{
     }
 
     /**
+     * TODO 进入已读页面
+     * @param modelMap:
+     * @return：java.lang.String
+     * @author：Ron.Peng
+     * @date：2021/1/26 15:34
+     */
+    @RequestMapping(value="/viewReaded.html", method = RequestMethod.GET)
+    public String viewReaded(ModelMap modelMap) {
+        modelMap.put("readTimeStart", LocalDate.now().minusDays(6) + " 00:00:00");
+        modelMap.put("readTimeEnd", LocalDate.now() + " 23:59:59");
+        return "annunciate/viewReaded";
+    }
+
+    /**
       * 信息通告新增
       * @param annunciateDto:
       * @return：com.dili.ss.domain.BaseOutput

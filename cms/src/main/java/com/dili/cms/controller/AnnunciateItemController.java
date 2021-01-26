@@ -6,6 +6,7 @@
 package com.dili.cms.controller;
 
 import com.dili.cms.sdk.domain.AnnunciateItem;
+import com.dili.cms.sdk.dto.AnnunciateItemDto;
 import com.dili.cms.service.AnnunciateItemService;
 import com.dili.ss.domain.BaseOutput;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class AnnunciateItemController{
      * @throws Exception
      */
     @RequestMapping(value="/listPage.action", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody String listPage(AnnunciateItem annunciateItem) throws Exception {
+    public @ResponseBody String listPage(AnnunciateItemDto annunciateItem) throws Exception {
         return annunciateItemService.listEasyuiPageByExample(annunciateItem, true).toString();
     }
 
