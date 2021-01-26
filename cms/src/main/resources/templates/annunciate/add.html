@@ -1,11 +1,351 @@
 <#bs4Body>
+<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css">
+<link rel="stylesheet" href="index.css" type="text/css">
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/bootstrap.min.js"></script>
+<script src="/javascripts/bootstrap-wysiwyg.js"></script>
+<script src="/javascripts/jquery.hotkeys.js"></script>
+<style>
+    #editor {overflow:scroll; max-height:300px}
+</style>
 <div class="container-fluid">
         <input type="hidden" id="_sourceChannel" value="<#config name='ia.source.channel.earnest_order'/>">
         <form id="saveForm" role="form" novalidate>
-            5555555
+            <input type="text" hidden="true"  id="customerType"  class="form-control" name="customerType"  maxlength="100">
+            <div class="row row-cols-2">
+                <div class="form-group col">
+                    <label for="title">通告标题<i class="red">*</i></label>
+                    <input id="title" class="form-control" name="title"  maxlength="20" required>
+                </div>
+            </div>
+            <div class="row row-cols-4">
+                <div class="form-group col">
+                    <label for="publishType">发布方式<i class="red">*</i></label>
+                    <select id="publishType" name="publishType" class="form-control" required>
+                        <option value="1">立即发布</option>
+                        <option value="2">定时发布</option>
+                    </select>
+                </div>
+            </div>
+            <div id="startTimeDev" class="row row-cols-4" style="display: none">
+                <div class="form-group col">
+                    <label for="startTime">开始时间<i class="red">*</i></label>
+                    <div class="input-group">
+                        <input  type="text" name="startTime"
+                               id="startTime"
+                               readonly
+                               autocomplete="off"
+                               class="form-control settletime laystart"/>
+                        <div class="input-group-append">
+                            <label for="startTime" class="input-group-text fa fa-calendar"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-4">
+                <div class="form-group col">
+                    <label for="endTime">结束时间<i class="red">*</i></label>
+                    <div class="input-group">
+                        <input  type="text" name="endTime"
+                                id="endTime"
+                                required
+                                readonly
+                                autocomplete="off"
+                                class="form-control settletime laystart"/>
+                        <div class="input-group-append">
+                            <label for="endTime" class="input-group-text fa fa-calendar"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-1">
+                <div class="form-group col">
+                    <label for="title">通告内容<i class="red">*</i></label>
+                    <div id="editor">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label for="title">发送对象<i class="red">*</i>：</label>
+                    <div class="btn-group" role="group" aria-label="Basic example ml-3">
+                        <button id="systemBtn" type="button" class="btn btn-secondary">系统用户</button>
+                        <button id="customerBtn" type="button" class="btn btn-secondary ml-3" >客户</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label for="title">发送范围<i class="red">*</i>：</label>
+                    <div id="systemDev" class="btn-group" role="group" aria-label="Basic example ml-3">
+                        <label class="radio-inline"><input id="allUserBtn" type="radio" name="systemVal" value="1">所有人</label>
+                        <label class="radio-inline"><input id="departmentBtn" type="radio" name="systemVal" value="3">指定部门</label>
+                        <label class="radio-inline"><input id="userBtn" type="radio" name="systemVal" value="2">指定人员</label>
+                    </div>
+                    <div id="customerDev" class="btn-group" role="group" aria-label="Basic example ml-3" style="display: none">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" id="driverBtn" class="form-check-input" value="5">司机
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" id="bureyBtn" class="form-check-input" value="6">买家
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" id="sellerBtn" class="form-check-input" value="7">经营户
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div id="systemUserAndDepartDev" class="row" style="display: none">
+                <div class="form-group col">
+                    <div id="departmentDev" style="display: none">
+                        部门树
+                    </div>
+                    <div id="userDev" style="display: none">
+                        指定人员
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-2">
+                <div class="form-group col">
+                    <label for="notes">备注</label>
+                    <input id="notes" class="form-control" name="notes"  maxlength="120">
+                </div>
+            </div>
+            <div class="modal-footer-wrap">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary px-5" onclick="javascript: parent.diaAdd.hide()" data-hotkey="{key: 'Ctrl+E'}">取消</button>
+                    <button type="button" class="btn btn-primary px-5" onclick="bui.util.debounce(saveOrUpdateHandler,1000,true)()" id="formSubmit" data-hotkey="{key: 'Ctrl+S'}">保存</button>
+                </div>
+            </div>
         </form>
     </div>
 </#bs4Body>
 <script>
+    //时间范围
+    lay('.settletime').each(function () {
+        laydate.render({
+            elem: this
+            , theme: '#007bff',
+            format: 'yyyy-MM-dd HH',
+            event: 'click', //触发事件
+            type: 'datetime',
+            min: dateFormat("YYYY-mm-dd HH:MM", new Date())
+        });
+    });
 
+    $(function () {
+        initCom();
+    })
+
+    /**
+     * 初始化按钮事件
+     */
+    function initCom() {
+        $("#publishType").change(publishTypeSelectFun);
+        $("#systemBtn").click(function () {
+            $("#systemDev").show();
+            $("#customerDev").hide();
+            $("#systemUserAndDepartDev").show();
+        });
+        $("#customerBtn").click(function () {
+            $("#systemDev").hide();
+            $("#customerDev").show();
+            $("#systemUserAndDepartDev").hide();
+        });
+        $("#departmentBtn").click(function (val) {
+            $("#systemUserAndDepartDev").show();
+            $("#userDev").hide();
+            $("#departmentDev").show();
+        });
+        $("#userBtn").click(function (val) {
+            $("#systemUserAndDepartDev").show();
+            $("#departmentDev").hide();
+            $("#userDev").show();
+        });
+        $("#allUserBtn").click(function (val) {
+            $("#systemUserAndDepartDev").hide();
+        });
+    }
+
+    /**
+     * 发布状态的选择
+     */
+    function publishTypeSelectFun() {
+        var publishType=$("#publishType").val();
+        if(publishType==2){
+            $("#startTimeDev").show();
+            $("#startTime").attr("required",true);
+        }else{
+            $("#startTime").val("");
+            $("#startTimeDev").hide();
+            $("#startTime").attr("required",false);
+        }
+    }
+
+    /**
+     * 保存数据信息
+     */
+    function saveOrUpdateHandler() {
+        // 提交保存
+        if (!$('#saveForm').validate().form()) {
+            return false;
+        }
+        //校验开始时间必须小于结束时间
+        var startTime=$("#startTime").val();
+        var endTime=$("#endTime").val();
+        if(startTime!=""){
+            if(startTime>=endTime){
+                bs4pop.alert("开始时间必须小于结束时间！", {type: 'error'});
+                return ;
+            }
+        }
+        var annunciateTargets=[];
+        var annunciateItems=[];
+        var systemSelectVal;
+        var users=[];
+        if(systemSelectVal=$('input:radio:checked').val()){
+            var annunciateTarget={};
+            annunciateTarget.targetType=1;
+            //所有人
+            if(systemSelectVal==1){
+                annunciateTarget.targetRange=1;
+                annunciateTargets.push(annunciateTarget);
+            }
+            //指定用户
+            if(systemSelectVal==2){
+                annunciateTarget.targetRange=2;
+                annunciateTargets.push(annunciateTarget);
+                var user={"id":1,"userName":"王三"};
+                users.push(user);
+                for(var i=0;i<users.length;i++){
+                    var annunciateItem={};
+                    annunciateItem.targetId=users[i].id
+                    annunciateItems.push(annunciateItem);
+                }
+                if(users.length==0){
+                    bs4pop.alert("指定用户时，最少选择一个用户！", {type: 'error'});
+                    return ;
+                }
+            }
+            //指定部门
+            if(systemSelectVal==3){
+                var departments=[{"id":1},{"id":2}];
+                if(departments.length==0){
+                    bs4pop.alert("指定部门时，最少选择一个部门！", {type: 'error'});
+                    return ;
+                }
+                for(var i=0;i<departments.length;i++){
+                    annunciateTarget={};
+                    annunciateTarget.targetType=1;
+                    annunciateTarget.targetRange=3;
+                    annunciateTarget.targetRangeId=departments[i].id;
+                    annunciateTargets.push(annunciateTarget);
+                }
+            }
+        }
+        if($("#driverBtn").is(":checked")){
+            var annunciateTarget={};
+            annunciateTarget.targetType=2;
+            annunciateTarget.targetRange=5;
+            annunciateTargets.push(annunciateTarget);
+        }
+        if($("#bureyBtn").is(":checked")){
+            var annunciateTarget={};
+            annunciateTarget.targetType=2;
+            annunciateTarget.targetRange=6;
+            annunciateTargets.push(annunciateTarget);
+        }
+        if($("#sellerBtn").is(":checked")){
+            var annunciateTarget={};
+            annunciateTarget.targetType=2;
+            annunciateTarget.targetRange=7;
+            annunciateTargets.push(annunciateTarget);
+        }
+        if(annunciateTargets.length==0){
+            bs4pop.alert("请选择发送范围！", {type: 'error'});
+            return ;
+        }
+        var annunciateDto=getAnnunciateDto();
+        annunciateDto.annunciateTargets=annunciateTargets;
+        annunciateDto.annunciateItems=annunciateItems;
+        bui.loading.show('努力提交中，请稍候。。。');
+        $.ajax({
+            type: "POST",
+            url: "/annunciate/insert.action",
+            data: JSON.stringify(annunciateDto),
+            contentType: 'application/json',
+            dataType: "json",
+            async: true,
+            success: function (res) {
+                bui.loading.hide();
+                if (res.code == "200") {
+                    parent.bs4pop.alert('新增成功！', {type: 'success',onHideStart(){
+                            parent.diaAdd.hide();
+                            parent.location.reload();
+                        }});
+                } else {
+                    bui.loading.hide();
+                    bs4pop.alert(res.message, {type: 'error'});
+                }
+            },
+            error: function (error) {
+                bui.loading.hide();
+                bs4pop.alert(error.message, {type: 'error'});
+            }
+        });
+    }
+
+    /**
+     * 组装提交主表值
+     */
+    function getAnnunciateDto() {
+        var annunciateDto={};
+        annunciateDto.title=$("#title").val();
+        annunciateDto.publishType=$("#publishType").val();
+        annunciateDto.startTime=$("#startTime").val();
+        if(annunciateDto.startTime!=""){
+            annunciateDto.startTime=annunciateDto.startTime+":00:00"
+        }
+        annunciateDto.endTime=$("#endTime").val();
+        if(annunciateDto.endTime!=""){
+            annunciateDto.endTime=annunciateDto.endTime+":00:00"
+        }
+        annunciateDto.notes=$("#notes").val();
+        annunciateDto.content="还不知道";
+        return annunciateDto;
+    }
+
+    /**
+     * 格式化时间
+     * @param fmt
+     * @param date
+     * @returns {*}
+     */
+    function dateFormat(fmt, date) {
+        let ret;
+        const opt = {
+            "Y+": date.getFullYear().toString(),        // 年
+            "m+": (date.getMonth() + 1).toString(),     // 月
+            "d+": date.getDate().toString(),            // 日
+            "H+": date.getHours().toString(),           // 时
+            "M+": date.getMinutes().toString(),         // 分
+            "S+": date.getSeconds().toString()          // 秒
+            // 有其他格式化字符需求可以继续添加，必须转化成字符串
+        };
+        for (let k in opt) {
+            ret = new RegExp("(" + k + ")").exec(fmt);
+            if (ret) {
+                fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+            }
+        }
+        return fmt;
+    }
 </script>

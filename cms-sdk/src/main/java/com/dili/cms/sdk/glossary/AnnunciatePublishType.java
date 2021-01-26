@@ -8,7 +8,7 @@ package com.dili.cms.sdk.glossary;
 /**
   * <pre>
   * Description
-  * 信息通告发送状态
+  * 信息通告发布类型
   *
   * @author Henry.Huang
   * @since 1.0
@@ -18,19 +18,17 @@ package com.dili.cms.sdk.glossary;
   * 2021/1/20 Henry.Huang Initial version.
   * </pre>
   */
-public enum AnnunciateSendState {
+public enum AnnunciatePublishType {
     /**
-     * 信息通告发送状态
+     * 信息通告对象
      */
-    CREATED("已创建", 1),
-    PUBLISH("已发布", 2),
-    REVOKE("已撤销", 3),
-    END("已结束", 4);
+    SYSTEM_USER("立即发布", 1),
+    CUSTOMER("定时发布", 2);
 
     private String name;
     private Integer value;
 
-    private AnnunciateSendState(String name, Integer value) {
+    private AnnunciatePublishType(String name, Integer value) {
         this.name = name;
         this.value = value;
     }

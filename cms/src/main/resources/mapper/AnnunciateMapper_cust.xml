@@ -9,6 +9,7 @@
       FROM annunciate t
       LEFT JOIN annunciate_target d ON t.id=d.`annunciate_id`
       WHERE 1 = 1
+      and t.firm_id=#{firmId,jdbcType=BIGINT}
       <if test="title != null">
         AND t.title like CONCAT('%',#{title,jdbcType=VARCHAR},'%')
       </if>
@@ -47,4 +48,13 @@
     ON t1.id=t2.annunciate_id
     WHERE 1=1 and t2.read_state!=3 and t2.target_id=#{targetType,jdbcType=BIGINT}
   </select>
+  <update id="updateAllNoStick">
+    update annunciate
+    <set>
+      stick_state=1
+    </set>
+    where firm_id=#{firmId,jdbcType=BIGINT}
+    and send_state=#{sendState,jdbcType=INTEGER}
+    and end_time>#{endTime,jdbcType=TIMESTAMP}
+  </update>
 </mapper>

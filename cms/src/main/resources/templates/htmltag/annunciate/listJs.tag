@@ -55,7 +55,7 @@
      */
     function openInsertHandler() {
         diaAdd = bs4pop.dialog({
-            title: '新增采购订单',//对话框title
+            title: '新增通告信息',//对话框title
             className: 'dialog-center',
             content: '${contextPath}/annunciate/add.html', //对话框内容，可以是 string、element，$object
             width: '95%',//宽度

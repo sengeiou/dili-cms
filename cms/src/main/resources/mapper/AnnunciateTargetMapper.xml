@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="annunciate_id" jdbcType="VARCHAR" property="annunciateId" />
+    <result column="annunciate_id" jdbcType="BIGINT" property="annunciateId" />
     <result column="target_type" jdbcType="TINYINT" property="targetType" />
     <result column="target_range" jdbcType="TINYINT" property="targetRange" />
     <result column="target_range_id" jdbcType="BIGINT" property="targetRangeId" />
@@ -33,7 +33,7 @@
     update annunciate_target
     <set>
       <if test="annunciateId != null">
-        annunciate_id = #{annunciateId,jdbcType=VARCHAR},
+        annunciate_id = #{annunciateId,jdbcType=BIGINT},
       </if>
       <if test="targetType != null">
         target_type = #{targetType,jdbcType=INTEGER},

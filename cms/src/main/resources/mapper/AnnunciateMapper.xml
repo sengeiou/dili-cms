@@ -20,13 +20,15 @@
     <result column="version" jdbcType="INTEGER" property="version" />
     <result column="stick_state" jdbcType="INTEGER" property="stickState" />
     <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="firm_id" jdbcType="BIGINT" property="firmId" />
+    <result column="publish_type" jdbcType="TINYINT" property="publishType" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, title, content, send_state, start_time, end_time, notes, creator_id, modifier_id, 
-    create_time, modify_time, read_count,stick_state,type, version
+    id, title, content, publish_type, send_state, start_time, end_time, notes, creator_id, modifier_id,
+    create_time, modify_time, read_count,stick_state,type, firm_id, version
   </sql>
 
 </mapper>

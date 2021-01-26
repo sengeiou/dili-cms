@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -61,7 +62,9 @@ public class AnnunciateTargetRangeProvider implements ValueProvider {
         if(objectArr==null || objectArr.length==0){
             return null;
         }
-        for (String objectValue:objectArr) {
+        Stream<String> stream = Arrays.stream(objectArr);
+        List<String> list = stream.distinct().collect(Collectors.toList());
+        for (String objectValue:list) {
             ValuePair<?> valuePair = BUFFER.stream().filter(val -> objectValue.equals(val.getValue())).findFirst().orElseGet(null);
             if(null != valuePair && !"".equals(valuePair.getText())){
                 text.append(valuePair.getText()).append(splitStr);
