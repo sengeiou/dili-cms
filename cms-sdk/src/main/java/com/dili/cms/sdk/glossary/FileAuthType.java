@@ -22,7 +22,7 @@ public enum FileAuthType {
     /**
      * 没有权限
      */
-    NOT_AUTH("没有权限", 0),
+    NOT_AUTH("所有", 0),
     /**
      * 部门
      */
