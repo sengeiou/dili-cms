@@ -57,10 +57,11 @@ public class FileTypeProvider implements ValueProvider {
         if (null == object) {
             return null;
         }
-        ValuePair<?> valuePair = lookupList.stream().filter(val -> object.toString().equals(val.getValue().toString())).findFirst().orElseGet(null);
-        if (null != valuePair) {
-            return valuePair.getText();
+        Optional<ValuePair<?>> first = lookupList.stream().filter(val -> object.toString().equals(val.getValue().toString())).findFirst();
+        if (first.isPresent()) {
+            return first.get().getText();
+        } else {
+            return "-";
         }
-        return null;
     }
 }

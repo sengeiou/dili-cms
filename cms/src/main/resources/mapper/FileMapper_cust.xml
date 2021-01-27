@@ -7,10 +7,7 @@
         FROM file f
         WHERE 1=1
         <choose>
-            <when test="authTypeId == null">
-                AND f.auth_type_id=0
-            </when>
-            <when test="authTypeId == 0">
+            <when test="authTypeId == null or authTypeId == 0">
                 AND f.auth_type_id=0
             </when>
             <otherwise>
