@@ -51,7 +51,8 @@
             rows: params.limit,   //页面大小
             page: ((params.offset / params.limit) + 1) || 1, //页码
             sort: params.sort,
-            order: params.order
+            order: params.order,
+            annunciateId:$('#annunciateId').val(),
         };
         return $.extend(temp, bui.util.bindGridMeta2Form('grid', 'queryForm'));
     }

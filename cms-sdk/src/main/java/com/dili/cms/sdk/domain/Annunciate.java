@@ -148,4 +148,14 @@ public interface Annunciate extends IBaseDomain {
     Long getFirmId();
 
     void setFirmId(Long firmId);
+
+    @Transient
+    String getStartTimeStr();
+
+    void setStartTimeStr(String startTimeStr);
+
+    @Transient
+    String getEndTimeStr();
+
+    void setEndTimeStr(String endTimeStr);
 }

@@ -143,13 +143,13 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public BaseOutput updateAnnunciate(AnnunciateDto annunciateDto, List<User> users) throws AppException{
+    public BaseOutput updateAnnunciate(AnnunciateDto annunciateDto) throws AppException{
         //乐观锁更新主数据
-        Example example=new Example(AnnunciateDto.class);
+        Example example=new Example(Annunciate.class);
         example.createCriteria().andEqualTo("id",annunciateDto.getId())
-                .andNotEqualTo("version",annunciateDto.getVersion());
+                .andEqualTo("version",annunciateDto.getVersion());
         annunciateDto.setVersion(annunciateDto.getVersion()+1);
-        int updateFlag=getActualDao().updateByExample(annunciateDto,example);
+        int updateFlag=getActualDao().updateByExampleExact(annunciateDto,example);
         if(updateFlag!=1){
             throw new AppException("更新数据失败，请重新打开页面进行编辑提交！");
         }

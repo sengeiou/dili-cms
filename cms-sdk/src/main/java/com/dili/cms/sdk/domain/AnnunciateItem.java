@@ -13,6 +13,7 @@ import com.dili.ss.metadata.annotation.FieldDef;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -52,6 +53,13 @@ public interface AnnunciateItem extends IBaseDomain {
     Long getTargetId();
 
     void setTargetId(Long targetId);
+
+    @Column(name = "`target_type`")
+    @FieldDef(label = "目标类型")
+    @EditMode(editor = FieldEditor.Text, required = false)
+    Integer getTargetType();
+
+    void setTargetType(Integer targetType);
 
     @Column(name = "`target_name`")
     @FieldDef(label = "目标名称", maxLength = 20)

@@ -78,7 +78,7 @@ public class FileTypeServiceImpl extends BaseServiceImpl<IFileType, Long> implem
         }
         //找到该类型下的所有文件，并将该分类下的文档对应的类型关联到父级节点
         Example iFileQuery = new Example(IFile.class);
-        iFileQuery.createCriteria().andEqualTo("typeId", iFileType.getId()).andEqualTo("isDataAuth", IFileConstant.AUTH.getValue());
+        iFileQuery.createCriteria().andEqualTo("typeId", iFileType.getId());
         List<IFile> iFileExample = fileService.selectByExample(iFileQuery);
         iFileExample.forEach(f -> {
             f.setTypeId(iFileType.getParentId());

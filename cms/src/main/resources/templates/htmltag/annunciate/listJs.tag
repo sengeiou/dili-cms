@@ -161,14 +161,14 @@
 
     function openEditHandler() {
         var selectDatas=_grid.bootstrapTable('getSelections');
-        if(selectDatas.length==0){
+        if(selectDatas.length!=1){
             bs4pop.alert("只能选择一条数据进行编辑!", {type: 'error'});
             return;
         }
         if(selectDatas[0].$_sendState==1||selectDatas[0].$_sendState==3){
-            diaView = bs4pop.dialog({
+            diaAdd = bs4pop.dialog({
                 title: '信息通告编辑',
-                content: '/annunciate/update.html?id=' + selectDatas[0].id,
+                content: '/annunciate/add.html?id=' + selectDatas[0].id,
                 isIframe: true,
                 backdrop: 'static',
                 width: '75%',
@@ -182,7 +182,7 @@
 
     function openViewBtnHandler() {
         var selectDatas=_grid.bootstrapTable('getSelections');
-        if(selectDatas.length==0){
+        if(selectDatas.length!=1){
             bs4pop.alert("只能选择一条数据进行查看!", {type: 'error'});
             return;
         }
