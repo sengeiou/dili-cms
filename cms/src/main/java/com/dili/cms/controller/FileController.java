@@ -16,10 +16,8 @@ import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.uap.sdk.domain.Department;
-import com.dili.uap.sdk.domain.User;
 import com.dili.uap.sdk.domain.dto.DepartmentDto;
 import com.dili.uap.sdk.rpc.DepartmentRpc;
-import com.dili.uap.sdk.rpc.UserRpc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -54,8 +52,6 @@ public class FileController extends BaseController {
     @Autowired
     private FileTypeServiceImpl fileTypeService;
     @Resource
-    private UserRpc userRpc;
-    @Resource
     private DepartmentRpc departmentRpc;
 
     /**
@@ -84,11 +80,6 @@ public class FileController extends BaseController {
         departmentDto.setFirmId(getFirmId());
         BaseOutput<List<Department>> departmentList = departmentRpc.listByExample(departmentDto);
         modelMap.put("departmentList", JSON.toJSONString(departmentList.getData()));
-
-        User user = DTOUtils.newInstance(User.class);
-        user.setFirmCode(getFirmCode());
-        BaseOutput<List<User>> userList = userRpc.list(user);
-        modelMap.put("userList", userList.getData());
 
         List<IFileType> fileTypeList = fileTypeService.list(null);
         modelMap.put("fileTypeList", JSON.toJSONString(fileTypeList));
@@ -168,8 +159,8 @@ public class FileController extends BaseController {
      */
     @RequestMapping(value = "delete.action", method = RequestMethod.POST)
     @ResponseBody
-    public BaseOutput delete(@RequestBody List<Long> ids) {
-        return fileService.deleteByIds(ids);
+    public BaseOutput delete(Long id) {
+        return fileService.deleteById(id);
     }
 
     /**
