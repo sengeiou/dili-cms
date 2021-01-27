@@ -8,6 +8,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="file_id" jdbcType="BIGINT" property="fileId" />
     <result column="auth_value" jdbcType="BIGINT" property="authValue" />
+    <result column="auth_text" jdbcType="VARCHAR" property="authText" />
     <result column="auth_type" jdbcType="TINYINT" property="authType" />
   </resultMap>
   <sql id="Base_Column_List">

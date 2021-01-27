@@ -17,9 +17,11 @@ import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.uap.sdk.domain.Department;
 import com.dili.uap.sdk.domain.User;
+import com.dili.uap.sdk.domain.UserTicket;
 import com.dili.uap.sdk.domain.dto.DepartmentDto;
 import com.dili.uap.sdk.rpc.DepartmentRpc;
 import com.dili.uap.sdk.rpc.UserRpc;
+import com.dili.uap.sdk.session.SessionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -148,6 +150,9 @@ public class FileController extends BaseController {
     @RequestMapping(value = "/listPage.action", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public EasyuiPageOutput listPage(IFileDto iFileDto) throws Exception {
+        UserTicket userTicket = SessionContext.getSessionContext().getUserTicket();
+        iFileDto.setDepartmentId(userTicket.getDepartmentId());
+        iFileDto.setPersonId(userTicket.getId());
         return fileService.listPage(iFileDto, true);
     }
 }

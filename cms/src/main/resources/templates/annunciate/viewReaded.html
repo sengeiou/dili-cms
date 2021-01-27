@@ -5,6 +5,7 @@
             筛选查询
         </div>
         <div class="card-body">
+            <input type="hidden" id="annunciateId" value="${annunciateId!}">
             <form class="form collapse show" id="queryForm" role="form">
                 <div class="row  row-cols-4">
                     <div class="form-group col">
@@ -65,8 +66,8 @@
                    data-show-columns="true" data-show-footer="true">
                 <thead>
                 <tr>
-                    <th data-field="targetId" data-align="center" data-sortable="true" data-provider="getTargetTypeNameByIdProvider"
-                        data-sort-name="target_id">
+                    <th data-field="targetType" data-align="center" data-sortable="true" data-provider="annunciateTargetTypeProvider"
+                        data-sort-name="target_type">
                         对象类型
                     </th>
                     <th data-field="targetName" data-align="center" data-sortable="true"

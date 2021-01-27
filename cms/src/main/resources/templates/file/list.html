@@ -62,13 +62,11 @@
                                        placeholder="">
                             </div>
                             <div class="form-group col" style="width: 350px">
-                                <label for="authType">访问权限</label>
+                                <label for="authTypeId">访问权限</label>
                                 <div class="input-group">
-                                    <select id="authType" name="authType" class="form-control selectpicker">
-                                        <option value="">--全部--</option>
-                                        <option value="1">指定组织</option>
-                                        <option value="2">指定人员</option>
-                                    </select>
+                                    <select id="authTypeId" name="authTypeId" class="form-control"></select>
+                                    <#select _id="authTypeId" _provider="fileAuthTypeProvider"
+                                    _selectIndex="0"/>
                                 </div>
                             </div>
                             <div class="form-group col-auto">
@@ -154,7 +152,7 @@
                         <th data-field="fileName" data-align="center">
                             资料名称
                         </th>
-                        <th data-field="authType" data-align="center">
+                        <th data-field="authTypeId" data-align="center" data-provider="fileAuthTypeProvider">
                             访问权限
                         </th>
                         <th data-field="typeId" data-align="center" data-sortable="true" data-provider="fileTypeProvider"

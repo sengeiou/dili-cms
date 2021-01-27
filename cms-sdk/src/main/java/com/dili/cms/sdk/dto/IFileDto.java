@@ -48,9 +48,14 @@ public interface IFileDto extends IFile {
     void setLikeFileName(String likeFileName);
 
     @Transient
-    Integer getAuthType();
+    Long getDepartmentId();
 
-    void setAuthType(Integer authType);
+    void setDepartmentId(Long departmentId);
+
+    @Transient
+    Long getPersonId();
+
+    void setPersonId(Long personId);
 
     @Transient
     LocalDateTime getCreateTimeStart();

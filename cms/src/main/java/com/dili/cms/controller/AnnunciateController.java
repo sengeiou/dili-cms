@@ -190,9 +190,10 @@ public class AnnunciateController extends BaseController{
      * @date：2021/1/26 15:34
      */
     @RequestMapping(value="/viewReaded.html", method = RequestMethod.GET)
-    public String viewReaded(ModelMap modelMap) {
+    public String viewReaded(ModelMap modelMap, Long id) {
         modelMap.put("readTimeStart", LocalDate.now().minusDays(6) + " 00:00:00");
         modelMap.put("readTimeEnd", LocalDate.now() + " 23:59:59");
+        modelMap.put("annunciateId",id);
         return "annunciate/viewReaded";
     }
 

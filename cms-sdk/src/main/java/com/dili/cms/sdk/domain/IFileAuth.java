@@ -50,6 +50,13 @@ public interface IFileAuth extends IBaseDomain {
 
     void setAuthValue(Long authValue);
 
+    @Column(name = "`auth_text`")
+    @FieldDef(label = "权限的文本值")
+    @EditMode(editor = FieldEditor.Number, required = false)
+    String getAuthText();
+
+    void setAuthText(String authText);
+
     @Column(name = "`auth_type`")
     @FieldDef(label = "权限类型(部门，市场)")
     @EditMode(editor = FieldEditor.Text, required = false)
