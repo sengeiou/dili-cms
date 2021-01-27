@@ -257,9 +257,9 @@
 
         };
         departmentAuthResult = $("#departmentTree").treeSelect(departmentTree)
-        $("#department").click(function () {
+        if(checks.length>0){
             $("#departmentTree").click();
-        });
+        }
     }
 
     function initDate() {
@@ -370,6 +370,7 @@
             $("#systemUserAndDepartDev").hide();
         });
         $("#departmentBtn").click(function (val) {
+            $("#departmentTree").click();
             $("#systemUserAndDepartDev").show();
             $("#userDev").hide();
             $("#departmentDev").show();
