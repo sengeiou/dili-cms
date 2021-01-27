@@ -56,12 +56,12 @@ public interface AnnunciateMapper extends MyMapper<Annunciate> {
 
     /**
       * 根据用户id获取信息列表，过滤掉已删除的
-      * @param userId:
+      * @param annunciateDto:
       * @return：java.util.List<com.dili.cms.sdk.domain.Annunciate>
       * @author：Henry.Huang
       * @date：2021/1/22 15:58
       */
-    List<AnnunciateVo> getListByUserId(Long userId);
+    List<AnnunciateVo> getListByUserId(AnnunciateDto annunciateDto);
 
     /**
       * 将条件内的所有消息改为非置顶 条件：发布时间未结束 发布状态为已发布 市场id
@@ -71,4 +71,13 @@ public interface AnnunciateMapper extends MyMapper<Annunciate> {
       * @date：2021/1/23 17:45
       */
     void updateAllNoStick(Annunciate noStickAnnunciate);
+
+    /**
+      * 根据客户id查询置顶三条消息列表(不包括富文本消息内容，以节约带宽)
+      * @param targetId:  
+      * @return：java.util.List<com.dili.cms.sdk.dto.AnnunciateVo> 
+      * @author：Henry.Huang 
+      * @date：2021/1/27 16:54 
+      */
+    List<AnnunciateVo> getStickListByTargetId(Long targetId);
 }

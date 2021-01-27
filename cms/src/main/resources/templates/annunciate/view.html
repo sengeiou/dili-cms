@@ -236,10 +236,10 @@
         departmentTree.callback.onCheck = function (e, treeNode) {
 
         };
-        departmentAuthResult = $("#departmentTree").treeSelect(departmentTree)
-        $("#department").click(function () {
+        departmentAuthResult = $("#departmentTree").treeSelect(departmentTree);
+        if(checks.length>0){
             $("#departmentTree").click();
-        });
+        }
     }
 
     function initDate() {

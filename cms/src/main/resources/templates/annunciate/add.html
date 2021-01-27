@@ -257,9 +257,9 @@
 
         };
         departmentAuthResult = $("#departmentTree").treeSelect(departmentTree)
-        $("#department").click(function () {
+        if(checks.length>0){
             $("#departmentTree").click();
-        });
+        }
     }
 
     function initDate() {
@@ -370,6 +370,7 @@
             $("#systemUserAndDepartDev").hide();
         });
         $("#departmentBtn").click(function (val) {
+            $("#departmentTree").click();
             $("#systemUserAndDepartDev").show();
             $("#userDev").hide();
             $("#departmentDev").show();
@@ -548,10 +549,20 @@
 
     //选择用户回调函数
     function selectUsersCallback(items) {
+        var oldUsers=_grid.bootstrapTable("getData");
         authList = [];
         if (items) {
             items.forEach((item) => {
-                authList.push({id: item.id, realName: item.realName,position:item.position,departmentId:item.departmentId});
+                var addFlag=true;
+                oldUsers.forEach((userItem) => {
+                    if(userItem.id==item.id){
+                        addFlag=false;
+                        return;
+                    }
+                });
+                if(addFlag){
+                    authList.push({id: item.id, realName: item.realName,position:item.position,departmentId:item.departmentId});
+                }
             });
         }
         _grid.bootstrapTable('load', authList);

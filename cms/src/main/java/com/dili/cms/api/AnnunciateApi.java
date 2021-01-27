@@ -6,12 +6,16 @@
 package com.dili.cms.api;
 
 import com.dili.cms.sdk.domain.Annunciate;
+import com.dili.cms.sdk.dto.AnnunciateDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.cms.sdk.glossary.AnnunciateItemOpType;
 import com.dili.cms.service.AnnunciateItemService;
 import com.dili.cms.service.AnnunciateService;
 import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.domain.EasyuiPageOutput;
+import com.dili.ss.domain.PageOutput;
 import com.dili.ss.exception.AppException;
+import com.dili.ss.metadata.ValueProviderUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -139,18 +143,19 @@ public class AnnunciateApi {
     }
 
     /**
-     * 根据用户id查询消息列表(不包括富文本消息内容，以节约带宽)
-     * @param targetId:
-     * @return：com.dili.ss.domain.BaseOutput<List<Annunciate>>
+     * 根据用户id查询消息列表(不包括富文本消息内容，以节约带宽) 分页
+     * @param annunciateDto:
+     * @return：com.dili.ss.domain.BaseOutput<String>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
     @PostMapping(value = "/getListByTargetId")
-    public BaseOutput<List<AnnunciateVo>> getListByTargetId(@RequestBody Long targetId) {
+    public String getListByTargetId(@RequestBody AnnunciateDto annunciateDto) {
         try{
-            return annunciateService.getListByUserId(targetId);
-        }catch (AppException e) {
-            return BaseOutput.failure(e.getMessage());
+            PageOutput<List<AnnunciateVo>> output =annunciateService.getListByUserId(annunciateDto);
+            return new EasyuiPageOutput(output.getTotal(), ValueProviderUtils.buildDataByProvider(annunciateDto, output.getData())).toString();
+        }catch (Exception e) {
+            return e.getMessage();
         }
     }
 
@@ -173,4 +178,37 @@ public class AnnunciateApi {
             return BaseOutput.failure(e.getMessage());
         }
     }
+
+    /**
+     * 根据客户id查询置顶三条消息列表(不包括富文本消息内容，以节约带宽)
+     * @param annunciateDto:
+     * @return：com.dili.ss.domain.BaseOutput<List<AnnunciateVo>>
+     * @author：Henry.Huang
+     * @date：2021/1/21 16:38
+     */
+    @PostMapping(value = "/getStickListByTargetId")
+    public BaseOutput<List<AnnunciateVo>> getStickListByTargetId(@RequestBody AnnunciateDto annunciateDto) {
+        try{
+            return annunciateService.getStickListByTargetId(annunciateDto.getTargetId());
+        }catch (AppException e) {
+            return BaseOutput.failure(e.getMessage());
+        }
+    }
+
+    /**
+     * 读，需要传4个值terminal id readState targetId
+     * @param annunciateDto:
+     * @return：com.dili.ss.domain.BaseOutput<Annunciate>
+     * @author：Henry.Huang
+     * @date：2021/1/21 16:38
+     */
+    @PostMapping(value = "/readByAnnunciateDto")
+    public BaseOutput<Annunciate> readByAnnunciateDto(@RequestBody AnnunciateDto annunciateDto) {
+        try{
+            return annunciateService.readByAnnunciateDto(annunciateDto);
+        }catch (AppException e) {
+            return BaseOutput.failure(e.getMessage());
+        }
+    }
+
 }

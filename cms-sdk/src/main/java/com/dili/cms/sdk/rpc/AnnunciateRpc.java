@@ -5,6 +5,7 @@
   */
 package com.dili.cms.sdk.rpc;
 
+import com.dili.cms.sdk.dto.AnnunciateDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.ss.domain.BaseOutput;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -94,13 +95,13 @@ public interface AnnunciateRpc {
 
     /**
      * 根据用户id查询消息列表(不包括富文本消息内容，以节约带宽)
-     * @param userId:
-     * @return：com.dili.ss.domain.BaseOutput<List<Annunciate>>
+     * @param annunciateDto:
+     * @return：String
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @PostMapping(value = "/api/annunciate/getListByUserId")
-    BaseOutput<List<AnnunciateVo>> getListByUserId(@RequestBody Long userId);
+    @PostMapping(value = "/api/annunciate/getListByTargetId")
+    String getListByTargetId(@RequestBody AnnunciateDto annunciateDto);
 
     /**
      * 根据annunciate_id查询富文本消息内容

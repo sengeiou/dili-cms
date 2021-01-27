@@ -57,7 +57,17 @@
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result.success) {
-                    bs4pop.alert(result.result);
+                    bs4pop.alert(result.result, {
+                        width: '350px', height: "200px", type: 'success', onHideStart: () => {
+                            if (url == "insert") {
+                                parent.diaAdd.hide();
+                            } else {
+                                parent.diaEdit.hide();
+                            }
+                            parent.treeInit();
+                            parent.queryDataHandler();
+                        }
+                    });
                 } else {
                     bs4pop.alert(result.result, {type: 'error'});
                 }

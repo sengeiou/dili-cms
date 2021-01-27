@@ -72,12 +72,12 @@ public interface AnnunciateDto extends Annunciate {
     void setUpateType(Integer upateType);
 
     /**
-     * 客户id
+     * 通告项客户或用户id
      * @return
      */
-    Long getCustomerId();
+    Long getTargetId();
 
-    void setCustomerId(Long customerId);
+    void setTargetId(Long targetId);
 
     /**
      * 查看终端
@@ -86,4 +86,14 @@ public interface AnnunciateDto extends Annunciate {
     Integer getTerminal();
 
     void setTerminal(Integer terminal);
+
+    /**
+     * 读取状态
+     * @return：java.lang.Integer
+     * @author：Henry.Huang
+     * @date：2021/1/22 16:03
+     */
+    Integer getReadState();
+
+    void setReadState(Integer readState);
 }

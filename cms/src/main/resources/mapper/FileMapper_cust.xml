@@ -17,7 +17,7 @@
         <if test="likeFileName != null and likeFileName != ''">
             AND f.file_name LIKE CONCAT('%',#{likeFileName},'%')
         </if>
-        <if test="typeId != null and typeId != ''">
+        <if test="typeId != null">
             AND f.type_id=#{typeId}
         </if>
         <if test="createTimeStart != null">
@@ -26,8 +26,8 @@
         <if test="createTimeEnd != null">
             <![CDATA[AND f.create_time <=#{createTimeEnd}]]>
         </if>
-        ORDER BY f.id DESC
-        ) UNION
+        ORDER BY f.id DESC)
+        UNION
         (SELECT f.*
         FROM file f
         JOIN file_auth au
@@ -35,26 +35,26 @@
         WHERE 1=1
         <choose>
             <when test="authTypeId == null">
-                <if test="departmentId != null and departmentId != ''">
-                    And (f.auth_type_id=10 AND au.auth_value=#{departmentId})
+                <if test="departmentId != null">
+                    AND (f.auth_type_id=10 AND au.auth_value=#{departmentId})
                 </if>
-                <if test="personId != null and personId != ''">
+                <if test="personId != null">
                     OR (f.auth_type_id=20 AND au.auth_value=#{personId})
                 </if>
             </when>
             <otherwise>
                 <if test="authTypeId == 0">
-                    <if test="departmentId != null and departmentId != ''">
+                    <if test="departmentId != null">
                         AND au.auth_type = 0
                     </if>
                 </if>
                 <if test="authTypeId == 10">
-                    <if test="departmentId != null and departmentId != ''">
+                    <if test="departmentId != null">
                         AND f.auth_type_id=10 AND au.auth_value=#{departmentId}
                     </if>
                 </if>
                 <if test="authTypeId == 20">
-                    <if test="personId != null and personId != ''">
+                    <if test="personId != null">
                         AND f.auth_type_id=20 AND au.auth_value=#{personId}
                     </if>
                 </if>
@@ -63,7 +63,7 @@
         <if test="likeFileName != null and likeFileName != ''">
             AND f.file_name LIKE CONCAT('%',#{likeFileName},'%')
         </if>
-        <if test="typeId != null and typeId != ''">
+        <if test="typeId != null">
             AND f.type_id=#{typeId}
         </if>
         <if test="createTimeStart != null">
