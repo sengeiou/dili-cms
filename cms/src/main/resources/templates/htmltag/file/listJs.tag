@@ -101,17 +101,19 @@
             url: '/file/listPage.action',
         });
     }
+
     /**
      * 勾选时触发事件
      */
     function zTreeOnCheck(event, treeId, treeNode) {
         var checked = treeNode.checked;
-        if(checked){
+        if (checked) {
             $("#fileType").val(treeNode.id);
-        }else{
+        } else {
             $("#fileType").val(null);
         }
     }
+
     /**
      * 编辑名称前回调函数
      */
@@ -260,7 +262,7 @@
     }
 
     /**
-     * 新增或修改分类
+     * 删除分类
      */
     function deleteFileType(nodes) {
         bui.loading.show('努力提交中，请稍候。。。');
@@ -330,7 +332,7 @@
         diaEdit = bs4pop.dialog({
             title: '编辑文件',//对话框title
             className: 'dialog-center',
-            content: '${contextPath}/file/add.html', //对话框内容，可以是 string、element，$object
+            content: '${contextPath}/file/add.html?id=' + rows[0].id, //对话框内容，可以是 string、element，$object
             width: '50%',//宽度
             height: '80%',//高度
             backdrop: 'static',
@@ -351,13 +353,92 @@
         diaView = bs4pop.dialog({
             title: '文件详情',//对话框title
             className: 'dialog-center',
-            content: '${contextPath}/file/add.html', //对话框内容，可以是 string、element，$object
+            content: '${contextPath}/file/view.html?id=' + rows[0].id, //对话框内容，可以是 string、element，$object
             width: '50%',//宽度
             height: '80%',//高度
             backdrop: 'static',
             isIframe: true//默认是页面层，非iframe
         });
 
+    }
+
+    /**
+     * 删除文件
+     */
+    function deleteHandler() {
+        let rows = _grid.bootstrapTable('getSelections');
+        if (null == rows || rows.length == 0) {
+            bs4pop.alert('请选数据');
+            return;
+        }
+        let ids = rows.map(item => item.id);
+        $.ajax({
+            type: "POST",
+            url: "/file/delete.action",
+            processData: false,
+            data: JSON.stringify(ids),
+            contentType: false,
+            dataType: "JSON",
+            success: function (res) {
+                if (res.code == "200") {
+                    bs4pop.alert(res.message);
+                    treeInit();
+                    _grid.bootstrapTable('refresh');
+                } else {
+                    bs4pop.alert(res.message, {type: 'error'});
+                }
+            },
+            error: function (error) {
+                bs4pop.alert(error.message, {type: 'error'});
+            }
+        });
+    }
+
+    /**
+     * 文件下载
+     */
+    function downloadFile() {
+        let rows = _grid.bootstrapTable('getSelections');
+        if (null == rows || rows.length == 0) {
+            bs4pop.alert('请选一条数据');
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/fileItem/listByFileId.action?fileId=" + rows[0].id,
+            processData: false,
+            contentType: false,
+            dataType: "JSON",
+            success: function (res) {
+                if (res.code == "200") {
+                    console.log(res)
+                    //aDownloadFile(rows[0].coverImg);
+                } else {
+                    bs4pop.alert(res.message, {type: 'error'});
+                }
+            },
+            error: function (error) {
+                bs4pop.alert(error.message, {type: 'error'});
+            }
+        });
+    }
+
+    /**
+     * 用a标签下载文件
+     */
+    function aDownloadFile(...url) {
+
+        if (url.length > 0) {
+            var a = document.createElement("a");
+            $("body").append(a); // 修复firefox中无法触发click
+            url.forEach(item => {
+                console.log(item)
+                a.download = '';
+                a.href = item;
+                a.click();
+            });
+            $(a).remove();
+        }
     }
 
     /**

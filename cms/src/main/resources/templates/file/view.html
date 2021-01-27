@@ -13,15 +13,15 @@
     </div>
 
     <div class="form-group">
-        <label for="fileName" class="col-sm-2 control-label">文档名称：${fileInfo.fileName!}</label>
+        <label for="fileName" class="col-sm-5 control-label">文档名称：${fileInfo.fileName!}</label>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label">文档分类：<#fileTypeTag value="${fileInfo.typeId!}"/></label>
+        <label class="col-sm-5 control-label">文档分类：<#fileTypeTag value="${fileInfo.typeId!}"/></label>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">配图：
         </label>
-        <div class='col' style="width: 150px;height: 150px;">
+        <div class='col' style="width: 150px;max-height: 150px;">
             <img src="${fileInfo.coverImg!}" class="img-thumbnail" onclick="openFile('${fileInfo.coverImg!}')">
         </div>
     </div>
@@ -43,18 +43,18 @@
                 </label>
             </div>
         </label>
-        <div class="col-sm-5">
-            <div class="card ">
-                <div class="card-body" style="padding: 10px;">
-                    <%if(fileInfo.typeId!=0){%>
-                    <%for(item in fileInfo.fileAuthList){%>
-                    <button type="button" class="btn btn-info btn-sm" style="margin: 3px;" disabled>${item.authText!}
-                    </button>
-                    <%}%>
-                    <%}%>
+        <%if(fileInfo.authTypeId!=0){%>
+            <div class="col-sm-5">
+                <div class="card ">
+                    <div class="card-body" style="padding: 10px;">
+                        <%for(item in fileInfo.fileAuthList){%>
+                        <button type="button" class="btn btn-info btn-sm" style="margin: 3px;" disabled>${item.authText!}
+                        </button>
+                        <%}%>
+                    </div>
                 </div>
             </div>
-        </div>
+        <%}%>
     </div>
     <div class="form-group">
         <label for="remark" class="col-sm-2 control-label">说明：</label>

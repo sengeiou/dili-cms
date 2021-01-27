@@ -20,6 +20,21 @@
             });
         }
         let formData = Object.assign(fileDto, _form.serializeObject());
+        //判断有没有上传文件
+        if (formData.fileItemList.length <= 0) {
+            bs4pop.alert('请上传文件!', {type: 'error'});
+            return;
+        }
+        //判断有没有选择文件类型
+        if (!formData.typeId) {
+            bs4pop.alert('请选择文件类型!', {type: 'error'});
+            return;
+        }
+        //判断有没有选择文件权限
+        if (!formData.authTypeId || (formData.authTypeId != 0 && formData.fileAuthList.length <= 0)) {
+            bs4pop.alert('请选择文件权限!', {type: 'error'});
+            return;
+        }
         let url = fileDto.id ? "update" : "insert";
         $.ajax({
             type: "POST",
@@ -29,7 +44,17 @@
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result.success) {
-                    bs4pop.alert(result.result);
+                    bs4pop.alert(result.result, {
+                        width: '350px', height: "200px", type: 'success', onHideStart: () => {
+                            if (url == "insert") {
+                                parent.diaAdd.hide();
+                            } else {
+                                parent.diaEdit.hide();
+                            }
+                            parent.treeInit();
+                            parent.queryDataHandler();
+                        }
+                    });
                 } else {
                     bs4pop.alert(result.result, {type: 'error'});
                 }

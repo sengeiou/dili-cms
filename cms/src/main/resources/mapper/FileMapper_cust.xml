@@ -3,41 +3,21 @@
 <mapper namespace="com.dili.cms.mapper.FileMapper">
     <!--文件列表查询-->
     <select id="listPage" parameterType="com.dili.cms.sdk.dto.IFileDto" resultType="com.dili.cms.sdk.dto.IFileDto">
-        SELECT f.*
+        (SELECT f.*
         FROM file f
-        JOIN file_auth au
-        ON f.id=au.file_id
-        where 1=1
+        WHERE 1=1
         <choose>
-            <when test="authTypeId == null">
+            <when test="authTypeId == null or authTypeId == 0">
                 AND f.auth_type_id=0
-                <if test="departmentId != null and departmentId != ''">
-                    OR (f.auth_type_id=10 AND au.auth_value=#{departmentId})
-                </if>
-                <if test="personId != null and personId != ''">
-                    OR (f.auth_type_id=20 AND au.auth_value=#{personId})
-                </if>
             </when>
             <otherwise>
-                <if test="authTypeId == 0">
-                    AND f.auth_type_id=0
-                </if>
-                <if test="authTypeId == 10">
-                    <if test="departmentId != null and departmentId != ''">
-                        AND f.auth_type_id=10 AND au.auth_value=#{departmentId}
-                    </if>
-                </if>
-                <if test="authTypeId == 20">
-                    <if test="personId != null and personId != ''">
-                        AND f.auth_type_id=20 AND au.auth_value=#{personId}
-                    </if>
-                </if>
+                AND f.auth_type_id=NULL
             </otherwise>
         </choose>
         <if test="likeFileName != null and likeFileName != ''">
             AND f.file_name LIKE CONCAT('%',#{likeFileName},'%')
         </if>
-        <if test="typeId != null and typeId != ''">
+        <if test="typeId != null">
             AND f.type_id=#{typeId}
         </if>
         <if test="createTimeStart != null">
@@ -46,6 +26,52 @@
         <if test="createTimeEnd != null">
             <![CDATA[AND f.create_time <=#{createTimeEnd}]]>
         </if>
-        ORDER BY f.id DESC
+        ORDER BY f.id DESC)
+        UNION
+        (SELECT f.*
+        FROM file f
+        JOIN file_auth au
+        ON f.id=au.file_id
+        WHERE 1=1
+        <choose>
+            <when test="authTypeId == null">
+                <if test="departmentId != null">
+                    AND (f.auth_type_id=10 AND au.auth_value=#{departmentId})
+                </if>
+                <if test="personId != null">
+                    OR (f.auth_type_id=20 AND au.auth_value=#{personId})
+                </if>
+            </when>
+            <otherwise>
+                <if test="authTypeId == 0">
+                    <if test="departmentId != null">
+                        AND au.auth_type = 0
+                    </if>
+                </if>
+                <if test="authTypeId == 10">
+                    <if test="departmentId != null">
+                        AND f.auth_type_id=10 AND au.auth_value=#{departmentId}
+                    </if>
+                </if>
+                <if test="authTypeId == 20">
+                    <if test="personId != null">
+                        AND f.auth_type_id=20 AND au.auth_value=#{personId}
+                    </if>
+                </if>
+            </otherwise>
+        </choose>
+        <if test="likeFileName != null and likeFileName != ''">
+            AND f.file_name LIKE CONCAT('%',#{likeFileName},'%')
+        </if>
+        <if test="typeId != null">
+            AND f.type_id=#{typeId}
+        </if>
+        <if test="createTimeStart != null">
+            <![CDATA[ AND #{createTimeStart}<=f.create_time ]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[AND f.create_time <=#{createTimeEnd}]]>
+        </if>
+        ORDER BY f.id DESC)
     </select>
 </mapper>
