@@ -159,4 +159,16 @@ public class AnnunciateItemServiceImpl extends BaseServiceImpl<AnnunciateItem, L
         }
         return BaseOutput.success();
     }
+
+    @Override
+    public BaseOutput<Integer> getNoReadCountByTargetId(AnnunciateDto annunciateDto) {
+        AnnunciateItem annunciateItem= DTOUtils.newInstance(AnnunciateItem.class);
+        if(annunciateDto==null){
+            BaseOutput.successData(0);
+        }
+        annunciateItem.setTargetId(annunciateDto.getTargetId());
+        annunciateItem.setReadState(ReadType.NO_READ.getValue());
+        Integer onReadCount=getActualDao().selectCount(annunciateItem);
+        return BaseOutput.successData(onReadCount);
+    }
 }
