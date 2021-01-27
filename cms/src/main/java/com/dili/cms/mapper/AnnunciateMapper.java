@@ -71,4 +71,13 @@ public interface AnnunciateMapper extends MyMapper<Annunciate> {
       * @date：2021/1/23 17:45
       */
     void updateAllNoStick(Annunciate noStickAnnunciate);
+
+    /**
+      * 根据客户id查询置顶三条消息列表(不包括富文本消息内容，以节约带宽)
+      * @param targetId:  
+      * @return：java.util.List<com.dili.cms.sdk.dto.AnnunciateVo> 
+      * @author：Henry.Huang 
+      * @date：2021/1/27 16:54 
+      */
+    List<AnnunciateVo> getStickListByTargetId(Long targetId);
 }

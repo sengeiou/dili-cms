@@ -6,6 +6,7 @@
 package com.dili.cms.api;
 
 import com.dili.cms.sdk.domain.Annunciate;
+import com.dili.cms.sdk.dto.AnnunciateDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.cms.sdk.glossary.AnnunciateItemOpType;
 import com.dili.cms.service.AnnunciateItemService;
@@ -173,4 +174,37 @@ public class AnnunciateApi {
             return BaseOutput.failure(e.getMessage());
         }
     }
+
+    /**
+     * 根据客户id查询置顶三条消息列表(不包括富文本消息内容，以节约带宽)
+     * @param annunciateDto:
+     * @return：com.dili.ss.domain.BaseOutput<List<AnnunciateVo>>
+     * @author：Henry.Huang
+     * @date：2021/1/21 16:38
+     */
+    @PostMapping(value = "/getStickListByTargetId")
+    public BaseOutput<List<AnnunciateVo>> getStickListByTargetId(@RequestBody AnnunciateDto annunciateDto) {
+        try{
+            return annunciateService.getStickListByTargetId(annunciateDto.getTargetId());
+        }catch (AppException e) {
+            return BaseOutput.failure(e.getMessage());
+        }
+    }
+
+    /**
+     * 读，需要传4个值terminal id readState targetId
+     * @param annunciateDto:
+     * @return：com.dili.ss.domain.BaseOutput<Annunciate>
+     * @author：Henry.Huang
+     * @date：2021/1/21 16:38
+     */
+    @PostMapping(value = "/readByAnnunciateDto")
+    public BaseOutput<Annunciate> readByAnnunciateDto(@RequestBody AnnunciateDto annunciateDto) {
+        try{
+            return annunciateService.readByAnnunciateDto(annunciateDto);
+        }catch (AppException e) {
+            return BaseOutput.failure(e.getMessage());
+        }
+    }
+
 }

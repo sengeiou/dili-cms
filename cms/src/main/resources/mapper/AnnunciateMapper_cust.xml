@@ -60,4 +60,11 @@
     and send_state=#{sendState,jdbcType=INTEGER}
     and end_time>#{endTime,jdbcType=TIMESTAMP}
   </update>
+  <select id="getStickListByTargetId" resultType="com.dili.cms.sdk.dto.AnnunciateVo">
+    SELECT t1.id,t1.title,t1.start_time,t2.read_state,t1.stick_state FROM annunciate t1
+    LEFT JOIN annunciate_item t2
+    ON t1.id=t2.annunciate_id
+    WHERE t1.send_state=2 AND t2.read_state!=3 AND t2.target_id=#{targetType,jdbcType=BIGINT}
+    ORDER BY t1.start_time DESC,t1.stick_state DESC LIMIT 0,3
+  </select>
 </mapper>

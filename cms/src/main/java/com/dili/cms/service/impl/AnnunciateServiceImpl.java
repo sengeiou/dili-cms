@@ -241,6 +241,7 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
         return BaseOutput.success();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public BaseOutput revoke(Annunciate annunciate) throws AppException{
         Example example=new Example(Annunciate.class);
@@ -270,6 +271,32 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
             annunciateMessageRpc.withdrawAnnunciates(annunciateMessages);
         }
         return BaseOutput.success();
+    }
+
+    @Override
+    public BaseOutput<List<AnnunciateVo>> getStickListByTargetId(Long targetId) {
+        List<AnnunciateVo> annunciateVos=getActualDao().getStickListByTargetId(targetId);
+        return BaseOutput.successData(annunciateVos);
+    }
+
+    @Override
+    public BaseOutput<Annunciate> readByAnnunciateDto(AnnunciateDto annunciateDto) {
+        AnnunciateItem annunciateItem= DTOUtils.newInstance(AnnunciateItem.class);
+        annunciateItem.setReadState(ReadType.READ.getValue());
+        annunciateItem.setTerminal(annunciateDto.getTerminal());
+        annunciateItem.setReadTime(LocalDateTime.now());
+        AnnunciateItem itemExample=DTOUtils.newInstance(AnnunciateItem.class);
+        itemExample.setAnnunciateId(annunciateDto.getId());
+        itemExample.setTargetId(annunciateDto.getTargetId());
+        if(ReadType.NO_READ.getValue().equals(annunciateDto.getReadState())){
+            itemExample.setReadState(ReadType.NO_READ.getValue());
+        }
+        int updateCount=annunciateItemService.updateSelectiveByExample(annunciateItem,itemExample);
+        if(updateCount==1){
+            annunciateDto.setReadCount(updateCount);
+            getActualDao().updateReadCountById(annunciateDto);
+        }
+        return BaseOutput.successData(get(annunciateDto.getId()));
     }
 
     /**
@@ -343,7 +370,7 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
                 UserQuery userQuery = DTOUtils.newInstance(UserQuery.class);
                 userQuery.setState(USER_NORMAL);
                 userQuery.setFirmCode(userTicket.getFirmCode());
-                BaseOutput<List<User>> allUserResult = userRpc.list(userQuery);
+                BaseOutput<List<User>> allUserResult = userRpc.listByExample(userQuery);
                 if (!allUserResult.isSuccess()) {
                     throw new AppException("查询所有用户失败");
                 }
@@ -364,7 +391,7 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
                 userQuery.setState(USER_NORMAL);
                 userQuery.setFirmCode(userTicket.getFirmCode());
                 userQuery.setDepartmentId(annunciateTarget.getTargetRangeId());
-                BaseOutput<List<User>> departmentUserResult = userRpc.list(userQuery);
+                BaseOutput<List<User>> departmentUserResult = userRpc.listByExample(userQuery);
                 if (!departmentUserResult.isSuccess()) {
                     throw new AppException("根据部门查询用户失败");
                 }
