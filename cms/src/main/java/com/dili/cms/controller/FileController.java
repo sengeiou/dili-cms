@@ -99,6 +99,7 @@ public class FileController extends BaseController {
         if (Objects.nonNull(id)) {
             IFileDto fileDto = fileService.getDetailById(id);
             modelMap.put("fileInfo", JSON.toJSONString(fileDto));
+            modelMap.put("fileCount", fileDto.getFileItemList().size());
         }
         return "file/add";
     }
@@ -137,6 +138,25 @@ public class FileController extends BaseController {
             return BaseOutput.failure(validResult.getErrors());
         }
         return fileService.edit(fileDto);
+    }
+
+
+    /**
+     * TODO 文件详情
+     *
+     * @param modelMap:
+     * @return：java.lang.String
+     * @author：Tab.Xie
+     * @date：2021/1/26 20:10
+     */
+    @RequestMapping(value = "view.html", method = RequestMethod.GET)
+    public String view(Long id, ModelMap modelMap) {
+        //如果参数id不为空 则是编辑
+        if (Objects.nonNull(id)) {
+            IFileDto fileDto = fileService.getDetailById(id);
+            modelMap.put("fileInfo",fileDto);
+        }
+        return "file/view";
     }
 
     /**

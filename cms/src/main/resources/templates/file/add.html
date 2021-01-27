@@ -7,10 +7,16 @@
     <div class="form-group" id="files">
         <label for="lastname" class="col-sm-2 control-label"><i class="red">*</i>文件：</label>
         <div class="form-inline col-sm-10" id="file-groups">
-            <#component_upload _cid="bbb" _types="" _maxFileCount="2" _uploadInitCount="${fileCount!}"
+            <#component_upload _cid="bbb" _types="" _maxFileCount="5" _uploadInitCount="${fileCount!}"
             _uploadCallback="uploadFileCallback"
             _deleteCallback="deleteFileHandler" _uploadUrl="/uploadFile/doUpload.action"/>
-            <div class="col-sm-4 file-group" id="file-group-0">
+            <!--            <div class="col-sm-4 file-group" id="file-group-0">-->
+            <!--            </div>-->
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body" style="padding: 10px;" id="file-group">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

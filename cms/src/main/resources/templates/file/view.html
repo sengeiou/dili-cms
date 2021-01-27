@@ -1,0 +1,72 @@
+<#bs4Body>
+<div id="body">
+    <div class="form-group" id="files">
+        <div class="col-sm-5">
+            <div class="card ">
+                <div class="card-body" style="padding: 10px;">
+                    <%for(item in fileInfo.fileItemList){%>
+                    <a href="#" class="badge badge-info" onclick="openFile('${item.fileUrl!}')">${item.fileName!}</a>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="fileName" class="col-sm-2 control-label">文档名称：${fileInfo.fileName!}</label>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">文档分类：<#fileTypeTag value="${fileInfo.typeId!}"/></label>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">配图：
+        </label>
+        <div class='col' style="width: 150px;height: 150px;">
+            <img src="${fileInfo.coverImg!}" class="img-thumbnail" onclick="openFile('${fileInfo.coverImg!}')">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="isDownload" class="col-sm control-label">支持下载：
+            <div class="form-check form-check-inline">
+                <label class="radio-inline">
+                    <input type="radio" checked name="isDownload" value="1"> ${fileInfo.isDownload==1?'支持':'不支持'}
+                </label>
+            </div>
+        </label>
+    </div>
+    <div class="form-group">
+        <label for="authTypeId" class="col-sm control-label">访问权限：
+            <div class="form-check form-check-inline">
+                <label class="radio-inline">
+                    <input type="radio" name="authTypeId" checked> <#fileAuthTypeTag value="${fileInfo.authTypeId!}"/>
+                </label>
+            </div>
+        </label>
+        <div class="col-sm-5">
+            <div class="card ">
+                <div class="card-body" style="padding: 10px;">
+                    <%if(fileInfo.typeId!=0){%>
+                    <%for(item in fileInfo.fileAuthList){%>
+                    <button type="button" class="btn btn-info btn-sm" style="margin: 3px;" disabled>${item.authText!}
+                    </button>
+                    <%}%>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="remark" class="col-sm-2 control-label">说明：</label>
+        <div class="col-sm-5">
+            <textarea id="remark" name="remark" class="form-control" rows="3" readonly>${fileInfo.remark!}</textarea>
+        </div>
+    </div>
+</div>
+</#bs4Body>
+<script>
+    //预览文件
+    function openFile(url) {
+        window.open("https://dfs.diligrp.com/file/view/" + url.substring(url.lastIndexOf("/") + 1));
+    }
+</script>
