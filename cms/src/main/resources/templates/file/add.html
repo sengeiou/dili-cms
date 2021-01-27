@@ -35,7 +35,9 @@
     <div class="form-group">
         <label class="col-sm-2 control-label"><i class="red">*</i>配图：</label>
         <div class="col-sm-10">
-            <#component_upload _class="form-inline" _cid="aaa" _types="image/png;image/PNG;image/jpg;image/JPG;image/jpeg;image/JPEG;image/gif;image/GIF" _maxFileCount="1" _uploadInitCount=""
+            <#component_upload _class="form-inline" _cid="aaa"
+            _types="image/png;image/PNG;image/jpg;image/JPG;image/jpeg;image/JPEG;image/gif;image/GIF" _maxFileCount="1"
+            _uploadInitCount=""
             _uploadCallback="uploadImgCallback"
             _deleteCallback="deleteImgFileHandler" _uploadUrl="/uploadFile/doUpload.action"/>
         </div>
@@ -75,6 +77,46 @@
         </label>
         <div class="col-sm-5">
             <div style="width: 300px;overflow:hidden;cursor: pointer" id="departmentTree"></div>
+        </div>
+    </div>
+    <div id="systemUserAndDepartDev" class="row" style="display: none;">
+        <div class="form-group col">
+            <div id="userDev" class="container-fluid">
+                <button type="button" class="btn btn-outline-primary mr-2" onclick="openUserPageHandler()">
+                    <i class="fa"></i>添加用户
+                </button>
+                <button type="button" class="btn btn-outline-primary mr-2" onclick="deleteUser()">
+                    <i class="fa"></i>删除用户
+                </button>
+                <div class="row">
+                    <div class="col-sm-12 offset-sm-0">
+                        <table id="grid" data-toggle="table" data-title="用户查询" class="table"
+                               data-toolbar="#toolbar" data-pagination="false" data-page-number="1"
+                               data-page-size="10" data-query-params="queryParams"
+                               data-side-pagination="server"
+                               data-content-type="application/x-www-form-urlencoded"
+                               data-single-select="false" data-click-to-select="true" data-checkbox-header="true"
+                               data-unique-id="id" data-sort-name="id" data-sort-order="desc"
+                               data-icons="bui.variable.icons"
+                               data-buttons-class="primary">
+                            <thead>
+                            <tr>
+                                <th data-checkbox="true">选择</th>
+                                <th data-field="departmentId" data-align="center">
+                                    组织
+                                </th>
+                                <th data-field="realName" data-align="center">
+                                    姓名
+                                </th>
+                                <th data-field="position" data-align="center">
+                                    职位
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="form-group">
