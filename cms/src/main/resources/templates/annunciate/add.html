@@ -1,14 +1,32 @@
 <#bs4Body>
-<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css">
-<link rel="stylesheet" href="index.css" type="text/css">
-<script src="/javascripts/jquery.min.js"></script>
-<script src="/javascripts/bootstrap.min.js"></script>
-<script src="/javascripts/bootstrap-wysiwyg.js"></script>
-<script src="/javascripts/jquery.hotkeys.js"></script>
+<head>
+    <link rel="stylesheet" href="/resources/css/zTree/metroStyle.css">
+    <link rel="stylesheet" href="/resources/css/zTree/treeSelectStyle.css">
+</head>
 <style>
-    #editor {overflow:scroll; max-height:300px}
+
+    .w-e-menu {
+        z-index: 2 !important;
+    }
+    .w-e-text-container {
+        z-index: 1 !important;
+    }
+
+    .w-e-toolbar {
+    // 给工具栏换行
+    z-index: 0 !important;
+
+    }
+
+    .w-e-toolbar {
+    // 给工具栏换行
+    flex-wrap: wrap;
+
+    }
+
 </style>
+<script src="/resources/js/jquery.ztree.all.js"></script>
+<script src="/resources/js/treeSelect.2.0.js"></script>
 <div class="container-fluid">
         <input type="hidden" id="_sourceChannel" value="<#config name='ia.source.channel.earnest_order'/>">
         <form id="saveForm" role="form" novalidate>
@@ -62,8 +80,7 @@
             <div class="row row-cols-1">
                 <div class="form-group col">
                     <label for="title">通告内容<i class="red">*</i></label>
-                    <div id="editor">
-                    </div>
+                    <div id="editor"></div>
                 </div>
             </div>
             <div class="row">
@@ -106,10 +123,43 @@
             <div id="systemUserAndDepartDev" class="row" style="display: none">
                 <div class="form-group col">
                     <div id="departmentDev" style="display: none">
-                        部门树
+                        <div style="width: 300px;overflow:hidden;cursor: pointer" id="departmentTree">选择部门</div>
                     </div>
-                    <div id="userDev" style="display: none">
-                        指定人员
+                    <div id="userDev" class="container-fluid" style="display: none">
+                        <button type="button" class="btn btn-outline-primary mr-2" onclick="openUserPageHandler()">
+                            <i class="fa fa-search"></i>添加用户
+                        </button>
+                        <button type="button" class="btn btn-outline-primary mr-2" onclick="deleteUser()">
+                            <i class="fa"></i>删除用户
+                        </button>
+                        <div class="row">
+                            <div class="col-sm-12 offset-sm-0">
+                                <table id="grid" data-toggle="table" data-title="用户查询" class="table"
+                                       data-toolbar="#toolbar" data-pagination="false" data-page-number="1"
+                                       data-page-size="10" data-query-params="queryParams"
+                                       data-side-pagination="server"
+                                       data-content-type="application/x-www-form-urlencoded"
+                                       data-single-select="false" data-click-to-select="true" data-checkbox-header="true"
+                                       data-unique-id="id" data-sort-name="id" data-sort-order="desc"
+                                       data-icons="bui.variable.icons"
+                                       data-buttons-class="primary">
+                                    <thead>
+                                    <tr>
+                                        <th data-checkbox="true">选择</th>
+                                        <th data-field="departmentId" data-align="center">
+                                            组织
+                                        </th>
+                                        <th data-field="realName" data-align="center">
+                                            姓名
+                                        </th>
+                                        <th data-field="position" data-align="center">
+                                            职位
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -118,6 +168,8 @@
                     <label for="notes">备注</label>
                     <input id="notes" class="form-control" name="notes"  maxlength="120">
                 </div>
+            </div>
+            <div style="height: 100px">
             </div>
             <div class="modal-footer-wrap">
                 <div class="modal-footer">
@@ -128,7 +180,18 @@
         </form>
     </div>
 </#bs4Body>
+
+<script type="text/javascript" src="${contextPath!}/resources/wangeditor/js/dist/wangEditor.min.js"></script>
+
 <script>
+
+    const E = window.wangEditor;
+    const editor = new E('#editor');
+    // 或者 const editor = new E(document.getElementById('div1'))
+    editor.create();
+    let _grid = $('#grid');
+    var departmentAuthResult;
+
     //时间范围
     lay('.settletime').each(function () {
         laydate.render({
@@ -141,9 +204,90 @@
         });
     });
 
+    //树
+    let zTreeConfig = {
+        //默认选中
+        checks: [],
+        height: 233,
+        filter: false,
+        searchShowParent: false,
+        // 单选还是多选 radio checkbox
+        chkStyle: "checkbox",
+        callback: {
+            onCheck: function (e, treeNode) {
+
+            } /*选中事件的回调*/
+        },
+        //自定义数据格式
+        data: {
+            key: {
+                name: "name",
+                isParent: "isParent"
+            },
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "parentId",
+                rootPId: 0
+            }
+        },
+        zNodes: []
+    };
+
     $(function () {
         initCom();
+
+        initTree();
+
+        $(window).resize(function () {
+            _grid.bootstrapTable('resetView')
+        });
+        _grid.bootstrapTable('refreshOptions', {
+            datatype:'local',
+            url: '',
+            responseHandler: function (res) {
+                if (res.code && res.code == "200") {
+                    return res.data;
+                }
+                return [];
+            }
+        });
     })
+
+    function initTree() {
+        //文件部门权限树配置
+        let departmentTree = Object.assign({}, zTreeConfig);
+
+        //加载部门树
+        departmentTree.zNodes =${departmentList!};
+        departmentTree.chkStyle = "checkbox";
+        departmentTree.callback.onCheck = function (e, treeNode) {
+
+        };
+        departmentAuthResult = $("#departmentTree").treeSelect(departmentTree)
+        $("#department").click(function () {
+            $("#departmentTree").click();
+        });
+    }
+
+    /**
+     * 查询处理
+     */
+    function queryDataHandler() {
+        _grid.bootstrapTable('refresh');
+    }
+
+    /**
+     * table参数组装
+     * 可修改queryParams向服务器发送其余的参数
+     * @param params
+     */
+    function queryParams(params) {
+        let temp = {
+            user: params.order
+        };
+        return $.extend(temp, bui.util.bindGridMeta2Form('grid', 'queryForm'));
+    }
 
     /**
      * 初始化按钮事件
@@ -223,21 +367,20 @@
             if(systemSelectVal==2){
                 annunciateTarget.targetRange=2;
                 annunciateTargets.push(annunciateTarget);
-                var user={"id":1,"userName":"王三"};
-                users.push(user);
+                users=$('#tableId').bootstrapTable("getData");
+                if(users.length==0){
+                    bs4pop.alert("指定用户时，最少选择一个用户！", {type: 'error'});
+                    return ;
+                }
                 for(var i=0;i<users.length;i++){
                     var annunciateItem={};
                     annunciateItem.targetId=users[i].id
                     annunciateItems.push(annunciateItem);
                 }
-                if(users.length==0){
-                    bs4pop.alert("指定用户时，最少选择一个用户！", {type: 'error'});
-                    return ;
-                }
             }
             //指定部门
             if(systemSelectVal==3){
-                var departments=[{"id":1},{"id":2}];
+                var departments=departmentAuthResult.getCheckedObject()
                 if(departments.length==0){
                     bs4pop.alert("指定部门时，最少选择一个部门！", {type: 'error'});
                     return ;
@@ -319,9 +462,52 @@
             annunciateDto.endTime=annunciateDto.endTime+":00:00"
         }
         annunciateDto.notes=$("#notes").val();
-        annunciateDto.content="还不知道";
+        annunciateDto.content=editor.txt.html();
         return annunciateDto;
     }
+
+    //弹出用户选择界面
+    function openUserPageHandler() {
+        let ids = [];
+        diaUserAdd = bs4pop.dialog({
+            title: '选择用户',// 对话框title
+            content: '${contextPath}/component/userSelect.html?ids=' + ids, // 对话框内容，可以是
+            width: '100%',// 宽度
+            height: '100%',// 高度
+            isIframe: true,// 默认是页面层，非iframe
+            backdrop: 'static',
+        });
+    }
+
+    //选择用户回调函数
+    function selectUsersCallback(items) {
+        authList = [];
+        if (items) {
+            items.forEach((item) => {
+                authList.push({id: item.id, realName: item.realName,position:item.position,departmentId:item.departmentId});
+            });
+        }
+        _grid.bootstrapTable('load', authList);
+    }
+
+    //删除用户
+    function deleteUser() {
+        let rows = _grid.bootstrapTable('getSelections');
+        if (!rows || rows.length <= 0) {
+            bs4pop.alert('请选择数据进行删除!');
+            return;
+        }
+        var ids=[];
+        rows.forEach((row) => {
+            ids.push(row.id);
+        });
+        _grid.bootstrapTable('remove', {
+            field: 'id',//对应该字段ID的columns的field
+            values: ids//字段ID的值
+        })
+        _grid.bootstrapTable('refreshOptions', {});
+    }
+
 
     /**
      * 格式化时间
