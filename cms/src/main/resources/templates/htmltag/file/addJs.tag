@@ -14,13 +14,11 @@
             return false;
         }
         // 获取部门权限
-        if ($('input:radio[name="authTypeId"]').val() == 10) {
+        if ($(':radio[name="authTypeId"]:checked').val() == 10) {
             departmentAuthResult.getCheckedObject().forEach(item => {
-                fileDto.fileAuthList.push({authType: 10, authValue: item.id});
+                fileDto.fileAuthList.push({authType: 10, authValue: item.id, authText: item.name});
             });
         }
-        console.log(departmentAuthResult.getCheckedObject());
-        return;
         let formData = Object.assign(fileDto, _form.serializeObject());
         let url = fileDto.id ? "update" : "insert";
         $.ajax({
@@ -59,10 +57,11 @@
         fileDto = ${fileInfo!};
         //显示已经存在的文件信息
         fileDto.fileItemList.forEach(item => {
+            item.fid = randomID(10);
             appendFileHtml(item);
         });
         //显示图片
-        appendImgHtml({fid: 123, coverImg: fileDto.coverImg});
+        appendImgHtml({fid: randomID(10), coverImg: fileDto.coverImg});
         //显示选中的文件类型
         fileTypeTree.checks = [fileDto.typeId];
         //显示部门类型
@@ -131,7 +130,7 @@
         fileDto.fileAuthList = [];
         if (items) {
             items.forEach((item) => {
-                fileDto.fileAuthList.push({authType: 30, authValue: item.id});
+                fileDto.fileAuthList.push({authType: 30, authValue: item.id, authText: item.realName});
             });
         }
     }
@@ -157,29 +156,13 @@
     }
 
     //添加一个文件元素
-    function appendFileHtml(file) {
-        let isAppend = false;
-        let fileItemHtml = "<li class='list-group-item' style='padding: 0 !important;' id='" + file.fid + "'>" +
-            "<button type='button' class='btn btn-default badge' onclick='deleteFileHandler(" + file.fid + ")'>X</button>\n" +
-            file.fileName +
-            "</li>";
-        //获取到所有group
-        $.each($(".file-group"), (i, item) => {
-            if ($(item).find("li").length < 4) {
-                $(item).append(fileItemHtml);
-                isAppend = true;
-                return;
-            }
-        });
-        if (isAppend) return;
-        //计算获取到当前是属于哪个group的
-        let fileCount = $("#files").find("li").length;
-        let groupElement = "file-group-" + parseInt(fileCount / 4);
-        //如果group不存在则需要添加一个group
-        if ($("#" + groupElement).length <= 0) {
-            $("#file-groups").append("<div class='col-sm-4' id='" + groupElement + "'></div>")
-        }
-        $("#" + groupElement).append(fileItemHtml);
+    function appendFileHtml(data) {
+        let fileItemHtml = "<span style='margin: 0 15px 0 0; ' id='" + data.fid + "'>" +
+            "<i onclick='deleteFileHandler(\"" + data.fid + "\")' class=\"fa fa-close\"></i>" +
+            "<a href=\"#\" class=\"badge badge-info\" onclick='openFile(\"" + data.fileUrl + "\")'>" +
+            data.fileName + "</a>" +
+            "</span>";
+        $("#file-group").append(fileItemHtml);
     }
 
 
@@ -240,8 +223,8 @@
     //在页面上添加一个图片
     function appendImgHtml(data) {
         let fileItemHtml = "<div class='file-item' id='" + data.fid + "'>" +
-            "<span class='recommends-content-item__info' onclick='deleteImgFileHandler(" + data.fid + ")'>删除</span>" +
-            "<img class='img-thumbnail' src='" + data.coverImg + "'></div>";
+            "<span class='recommends-content-item__info' onclick='deleteImgFileHandler(\"" + data.fid + "\")'>删除</span>" +
+            "<img class='img-thumbnail' onclick='openFile(\"" + data.coverImg + "\")' src='" + data.coverImg + "'></div>";
         $("#aaa").append(fileItemHtml);
     }
 
@@ -250,5 +233,15 @@
         $("#" + fid).remove();
         $("#aaa").triggerHandler("updateCount");
         fileDto.coverImg = "";
+    }
+
+    //预览文件
+    function openFile(url) {
+        window.open("https://dfs.diligrp.com/file/view/" + url.substring(url.lastIndexOf("/") + 1));
+    }
+
+    //随机生成Id
+    function randomID(randomLength) {
+        return Number(Math.random().toString().substr(3, randomLength) + new Date().getTime()).toString(36)
     }
 </script>

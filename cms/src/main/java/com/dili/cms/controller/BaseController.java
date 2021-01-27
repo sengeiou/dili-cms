@@ -34,6 +34,10 @@ public abstract class BaseController {
         return 0L;//getCurrentUser().getId();
     }
 
+    protected Long getDepartmentId() {
+        return 0L;//getCurrentUser().getDepartmentId();
+    }
+
     protected Long getOrgId() {
         return 0L;//getCurrentUser().getId();
     }

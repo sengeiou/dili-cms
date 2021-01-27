@@ -78,24 +78,26 @@
         }
         if(selectDatas[0].$_sendState==1||selectDatas[0].$_sendState==3){
             bs4pop.confirm("确认删除当前通告信息吗？", {title: "信息确认"}, function (sure) {
-                $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    url: '/annunciate/delete.action',
-                    data: {id: selectDatas[0].id},
-                    success: function (data) {
-                        bui.loading.hide();
-                        if (data.code == '200') {
-                            bs4pop.alert("删除成功!", {type: 'success'},function(){
-                                location.reload();
-                            });
+                if(sure){
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: '/annunciate/delete.action',
+                        data: {id: selectDatas[0].id},
+                        success: function (data) {
+                            bui.loading.hide();
+                            if (data.code == '200') {
+                                bs4pop.alert("删除成功!", {type: 'success'},function(){
+                                    location.reload();
+                                });
+                            }
+                        },
+                        error: function () {
+                            bui.loading.hide();
+                            bs4pop.alert("删除失败!", {type: 'error'});
                         }
-                    },
-                    error: function () {
-                        bui.loading.hide();
-                        bs4pop.alert("删除失败!", {type: 'error'});
-                    }
-                });
+                    });
+                }
             });
         }else{
             bs4pop.alert("只有未发布和已撤发的通告才能进行删除!", {type: 'error'});
@@ -111,24 +113,26 @@
         }
         if(selectDatas[0].$_sendState==2){
             bs4pop.confirm("确认撤销当前通告信息吗？", {title: "信息确认"}, function (sure) {
-                $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    url: '/annunciate/revoke.action',
-                    data: {id: selectDatas[0].id},
-                    success: function (data) {
-                        bui.loading.hide();
-                        if (data.code == '200') {
-                            bs4pop.alert("撤销成功!", {type: 'success'},function(){
-                                location.reload();
-                            });
+                if(sure){
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: '/annunciate/revoke.action',
+                        data: {id: selectDatas[0].id},
+                        success: function (data) {
+                            bui.loading.hide();
+                            if (data.code == '200') {
+                                bs4pop.alert("撤销成功!", {type: 'success'},function(){
+                                    location.reload();
+                                });
+                            }
+                        },
+                        error: function () {
+                            bui.loading.hide();
+                            bs4pop.alert("撤销失败!", {type: 'error'});
                         }
-                    },
-                    error: function () {
-                        bui.loading.hide();
-                        bs4pop.alert("撤销失败!", {type: 'error'});
-                    }
-                });
+                    });
+                }
             });
         }else{
             bs4pop.alert("只有已发布的通告才能进行撤销!", {type: 'error'});
@@ -138,37 +142,39 @@
 
     function stickHandler(id) {
         bs4pop.confirm("确认置顶当前通告信息吗？", {title: "信息确认"}, function (sure) {
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: '/annunciate/stick.action',
-                data: {id: id},
-                success: function (data) {
-                    bui.loading.hide();
-                    if (data.code == '200') {
-                        bs4pop.alert("置顶成功!", {type: 'success'},function(){
-                            location.reload();
-                        });
+            if(sure){
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: '/annunciate/stick.action',
+                    data: {id: id},
+                    success: function (data) {
+                        bui.loading.hide();
+                        if (data.code == '200') {
+                            bs4pop.alert("置顶成功!", {type: 'success'},function(){
+                                location.reload();
+                            });
+                        }
+                    },
+                    error: function () {
+                        bui.loading.hide();
+                        bs4pop.alert("置顶失败!", {type: 'error'});
                     }
-                },
-                error: function () {
-                    bui.loading.hide();
-                    bs4pop.alert("置顶失败!", {type: 'error'});
-                }
-            });
+                });
+            }
         });
     }
 
     function openEditHandler() {
         var selectDatas=_grid.bootstrapTable('getSelections');
-        if(selectDatas.length==0){
+        if(selectDatas.length!=1){
             bs4pop.alert("只能选择一条数据进行编辑!", {type: 'error'});
             return;
         }
         if(selectDatas[0].$_sendState==1||selectDatas[0].$_sendState==3){
-            diaView = bs4pop.dialog({
+            diaAdd = bs4pop.dialog({
                 title: '信息通告编辑',
-                content: '/annunciate/update.html?id=' + selectDatas[0].id,
+                content: '/annunciate/add.html?id=' + selectDatas[0].id,
                 isIframe: true,
                 backdrop: 'static',
                 width: '75%',
@@ -182,7 +188,7 @@
 
     function openViewBtnHandler() {
         var selectDatas=_grid.bootstrapTable('getSelections');
-        if(selectDatas.length==0){
+        if(selectDatas.length!=1){
             bs4pop.alert("只能选择一条数据进行查看!", {type: 'error'});
             return;
         }

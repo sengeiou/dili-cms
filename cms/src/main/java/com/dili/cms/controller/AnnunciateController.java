@@ -9,13 +9,14 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import com.alibaba.fastjson.JSON;
 import com.dili.cms.commons.Constants;
 import com.dili.cms.sdk.domain.Annunciate;
+import com.dili.cms.sdk.domain.AnnunciateItem;
+import com.dili.cms.sdk.domain.AnnunciateTarget;
 import com.dili.cms.sdk.dto.AnnunciateDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
-import com.dili.cms.sdk.glossary.AnnunciatePublishType;
-import com.dili.cms.sdk.glossary.AnnunciateSendState;
-import com.dili.cms.sdk.glossary.AnnunciateStickState;
-import com.dili.cms.sdk.glossary.AnnunciateType;
+import com.dili.cms.sdk.glossary.*;
+import com.dili.cms.service.AnnunciateItemService;
 import com.dili.cms.service.AnnunciateService;
+import com.dili.cms.service.AnnunciateTargetService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.domain.PageOutput;
@@ -25,7 +26,9 @@ import com.dili.uap.sdk.domain.Department;
 import com.dili.uap.sdk.domain.User;
 import com.dili.uap.sdk.domain.UserTicket;
 import com.dili.uap.sdk.domain.dto.DepartmentDto;
+import com.dili.uap.sdk.domain.dto.UserQuery;
 import com.dili.uap.sdk.rpc.DepartmentRpc;
+import com.dili.uap.sdk.rpc.UserRpc;
 import com.dili.uap.sdk.session.SessionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +38,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,8 +60,17 @@ public class AnnunciateController extends BaseController{
     @Autowired
     AnnunciateService annunciateService;
 
+    @Autowired
+    AnnunciateTargetService annunciateTargetService;
+
+    @Autowired
+    AnnunciateItemService annunciateItemService;
+
     @Resource
     private DepartmentRpc departmentRpc;
+
+    @Autowired
+    UserRpc userRpc;
 
     /**
       * 进入信息通告列表页面
@@ -97,7 +110,55 @@ public class AnnunciateController extends BaseController{
      * @date：2021/1/21 9:38
      */
     @RequestMapping(value="/add.html", method = RequestMethod.GET)
-    public String add(ModelMap modelMap) {
+    public String add(Long id,ModelMap modelMap) {
+        if(id!=null){
+            modelMap.put("opType", JSON.toJSONString("update"));
+            //获取主数据
+            Annunciate annunciate=annunciateService.get(id);
+            if(annunciate.getStartTime()!=null){
+                annunciate.setStartTimeStr(LocalDateTimeUtil.format(annunciate.getStartTime(), Constants.GLOBAL_HOUR_FORMAT));
+            }
+            annunciate.setEndTimeStr(LocalDateTimeUtil.format(annunciate.getEndTime(), Constants.GLOBAL_HOUR_FORMAT));
+            modelMap.put("annunciate", JSON.toJSONString(annunciate));
+            //获取通告目标
+            AnnunciateTarget annunciateTarget=DTOUtils.newInstance(AnnunciateTarget.class);
+            annunciateTarget.setAnnunciateId(id);
+            List<AnnunciateTarget> annunciateTargets=annunciateTargetService.listByExample(annunciateTarget);
+            modelMap.put("annunciateTargets", JSON.toJSONString(annunciateTargets));
+            //获取通告项
+            AnnunciateItem annunciateItem=DTOUtils.newInstance(AnnunciateItem.class);
+            annunciateItem.setAnnunciateId(id);
+            List<AnnunciateItem> annunciateItems=annunciateItemService.listByExample(annunciateItem);
+            //如果是指定用户的需要查出用户数据进行填充到列表
+            boolean flag=false;
+            for (AnnunciateTarget obj:annunciateTargets) {
+                if(AnnunciateTargetRange.APPOINT_USER.getValue().equals(obj.getTargetRange())){
+                    List<String> ids=new ArrayList<>(annunciateItems.size());
+                    for (AnnunciateItem objItem : annunciateItems) {
+                        if(AnnunciateTargetType.SYSTEM_USER.getValue().equals(objItem.getTargetType())){
+                            ids.add(objItem.getId().toString());
+                        }
+                    }
+                    UserQuery userQuery = DTOUtils.newInstance(UserQuery.class);
+                    userQuery.setIds(ids);
+                    BaseOutput<List<User>> UserResult = userRpc.listByExample(userQuery);
+                    if(UserResult.isSuccess()){
+                        modelMap.put("appointUsers",JSON.toJSONString(UserResult.getData()));
+                        flag=true;
+                    }
+                    break;
+                }
+            }
+            if(!flag){
+                modelMap.put("appointUsers",JSON.toJSONString(""));
+            }
+        }else{
+            modelMap.put("opType", JSON.toJSONString("add"));
+            modelMap.put("annunciate", JSON.toJSONString(""));
+            modelMap.put("annunciateTargets", JSON.toJSONString(""));
+            modelMap.put("appointUsers",JSON.toJSONString(""));
+        }
+        //获取部门列表
         DepartmentDto departmentDto = DTOUtils.newInstance(DepartmentDto.class);
         departmentDto.setFirmId(getFirmId());
         BaseOutput<List<Department>> departmentList = departmentRpc.listByExample(departmentDto);
@@ -106,15 +167,59 @@ public class AnnunciateController extends BaseController{
     }
 
     /**
-     * 进入信息通告新增页面
+     * 查看页面
      * @param modelMap:
      * @return：java.lang.String
-     * @author：Henry.Huang
-     * @date：2021/1/21 9:38
+     * @author：Ron.Peng
+     * @date：2021/1/26 15:34
      */
-    @RequestMapping(value="/update.html", method = RequestMethod.GET)
-    public String update(ModelMap modelMap) {
-        return "annunciate/add";
+    @RequestMapping(value="/view.html", method = RequestMethod.GET)
+    public String view(Long id,ModelMap modelMap) {
+        //获取主数据
+        Annunciate annunciate=annunciateService.get(id);
+        if(annunciate.getStartTime()!=null){
+            annunciate.setStartTimeStr(LocalDateTimeUtil.format(annunciate.getStartTime(), Constants.GLOBAL_HOUR_FORMAT));
+        }
+        annunciate.setEndTimeStr(LocalDateTimeUtil.format(annunciate.getEndTime(), Constants.GLOBAL_HOUR_FORMAT));
+        modelMap.put("annunciate", JSON.toJSONString(annunciate));
+        //获取通告目标
+        AnnunciateTarget annunciateTarget=DTOUtils.newInstance(AnnunciateTarget.class);
+        annunciateTarget.setAnnunciateId(id);
+        List<AnnunciateTarget> annunciateTargets=annunciateTargetService.listByExample(annunciateTarget);
+        modelMap.put("annunciateTargets", JSON.toJSONString(annunciateTargets));
+        //获取通告项
+        AnnunciateItem annunciateItem=DTOUtils.newInstance(AnnunciateItem.class);
+        annunciateItem.setAnnunciateId(id);
+        List<AnnunciateItem> annunciateItems=annunciateItemService.listByExample(annunciateItem);
+        //如果是指定用户的需要查出用户数据进行填充到列表
+        boolean flag=false;
+        for (AnnunciateTarget obj:annunciateTargets) {
+            if(AnnunciateTargetRange.APPOINT_USER.getValue().equals(obj.getTargetRange())){
+                List<String> ids=new ArrayList<>(annunciateItems.size());
+                for (AnnunciateItem objItem : annunciateItems) {
+                    if(AnnunciateTargetType.SYSTEM_USER.getValue().equals(objItem.getTargetType())){
+                        ids.add(objItem.getId().toString());
+                    }
+                }
+                UserQuery userQuery = DTOUtils.newInstance(UserQuery.class);
+                userQuery.setIds(ids);
+                BaseOutput<List<User>> UserResult = userRpc.listByExample(userQuery);
+                if(UserResult.isSuccess()){
+                    modelMap.put("appointUsers",JSON.toJSONString(UserResult.getData()));
+                    flag=true;
+                }
+                break;
+            }
+        }
+        if(!flag){
+            modelMap.put("appointUsers",JSON.toJSONString(""));
+        }
+        //获取部门列表
+        DepartmentDto departmentDto = DTOUtils.newInstance(DepartmentDto.class);
+        departmentDto.setFirmId(getFirmId());
+        BaseOutput<List<Department>> departmentList = departmentRpc.listByExample(departmentDto);
+        modelMap.put("departmentList", JSON.toJSONString(departmentList.getData()));
+        return "annunciate/view";
     }
 
     /**
@@ -159,13 +264,13 @@ public class AnnunciateController extends BaseController{
       */
     @RequestMapping(value="/update.action", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public BaseOutput update(AnnunciateDto annunciateDto, List<User> users) {
+    public BaseOutput update(@RequestBody AnnunciateDto annunciateDto) {
         String tips=checkAnnunciate(annunciateDto);
         if (!"".equals(tips)){
             return BaseOutput.failure(tips);
         }
         setUpdateDefaultValue(annunciateDto);
-        return annunciateService.updateAnnunciate(annunciateDto,users);
+        return annunciateService.updateAnnunciate(annunciateDto);
     }
 
     /**
@@ -288,6 +393,7 @@ public class AnnunciateController extends BaseController{
       */
     private void setUpdateDefaultValue(AnnunciateDto annunciateDto) {
         UserTicket userTicket = SessionContext.getSessionContext().getUserTicket();
+        annunciateDto.setFirmId(userTicket.getFirmId());
         annunciateDto.setModifyTime(LocalDateTime.now());
         annunciateDto.setModifierId(userTicket.getId());
         if(AnnunciatePublishType.SYSTEM_USER.getValue().equals(annunciateDto.getPublishType())){

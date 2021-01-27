@@ -11,10 +11,7 @@ import com.dili.cms.sdk.domain.AnnunciateItem;
 import com.dili.cms.sdk.domain.AnnunciateTarget;
 import com.dili.cms.sdk.dto.AnnunciateDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
-import com.dili.cms.sdk.glossary.AnnunciateSendState;
-import com.dili.cms.sdk.glossary.AnnunciateStickState;
-import com.dili.cms.sdk.glossary.AnnunciateTargetRange;
-import com.dili.cms.sdk.glossary.ReadType;
+import com.dili.cms.sdk.glossary.*;
 import com.dili.cms.service.AnnunciateItemService;
 import com.dili.cms.service.AnnunciateService;
 import com.dili.cms.service.AnnunciateTargetService;
@@ -31,8 +28,9 @@ import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.exception.AppException;
 import com.dili.uap.sdk.domain.User;
 import com.dili.uap.sdk.domain.UserTicket;
-import com.dili.uap.sdk.domain.dto.AnnunciateMessage;
+import com.dili.uap.sdk.domain.dto.AnnunciateMessages;
 import com.dili.uap.sdk.domain.dto.UserQuery;
+import com.dili.uap.sdk.rpc.AnnunciateMessageRpc;
 import com.dili.uap.sdk.rpc.UserRpc;
 import com.dili.uap.sdk.session.SessionContext;
 import com.github.pagehelper.Page;
@@ -73,6 +71,9 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
 
     @Autowired
     CustomerRpc customerRpc;
+
+    @Autowired
+    AnnunciateMessageRpc annunciateMessageRpc;
 
     private final Integer USER_NORMAL=1;
 
@@ -131,10 +132,14 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
                 annunciateItemService.batchInsert(annunciateItems);
                 //保存成功后将信息推送给uap待办 立即发布才发
                 if(AnnunciateSendState.PUBLISH.getValue().equals(annunciateDto.getSendState())){
-                    List<AnnunciateMessage> annunciateMessages=new ArrayList<>(annunciateItems.size());
+                    AnnunciateMessages annunciateMessages=DTOUtils.newInstance(AnnunciateMessages.class);
+                    List<String> targetIds=new ArrayList<>(annunciateItems.size());
                     for (AnnunciateItem annunciateItem:annunciateItems) {
-                        annunciateMessages.add(setAnnunciateMessageValue(annunciateItem,annunciateDto));
+                        targetIds.add(annunciateItem.getTargetId().toString());
                     }
+                    annunciateMessages.setTargetIds(targetIds);
+                    setAnnunciateMessagesValue(annunciateMessages,annunciateDto);
+                    annunciateMessageRpc.sendAnnunciates(annunciateMessages);
                 }
             }
         }
@@ -143,13 +148,13 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public BaseOutput updateAnnunciate(AnnunciateDto annunciateDto, List<User> users) throws AppException{
+    public BaseOutput updateAnnunciate(AnnunciateDto annunciateDto) throws AppException{
         //乐观锁更新主数据
-        Example example=new Example(AnnunciateDto.class);
+        Example example=new Example(Annunciate.class);
         example.createCriteria().andEqualTo("id",annunciateDto.getId())
-                .andNotEqualTo("version",annunciateDto.getVersion());
+                .andEqualTo("version",annunciateDto.getVersion());
         annunciateDto.setVersion(annunciateDto.getVersion()+1);
-        int updateFlag=getActualDao().updateByExample(annunciateDto,example);
+        int updateFlag=getActualDao().updateByExampleExact(annunciateDto,example);
         if(updateFlag!=1){
             throw new AppException("更新数据失败，请重新打开页面进行编辑提交！");
         }
@@ -171,10 +176,14 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
                 annunciateItemService.batchInsert(annunciateItems);
                 //保存成功后将信息推送给uap待办 立即发布才发 updateType 1为未发布更新 2位已撤销更新 只有未发布更新才发送消息到uap
                 if(AnnunciateSendState.PUBLISH.getValue().equals(annunciateDto.getSendState())){
-                    List<AnnunciateMessage> annunciateMessages=new ArrayList<>(annunciateItems.size());
+                    AnnunciateMessages annunciateMessages=DTOUtils.newInstance(AnnunciateMessages.class);
+                    List<String> targetIds=new ArrayList<>(annunciateItems.size());
                     for (AnnunciateItem annunciateItem:annunciateItems) {
-                        annunciateMessages.add(setAnnunciateMessageValue(annunciateItem,annunciateDto));
+                        targetIds.add(annunciateItem.getTargetId().toString());
                     }
+                    annunciateMessages.setTargetIds(targetIds);
+                    setAnnunciateMessagesValue(annunciateMessages,annunciateDto);
+                    annunciateMessageRpc.sendAnnunciates(annunciateMessages);
                 }
             }
         }
@@ -247,24 +256,34 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
         AnnunciateItem annunciateItem=DTOUtils.newInstance(AnnunciateItem.class);
         annunciateItem.setReadState(ReadType.DELETE.getValue());
         annunciateItemService.updateSelectiveByExample(annunciateItem,annunciateItemCondition);
+        //调用uap接口进行撤销消息
+        annunciateItemCondition.setTargetType(AnnunciateTargetType.SYSTEM_USER.getValue());
+        List<AnnunciateItem> annunciateItems=annunciateItemService.listByExample(annunciateItemCondition);
+        if(annunciateItems!=null&&annunciateItems.size()>0){
+            AnnunciateMessages annunciateMessages=DTOUtils.newInstance(AnnunciateMessages.class);
+            List<String> targetIds=new ArrayList<>(annunciateItems.size());
+            for (AnnunciateItem obj:annunciateItems) {
+                targetIds.add(obj.getTargetId().toString());
+            }
+            annunciateMessages.setTargetIds(targetIds);
+            annunciateMessages.setId(annunciate.getId());
+            annunciateMessageRpc.withdrawAnnunciates(annunciateMessages);
+        }
         return BaseOutput.success();
     }
 
     /**
-      * 生成uap平台休息
-      * @param annunciateItem:
+      * 生成uap平台消息
+      * @param annunciateMessages:
       * @param annunciateDto:
       * @return：com.dili.uap.sdk.domain.dto.AnnunciateMessage
       * @author：Henry.Huang
       * @date：2021/1/23 15:47
       */
-    private AnnunciateMessage setAnnunciateMessageValue(AnnunciateItem annunciateItem, AnnunciateDto annunciateDto) {
-        AnnunciateMessage annunciateMessage=DTOUtils.newDTO(AnnunciateMessage.class);
-        annunciateMessage.setId(annunciateDto.getId());
-        annunciateMessage.setTargetId(annunciateItem.getTargetId().toString());
-        annunciateMessage.setTitle(annunciateDto.getTitle());
-        annunciateMessage.setType(annunciateDto.getType());
-        return annunciateMessage;
+    private void setAnnunciateMessagesValue(AnnunciateMessages annunciateMessages, AnnunciateDto annunciateDto) {
+        annunciateMessages.setId(annunciateDto.getId());
+        annunciateMessages.setTitle(annunciateDto.getTitle());
+        annunciateMessages.setType(annunciateDto.getType());
     }
 
     /**
@@ -282,6 +301,7 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
             annunciateItemNew.setAnnunciateId(annunciateDto.getId());
             annunciateItemNew.setReadState(ReadType.NO_READ.getValue());
             annunciateItemNew.setSendTime(annunciateDto.getStartTime());
+            annunciateItemNew.setTargetType(AnnunciateTargetType.SYSTEM_USER.getValue());
             annunciateItemNew.setCreateTime(annunciateDto.getCreateTime());
             return annunciateItemNew;
         }
@@ -292,6 +312,8 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
             annunciateItem.setReadState(ReadType.NO_READ.getValue());
             annunciateItem.setSendTime(annunciateDto.getStartTime());
             annunciateItem.setCreateTime(annunciateDto.getCreateTime());
+            annunciateItem.setTargetType(AnnunciateTargetType.SYSTEM_USER.getValue());
+            annunciateItem.setTargetName(user.getRealName());
         }
         if (customer != null) {
             annunciateItem.setAnnunciateId(annunciateDto.getId());
@@ -299,6 +321,7 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
             annunciateItem.setReadState(ReadType.NO_READ.getValue());
             annunciateItem.setSendTime(annunciateDto.getStartTime());
             annunciateItem.setCreateTime(annunciateDto.getCreateTime());
+            annunciateItem.setTargetType(AnnunciateTargetType.CUSTOMER.getValue());
         }
         return annunciateItem;
     }

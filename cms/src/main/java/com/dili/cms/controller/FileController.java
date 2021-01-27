@@ -17,11 +17,9 @@ import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.uap.sdk.domain.Department;
 import com.dili.uap.sdk.domain.User;
-import com.dili.uap.sdk.domain.UserTicket;
 import com.dili.uap.sdk.domain.dto.DepartmentDto;
 import com.dili.uap.sdk.rpc.DepartmentRpc;
 import com.dili.uap.sdk.rpc.UserRpc;
-import com.dili.uap.sdk.session.SessionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -99,6 +97,7 @@ public class FileController extends BaseController {
         if (Objects.nonNull(id)) {
             IFileDto fileDto = fileService.getDetailById(id);
             modelMap.put("fileInfo", JSON.toJSONString(fileDto));
+            modelMap.put("fileCount", fileDto.getFileItemList().size());
         }
         return "file/add";
     }
@@ -139,6 +138,40 @@ public class FileController extends BaseController {
         return fileService.edit(fileDto);
     }
 
+
+    /**
+     * TODO 文件详情
+     *
+     * @param modelMap:
+     * @return：java.lang.String
+     * @author：Tab.Xie
+     * @date：2021/1/26 20:10
+     */
+    @RequestMapping(value = "view.html", method = RequestMethod.GET)
+    public String view(Long id, ModelMap modelMap) {
+        //如果参数id不为空 则是编辑
+        if (Objects.nonNull(id)) {
+            IFileDto fileDto = fileService.getDetailById(id);
+            modelMap.put("fileInfo", fileDto);
+        }
+        return "file/view";
+    }
+
+
+    /**
+     * TODO 删除文件
+     *
+     * @param ids:
+     * @return：com.dili.ss.domain.BaseOutput
+     * @author：Tab.Xie
+     * @date：2021/1/27 14:51
+     */
+    @RequestMapping(value = "delete.action", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseOutput delete(@RequestBody List<Long> ids) {
+        return fileService.deleteByIds(ids);
+    }
+
     /**
      * TODO 列表查询
      *
@@ -150,9 +183,8 @@ public class FileController extends BaseController {
     @RequestMapping(value = "/listPage.action", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public EasyuiPageOutput listPage(IFileDto iFileDto) throws Exception {
-        UserTicket userTicket = SessionContext.getSessionContext().getUserTicket();
-        iFileDto.setDepartmentId(userTicket.getDepartmentId());
-        iFileDto.setPersonId(userTicket.getId());
+        iFileDto.setDepartmentId(getDepartmentId());
+        iFileDto.setPersonId(getUserId());
         return fileService.listPage(iFileDto, true);
     }
 }

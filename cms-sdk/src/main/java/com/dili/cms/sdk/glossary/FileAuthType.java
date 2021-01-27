@@ -41,6 +41,16 @@ public enum FileAuthType {
         this.value = value;
     }
 
+    public static FileAuthType getByValue(Integer value) {
+        for (FileAuthType fileAuthType : FileAuthType.values()) {
+            if (fileAuthType.getValue().equals(value)) {
+                return fileAuthType;
+            }
+        }
+
+        return null;
+    }
+
     public String getName() {
         return name;
     }
