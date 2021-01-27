@@ -9,13 +9,17 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import com.alibaba.fastjson.JSON;
 import com.dili.cms.commons.Constants;
 import com.dili.cms.sdk.domain.Annunciate;
+import com.dili.cms.sdk.domain.AnnunciateItem;
+import com.dili.cms.sdk.domain.AnnunciateTarget;
 import com.dili.cms.sdk.dto.AnnunciateDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.cms.sdk.glossary.AnnunciatePublishType;
 import com.dili.cms.sdk.glossary.AnnunciateSendState;
 import com.dili.cms.sdk.glossary.AnnunciateStickState;
 import com.dili.cms.sdk.glossary.AnnunciateType;
+import com.dili.cms.service.AnnunciateItemService;
 import com.dili.cms.service.AnnunciateService;
+import com.dili.cms.service.AnnunciateTargetService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.domain.PageOutput;
@@ -35,6 +39,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,6 +60,12 @@ import java.util.List;
 public class AnnunciateController extends BaseController{
     @Autowired
     AnnunciateService annunciateService;
+
+    @Autowired
+    AnnunciateTargetService annunciateTargetService;
+
+    @Autowired
+    AnnunciateItemService annunciateItemService;
 
     @Resource
     private DepartmentRpc departmentRpc;
@@ -97,7 +108,36 @@ public class AnnunciateController extends BaseController{
      * @date：2021/1/21 9:38
      */
     @RequestMapping(value="/add.html", method = RequestMethod.GET)
-    public String add(ModelMap modelMap) {
+    public String add(Long id,ModelMap modelMap) {
+        if(id!=null){
+            modelMap.put("opType", JSON.toJSONString("update"));
+            //获取主数据
+            Annunciate annunciate=annunciateService.get(id);
+            if(annunciate.getStartTime()!=null){
+                annunciate.setStartTimeStr(LocalDateTimeUtil.format(annunciate.getStartTime(), Constants.GLOBAL_HOUR_FORMAT));
+            }
+            annunciate.setEndTimeStr(LocalDateTimeUtil.format(annunciate.getEndTime(), Constants.GLOBAL_HOUR_FORMAT));
+            modelMap.put("annunciate", JSON.toJSONString(annunciate));
+            //获取通告目标
+            AnnunciateTarget annunciateTarget=DTOUtils.newInstance(AnnunciateTarget.class);
+            annunciateTarget.setAnnunciateId(id);
+            List<AnnunciateTarget> annunciateTargets=annunciateTargetService.listByExample(annunciateTarget);
+            modelMap.put("annunciateTargets", JSON.toJSONString(annunciateTargets));
+            //获取通告项
+            AnnunciateItem annunciateItem=DTOUtils.newInstance(AnnunciateItem.class);
+            annunciateItem.setAnnunciateId(id);
+            List<AnnunciateItem> annunciateItems=annunciateItemService.listByExample(annunciateItem);
+            if(annunciateItems==null){
+                annunciateItems=new ArrayList<>();
+            }
+            modelMap.put("annunciateItems", JSON.toJSONString(annunciateItems));
+        }else{
+            modelMap.put("opType", JSON.toJSONString("add"));
+            modelMap.put("annunciate", JSON.toJSONString(""));
+            modelMap.put("annunciateTargets", JSON.toJSONString(""));
+            modelMap.put("annunciateItems",JSON.toJSONString(""));
+        }
+        //获取部门列表
         DepartmentDto departmentDto = DTOUtils.newInstance(DepartmentDto.class);
         departmentDto.setFirmId(getFirmId());
         BaseOutput<List<Department>> departmentList = departmentRpc.listByExample(departmentDto);
@@ -113,8 +153,33 @@ public class AnnunciateController extends BaseController{
      * @date：2021/1/21 9:38
      */
     @RequestMapping(value="/update.html", method = RequestMethod.GET)
-    public String update(ModelMap modelMap) {
-        return "annunciate/add";
+    public String update(Long id , ModelMap modelMap) {
+        //获取主数据
+        Annunciate annunciate=annunciateService.get(id);
+        if(annunciate.getStartTime()!=null){
+            annunciate.setStartTimeStr(LocalDateTimeUtil.format(annunciate.getStartTime(), Constants.GLOBAL_HOUR_FORMAT));
+        }
+        annunciate.setEndTimeStr(LocalDateTimeUtil.format(annunciate.getEndTime(), Constants.GLOBAL_HOUR_FORMAT));
+        modelMap.put("annunciate", JSON.toJSONString(annunciate));
+        //获取通告目标
+        AnnunciateTarget annunciateTarget=DTOUtils.newInstance(AnnunciateTarget.class);
+        annunciateTarget.setAnnunciateId(id);
+        List<AnnunciateTarget> annunciateTargets=annunciateTargetService.listByExample(annunciateTarget);
+        modelMap.put("annunciateTargets", JSON.toJSONString(annunciateTargets));
+        //获取通告项
+        AnnunciateItem annunciateItem=DTOUtils.newInstance(AnnunciateItem.class);
+        annunciateItem.setAnnunciateId(id);
+        List<AnnunciateItem> annunciateItems=annunciateItemService.listByExample(annunciateItem);
+        if(annunciateItems==null){
+            annunciateItems=new ArrayList<>();
+        }
+        modelMap.put("annunciateItems", JSON.toJSONString(annunciateItems));
+        //获取部门列表
+        DepartmentDto departmentDto = DTOUtils.newInstance(DepartmentDto.class);
+        departmentDto.setFirmId(getFirmId());
+        BaseOutput<List<Department>> departmentList = departmentRpc.listByExample(departmentDto);
+        modelMap.put("departmentList", JSON.toJSONString(departmentList.getData()));
+        return "annunciate/update";
     }
 
     /**
@@ -158,13 +223,13 @@ public class AnnunciateController extends BaseController{
       */
     @RequestMapping(value="/update.action", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public BaseOutput update(AnnunciateDto annunciateDto, List<User> users) {
+    public BaseOutput update(@RequestBody AnnunciateDto annunciateDto) {
         String tips=checkAnnunciate(annunciateDto);
         if (!"".equals(tips)){
             return BaseOutput.failure(tips);
         }
         setUpdateDefaultValue(annunciateDto);
-        return annunciateService.updateAnnunciate(annunciateDto,users);
+        return annunciateService.updateAnnunciate(annunciateDto);
     }
 
     /**
@@ -287,6 +352,7 @@ public class AnnunciateController extends BaseController{
       */
     private void setUpdateDefaultValue(AnnunciateDto annunciateDto) {
         UserTicket userTicket = SessionContext.getSessionContext().getUserTicket();
+        annunciateDto.setFirmId(userTicket.getFirmId());
         annunciateDto.setModifyTime(LocalDateTime.now());
         annunciateDto.setModifierId(userTicket.getId());
         if(AnnunciatePublishType.SYSTEM_USER.getValue().equals(annunciateDto.getPublishType())){

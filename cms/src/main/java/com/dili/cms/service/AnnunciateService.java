@@ -79,12 +79,11 @@ public interface AnnunciateService extends BaseService<Annunciate, Long> {
     /**
       * 信息通告修改
       * @param annunciateDto:
-      * @param users:
       * @return：com.dili.ss.domain.BaseOutput
       * @author：Henry.Huang
       * @date：2021/1/23 15:46
       */
-    BaseOutput updateAnnunciate(AnnunciateDto annunciateDto, List<User> users);
+    BaseOutput updateAnnunciate(AnnunciateDto annunciateDto);
 
     /**
       * 信息通告删除

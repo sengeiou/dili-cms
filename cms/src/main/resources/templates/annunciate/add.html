@@ -4,26 +4,6 @@
     <link rel="stylesheet" href="/resources/css/zTree/treeSelectStyle.css">
 </head>
 <style>
-
-    .w-e-menu {
-        z-index: 2 !important;
-    }
-    .w-e-text-container {
-        z-index: 1 !important;
-    }
-
-    .w-e-toolbar {
-    // 给工具栏换行
-    z-index: 0 !important;
-
-    }
-
-    .w-e-toolbar {
-    // 给工具栏换行
-    flex-wrap: wrap;
-
-    }
-
 </style>
 <script src="/resources/js/jquery.ztree.all.js"></script>
 <script src="/resources/js/treeSelect.2.0.js"></script>
@@ -185,12 +165,17 @@
 
 <script>
 
+    //操作类型
+    var opType=${opType!};
     const E = window.wangEditor;
     const editor = new E('#editor');
     // 或者 const editor = new E(document.getElementById('div1'))
+    editor.config.zIndex=5;
     editor.create();
     let _grid = $('#grid');
     var departmentAuthResult;
+
+    var annunciateDto={};
 
     //时间范围
     lay('.settletime').each(function () {
@@ -255,12 +240,19 @@
     })
 
     function initTree() {
+        var checks=[];
+        if(opType=="update"){
+            //初始化数据时将部门id返回生成树
+            checks=initDate();
+        }
+
         //文件部门权限树配置
         let departmentTree = Object.assign({}, zTreeConfig);
 
         //加载部门树
         departmentTree.zNodes =${departmentList!};
         departmentTree.chkStyle = "checkbox";
+        departmentTree.checks =checks;
         departmentTree.callback.onCheck = function (e, treeNode) {
 
         };
@@ -268,6 +260,79 @@
         $("#department").click(function () {
             $("#departmentTree").click();
         });
+    }
+
+    function initDate() {
+        var annunciate=${annunciate!};
+        var annunciateTargets=${annunciateTargets!};
+        var annunciateItems=${annunciateItems!};
+
+        //保存初始化数据
+        annunciateDto.id=annunciate.id;
+        annunciateDto.type=annunciate.type;
+        annunciateDto.creatorId=annunciate.creatorId;
+        annunciateDto.createTime=annunciate.createTime;
+        annunciateDto.readCount=annunciate.readCount;
+        annunciateDto.version=annunciate.version;
+
+        $("#title").val(annunciate.title);
+        $("#publishType").val(annunciate.publishType);
+        if(annunciate.publishType==2){
+            $("#startTime").val(annunciate.startTimeStr);
+            $("#startTimeDev").show();
+        }
+        editor.txt.html(annunciate.content);
+        $("#endTime").val(annunciate.endTimeStr);
+        $("#notes").val(annunciate.notes);
+        var checks=[];
+        annunciateTargets.forEach((targe) => {
+            var systemSelectVal=$('input:radio:checked').val()
+            //所有用户
+            if(targe.targetRange==1){
+                $(':radio[name="systemVal"]').eq(0).attr("checked",true);
+            }
+            //指定用户
+            if(targe.targetRange==2){
+                $(':radio[name="systemVal"]').eq(2).attr("checked",true);
+                $("#systemUserAndDepartDev").show();
+                $("#userDev").show();
+            }
+            //指定部门
+            if(targe.targetRange==3){
+                if(systemSelectVal!=3){
+                    $(':radio[name="systemVal"]').eq(1).attr("checked",true);
+                    $("#systemUserAndDepartDev").show();
+                    $("#departmentDev").show();
+                }
+                checks.push(targe.targetRangeId);
+            }
+            //公司
+            if(targe.targetRange==4){
+
+            }
+            //司机
+            if(targe.targetRange==5){
+                $("#driverBtn").attr("checked", true);
+            }
+            //买家
+            if(targe.targetRange==6){
+                $("#bureyBtn").attr("checked", true);
+            }
+            //经营户
+            if(targe.targetRange==7){
+                $("#sellerBtn").attr("checked", true);
+            }
+        });
+        var userOlds=[];
+        annunciateItems.forEach((targeItem) => {
+            if(1==1){
+                userOlds.push({id : targeItem.targetId, realName :targeItem.targetName});
+            }
+        });
+        if(userOlds.length>0){
+            _grid.bootstrapTable('load', userOlds);
+        }
+        return checks;
     }
 
     /**
@@ -419,10 +484,12 @@
         var annunciateDto=getAnnunciateDto();
         annunciateDto.annunciateTargets=annunciateTargets;
         annunciateDto.annunciateItems=annunciateItems;
+        var url=opType=="update"?"update.action":"insert.action";
+        var tips =opType=="update"?'更新成功！':'新增成功！';
         bui.loading.show('努力提交中，请稍候。。。');
         $.ajax({
             type: "POST",
-            url: "/annunciate/insert.action",
+            url: "/annunciate/"+url,
             data: JSON.stringify(annunciateDto),
             contentType: 'application/json',
             dataType: "json",
@@ -430,7 +497,7 @@
             success: function (res) {
                 bui.loading.hide();
                 if (res.code == "200") {
-                    parent.bs4pop.alert('新增成功！', {type: 'success',onHideStart(){
+                    parent.bs4pop.alert(tips, {type: 'success',onHideStart(){
                             parent.diaAdd.hide();
                             parent.location.reload();
                         }});
@@ -450,7 +517,6 @@
      * 组装提交主表值
      */
     function getAnnunciateDto() {
-        var annunciateDto={};
         annunciateDto.title=$("#title").val();
         annunciateDto.publishType=$("#publishType").val();
         annunciateDto.startTime=$("#startTime").val();
