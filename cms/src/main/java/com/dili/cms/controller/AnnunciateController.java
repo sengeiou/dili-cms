@@ -167,6 +167,62 @@ public class AnnunciateController extends BaseController{
     }
 
     /**
+     * 查看页面
+     * @param modelMap:
+     * @return：java.lang.String
+     * @author：Ron.Peng
+     * @date：2021/1/26 15:34
+     */
+    @RequestMapping(value="/view.html", method = RequestMethod.GET)
+    public String view(Long id,ModelMap modelMap) {
+        //获取主数据
+        Annunciate annunciate=annunciateService.get(id);
+        if(annunciate.getStartTime()!=null){
+            annunciate.setStartTimeStr(LocalDateTimeUtil.format(annunciate.getStartTime(), Constants.GLOBAL_HOUR_FORMAT));
+        }
+        annunciate.setEndTimeStr(LocalDateTimeUtil.format(annunciate.getEndTime(), Constants.GLOBAL_HOUR_FORMAT));
+        modelMap.put("annunciate", JSON.toJSONString(annunciate));
+        //获取通告目标
+        AnnunciateTarget annunciateTarget=DTOUtils.newInstance(AnnunciateTarget.class);
+        annunciateTarget.setAnnunciateId(id);
+        List<AnnunciateTarget> annunciateTargets=annunciateTargetService.listByExample(annunciateTarget);
+        modelMap.put("annunciateTargets", JSON.toJSONString(annunciateTargets));
+        //获取通告项
+        AnnunciateItem annunciateItem=DTOUtils.newInstance(AnnunciateItem.class);
+        annunciateItem.setAnnunciateId(id);
+        List<AnnunciateItem> annunciateItems=annunciateItemService.listByExample(annunciateItem);
+        //如果是指定用户的需要查出用户数据进行填充到列表
+        boolean flag=false;
+        for (AnnunciateTarget obj:annunciateTargets) {
+            if(AnnunciateTargetRange.APPOINT_USER.getValue().equals(obj.getTargetRange())){
+                List<String> ids=new ArrayList<>(annunciateItems.size());
+                for (AnnunciateItem objItem : annunciateItems) {
+                    if(AnnunciateTargetType.SYSTEM_USER.getValue().equals(objItem.getTargetType())){
+                        ids.add(objItem.getId().toString());
+                    }
+                }
+                UserQuery userQuery = DTOUtils.newInstance(UserQuery.class);
+                userQuery.setIds(ids);
+                BaseOutput<List<User>> UserResult = userRpc.listByExample(userQuery);
+                if(UserResult.isSuccess()){
+                    modelMap.put("appointUsers",JSON.toJSONString(UserResult.getData()));
+                    flag=true;
+                }
+                break;
+            }
+        }
+        if(!flag){
+            modelMap.put("appointUsers",JSON.toJSONString(""));
+        }
+        //获取部门列表
+        DepartmentDto departmentDto = DTOUtils.newInstance(DepartmentDto.class);
+        departmentDto.setFirmId(getFirmId());
+        BaseOutput<List<Department>> departmentList = departmentRpc.listByExample(departmentDto);
+        modelMap.put("departmentList", JSON.toJSONString(departmentList.getData()));
+        return "annunciate/view";
+    }
+
+    /**
      * TODO 进入已读页面
      * @param modelMap:
      * @return：java.lang.String

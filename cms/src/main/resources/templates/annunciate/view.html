@@ -1,0 +1,409 @@
+<#bs4Body>
+<head>
+    <link rel="stylesheet" href="/resources/css/zTree/metroStyle.css">
+    <link rel="stylesheet" href="/resources/css/zTree/treeSelectStyle.css">
+</head>
+<style>
+</style>
+<script src="/resources/js/jquery.ztree.all.js"></script>
+<script src="/resources/js/treeSelect.2.0.js"></script>
+<div class="container-fluid">
+        <input type="hidden" id="_sourceChannel" value="<#config name='ia.source.channel.earnest_order'/>">
+        <form id="saveForm" role="form" novalidate>
+            <input type="text" hidden="true"  id="customerType"  class="form-control" name="customerType"  maxlength="100">
+            <div class="row row-cols-2">
+                <div class="form-group col">
+                    <label for="title">通告标题<i class="red">*</i></label>
+                    <input id="title" class="form-control" name="title"  maxlength="20" disabled required>
+                </div>
+            </div>
+            <div class="row row-cols-4">
+                <div class="form-group col">
+                    <label for="publishType">发布方式<i class="red">*</i></label>
+                    <select id="publishType" name="publishType" class="form-control" disabled required>
+                        <option value="1">立即发布</option>
+                        <option value="2">定时发布</option>
+                    </select>
+                </div>
+            </div>
+            <div id="startTimeDev" class="row row-cols-4" style="display: none">
+                <div class="form-group col">
+                    <label for="startTime">开始时间<i class="red">*</i></label>
+                    <div class="input-group">
+                        <input  type="text" name="startTime"
+                               id="startTime"
+                               readonly disabled
+                               autocomplete="off"
+                               class="form-control settletime laystart"/>
+                        <div class="input-group-append">
+                            <label for="startTime" class="input-group-text fa fa-calendar"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-4">
+                <div class="form-group col">
+                    <label for="endTime">结束时间<i class="red">*</i></label>
+                    <div class="input-group">
+                        <input  type="text" name="endTime"
+                                id="endTime"
+                                required
+                                readonly disabled
+                                autocomplete="off"
+                                class="form-control settletime laystart"/>
+                        <div class="input-group-append">
+                            <label for="endTime" class="input-group-text fa fa-calendar"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-1">
+                <div class="form-group col">
+                    <label for="title">通告内容<i class="red">*</i></label>
+                    <div id="editor"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label for="title">发送对象<i class="red">*</i>：</label>
+                    <div class="btn-group" role="group" aria-label="Basic example ml-3">
+                        <button id="systemBtn" type="button" class="btn btn-secondary">系统用户</button>
+                        <button id="customerBtn" type="button" class="btn btn-secondary ml-3" >客户</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label for="title">发送范围<i class="red">*</i>：</label>
+                    <div id="systemDev" class="btn-group" role="group" aria-label="Basic example ml-3">
+                        <label class="radio-inline"><input id="allUserBtn" type="radio" name="systemVal" value="1" disabled>所有人</label>
+                        <label class="radio-inline"><input id="departmentBtn" type="radio" name="systemVal" value="3" disabled>指定部门</label>
+                        <label class="radio-inline"><input id="userBtn" type="radio" name="systemVal" value="2" disabled>指定人员</label>
+                    </div>
+                    <div id="customerDev" class="btn-group" role="group" aria-label="Basic example ml-3" style="display: none">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" id="driverBtn" class="form-check-input" value="5" disabled>司机
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" id="bureyBtn" class="form-check-input" value="6" disabled>买家
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" id="sellerBtn" class="form-check-input" value="7" disabled>经营户
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div id="systemUserAndDepartDev" class="row" style="display: none">
+                <div class="form-group col">
+                    <div id="departmentDev" style="display: none">
+                        <div style="width: 300px;overflow:hidden;cursor: pointer" id="departmentTree">选择部门</div>
+                    </div>
+                    <div id="userDev" class="container-fluid" style="display: none">
+                        <div class="row">
+                            <div class="col-sm-12 offset-sm-0">
+                                <table id="grid" data-toggle="table" data-title="用户查询" class="table"
+                                       data-toolbar="#toolbar" data-pagination="false" data-page-number="1"
+                                       data-page-size="10" data-query-params="queryParams"
+                                       data-side-pagination="server"
+                                       data-content-type="application/x-www-form-urlencoded"
+                                       data-single-select="false" data-click-to-select="true" data-checkbox-header="true"
+                                       data-unique-id="id" data-sort-name="id" data-sort-order="desc"
+                                       data-icons="bui.variable.icons"
+                                       data-buttons-class="primary">
+                                    <thead>
+                                    <tr>
+                                        <th data-checkbox="true">选择</th>
+                                        <th data-field="departmentId" data-align="center">
+                                            组织
+                                        </th>
+                                        <th data-field="realName" data-align="center">
+                                            姓名
+                                        </th>
+                                        <th data-field="position" data-align="center">
+                                            职位
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-2">
+                <div class="form-group col">
+                    <label for="notes">备注</label>
+                    <input id="notes" class="form-control" name="notes"  maxlength="120" disabled>
+                </div>
+            </div>
+        </form>
+    </div>
+</#bs4Body>
+
+<script type="text/javascript" src="${contextPath!}/resources/wangeditor/js/dist/wangEditor.min.js"></script>
+
+<script>
+
+    const E = window.wangEditor;
+    const editor = new E('#editor');
+    // 或者 const editor = new E(document.getElementById('div1'))
+    editor.config.zIndex=5;
+    editor.create();
+    let _grid = $('#grid');
+    var departmentAuthResult;
+
+    var annunciateDto={};
+
+    //时间范围
+    lay('.settletime').each(function () {
+        laydate.render({
+            elem: this
+            , theme: '#007bff',
+            format: 'yyyy-MM-dd HH',
+            event: 'click', //触发事件
+            type: 'datetime',
+            min: dateFormat("YYYY-mm-dd HH:MM", new Date())
+        });
+    });
+
+    //树
+    let zTreeConfig = {
+        //默认选中
+        checks: [],
+        height: 233,
+        filter: false,
+        searchShowParent: false,
+        // 单选还是多选 radio checkbox
+        chkStyle: "checkbox",
+        callback: {
+            onCheck: function (e, treeNode) {
+
+            } /*选中事件的回调*/
+        },
+        //自定义数据格式
+        data: {
+            key: {
+                name: "name",
+                isParent: "isParent"
+            },
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "parentId",
+                rootPId: 0
+            }
+        },
+        zNodes: []
+    };
+
+    $(function () {
+        initCom();
+
+        initTree();
+
+        $(window).resize(function () {
+            _grid.bootstrapTable('resetView')
+        });
+        _grid.bootstrapTable('refreshOptions', {
+            datatype:'local',
+            url: '',
+            responseHandler: function (res) {
+                if (res.code && res.code == "200") {
+                    return res.data;
+                }
+                return [];
+            }
+        });
+    })
+
+    function initTree() {
+        var checks=[];
+        checks=initDate();
+        //文件部门权限树配置
+        let departmentTree = Object.assign({}, zTreeConfig);
+
+        //加载部门树
+        departmentTree.zNodes =${departmentList!};
+        departmentTree.chkStyle = "checkbox";
+        departmentTree.checks =checks;
+        departmentTree.callback.onCheck = function (e, treeNode) {
+
+        };
+        departmentAuthResult = $("#departmentTree").treeSelect(departmentTree)
+        $("#department").click(function () {
+            $("#departmentTree").click();
+        });
+    }
+
+    function initDate() {
+        var annunciate=${annunciate!};
+        var annunciateTargets=${annunciateTargets!};
+
+        //保存初始化数据
+        annunciateDto.id=annunciate.id;
+        annunciateDto.type=annunciate.type;
+        annunciateDto.creatorId=annunciate.creatorId;
+        annunciateDto.createTime=annunciate.createTime;
+        annunciateDto.readCount=annunciate.readCount;
+        annunciateDto.version=annunciate.version;
+
+        $("#title").val(annunciate.title);
+        $("#publishType").val(annunciate.publishType);
+        if(annunciate.publishType==2){
+            $("#startTime").val(annunciate.startTimeStr);
+            $("#startTimeDev").show();
+        }
+        editor.txt.html(annunciate.content);
+        $("#endTime").val(annunciate.endTimeStr);
+        $("#notes").val(annunciate.notes);
+        var checks=[];
+        annunciateTargets.forEach((targe) => {
+            var systemSelectVal=$('input:radio:checked').val()
+            //所有用户
+            if(targe.targetRange==1){
+                $(':radio[name="systemVal"]').eq(0).attr("checked",true);
+            }
+            //指定用户
+            if(targe.targetRange==2){
+                $(':radio[name="systemVal"]').eq(2).attr("checked",true);
+                $("#systemUserAndDepartDev").show();
+                $("#userDev").show();
+            }
+            //指定部门
+            if(targe.targetRange==3){
+                if(systemSelectVal!=3){
+                    $(':radio[name="systemVal"]').eq(1).attr("checked",true);
+                    $("#systemUserAndDepartDev").show();
+                    $("#departmentDev").show();
+                }
+                checks.push(targe.targetRangeId);
+            }
+            //公司
+            if(targe.targetRange==4){
+
+            }
+            //司机
+            if(targe.targetRange==5){
+                $("#driverBtn").attr("checked", true);
+            }
+            //买家
+            if(targe.targetRange==6){
+                $("#bureyBtn").attr("checked", true);
+            }
+            //经营户
+            if(targe.targetRange==7){
+                $("#sellerBtn").attr("checked", true);
+            }
+        });
+        var appointUsers=${appointUsers!};
+        if(appointUsers!=""){
+            var userOlds=[];
+            appointUsers.forEach((targeItem) => {
+                if(1==1){
+                    userOlds.push({id:targeItem.id, realName:targeItem.realName, position:targeItem.position, departmentId:targeItem.departmentId});
+                }
+            });
+            _grid.bootstrapTable('load', userOlds);
+        }
+        return checks;
+    }
+
+    /**
+     * 发布状态的选择
+     */
+    function publishTypeSelectFun() {
+        var publishType=$("#publishType").val();
+        if(publishType==2){
+            $("#startTimeDev").show();
+            $("#startTime").attr("required",true);
+        }else{
+            $("#startTime").val("");
+            $("#startTimeDev").hide();
+            $("#startTime").attr("required",false);
+        }
+    }
+
+    /**
+     * 查询处理
+     */
+    function queryDataHandler() {
+        _grid.bootstrapTable('refresh');
+    }
+
+    /**
+     * table参数组装
+     * 可修改queryParams向服务器发送其余的参数
+     * @param params
+     */
+    function queryParams(params) {
+        let temp = {
+            user: params.order
+        };
+        return $.extend(temp, bui.util.bindGridMeta2Form('grid', 'queryForm'));
+    }
+
+    /**
+     * 初始化按钮事件
+     */
+    function initCom() {
+        $("#publishType").change(publishTypeSelectFun);
+        $("#systemBtn").click(function () {
+            $("#systemDev").show();
+            $("#customerDev").hide();
+            $("#systemUserAndDepartDev").show();
+        });
+        $("#customerBtn").click(function () {
+            $("#systemDev").hide();
+            $("#customerDev").show();
+            $("#systemUserAndDepartDev").hide();
+        });
+        $("#departmentBtn").click(function (val) {
+            $("#systemUserAndDepartDev").show();
+            $("#userDev").hide();
+            $("#departmentDev").show();
+        });
+        $("#userBtn").click(function (val) {
+            $("#systemUserAndDepartDev").show();
+            $("#departmentDev").hide();
+            $("#userDev").show();
+        });
+        $("#allUserBtn").click(function (val) {
+            $("#systemUserAndDepartDev").hide();
+        });
+    }
+
+
+
+    /**
+     * 格式化时间
+     * @param fmt
+     * @param date
+     * @returns {*}
+     */
+    function dateFormat(fmt, date) {
+        let ret;
+        const opt = {
+            "Y+": date.getFullYear().toString(),        // 年
+            "m+": (date.getMonth() + 1).toString(),     // 月
+            "d+": date.getDate().toString(),            // 日
+            "H+": date.getHours().toString(),           // 时
+            "M+": date.getMinutes().toString(),         // 分
+            "S+": date.getSeconds().toString()          // 秒
+            // 有其他格式化字符需求可以继续添加，必须转化成字符串
+        };
+        for (let k in opt) {
+            ret = new RegExp("(" + k + ")").exec(fmt);
+            if (ret) {
+                fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+            }
+        }
+        return fmt;
+    }
+</script>
