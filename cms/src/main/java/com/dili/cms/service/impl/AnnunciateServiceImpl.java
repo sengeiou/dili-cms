@@ -292,7 +292,7 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
             itemExample.setReadState(ReadType.NO_READ.getValue());
         }
         int updateCount=annunciateItemService.updateSelectiveByExample(annunciateItem,itemExample);
-        if(updateCount==1){
+        if(ReadType.NO_READ.getValue().equals(annunciateDto.getReadState())&&updateCount==1){
             annunciateDto.setReadCount(updateCount);
             getActualDao().updateReadCountById(annunciateDto);
         }
