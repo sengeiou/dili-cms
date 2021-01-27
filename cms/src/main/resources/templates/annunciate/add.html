@@ -265,7 +265,6 @@
     function initDate() {
         var annunciate=${annunciate!};
         var annunciateTargets=${annunciateTargets!};
-        var annunciateItems=${annunciateItems!};
 
         //保存初始化数据
         annunciateDto.id=annunciate.id;
@@ -323,13 +322,14 @@
                 $("#sellerBtn").attr("checked", true);
             }
         });
-        var userOlds=[];
-        annunciateItems.forEach((targeItem) => {
-            if(1==1){
-                userOlds.push({id : targeItem.targetId, realName :targeItem.targetName});
-            }
-        });
-        if(userOlds.length>0){
+        var appointUsers=${appointUsers!};
+        if(appointUsers!=""){
+            var userOlds=[];
+            appointUsers.forEach((targeItem) => {
+                if(1==1){
+                    userOlds.push({id:targeItem.id, realName:targeItem.realName, position:targeItem.position, departmentId:targeItem.departmentId});
+                }
+            });
             _grid.bootstrapTable('load', userOlds);
         }
         return checks;
@@ -432,14 +432,15 @@
             if(systemSelectVal==2){
                 annunciateTarget.targetRange=2;
                 annunciateTargets.push(annunciateTarget);
-                users=$('#tableId').bootstrapTable("getData");
+                users=_grid.bootstrapTable("getData");
                 if(users.length==0){
                     bs4pop.alert("指定用户时，最少选择一个用户！", {type: 'error'});
                     return ;
                 }
                 for(var i=0;i<users.length;i++){
                     var annunciateItem={};
-                    annunciateItem.targetId=users[i].id
+                    annunciateItem.targetId=users[i].id;
+                    annunciateItem.targetName=users[i].realName;
                     annunciateItems.push(annunciateItem);
                 }
             }
