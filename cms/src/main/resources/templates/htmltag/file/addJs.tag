@@ -6,6 +6,12 @@
         fileAuthList: [],
         fileItemList: []
     };
+    //已经添加了得用户id
+    let fileUserIds = new Set();
+    // 已经选择的数据
+    let userFileAuthList = [];
+
+    let _grid;
 
     // 新增或者更新
     function saveOrUpdate(successfn) {
@@ -17,6 +23,13 @@
         if ($(':radio[name="authTypeId"]:checked').val() == 10) {
             departmentAuthResult.getCheckedObject().forEach(item => {
                 fileDto.fileAuthList.push({authType: 10, authValue: item.id, authText: item.name});
+            });
+        }
+        // 获取用户权限
+        if ($(':radio[name="authTypeId"]:checked').val() == 20) {
+            let users = _grid.bootstrapTable("getData");
+            users.forEach(item => {
+                fileDto.fileAuthList.push({authType: 20, authValue: item.id, authText: item.realName});
             });
         }
         let formData = Object.assign(fileDto, _form.serializeObject());
@@ -67,12 +80,20 @@
     var departmentAuthResult;
     var fileTypeResult;
     $(function () {
+        _grid = $('#grid');
+        _grid.bootstrapTable('refreshOptions', {
+            datatype: 'local',
+        });
+        $(window).resize(function () {
+            _grid.bootstrapTable('resetView')
+        });
         //初始化
         init();
     });
 
     //初始化
     function init() {
+
         //文件部门权限树配置
         let departmentTree = Object.assign({}, zTreeConfig);
         //文件类型树配置
@@ -93,6 +114,14 @@
         departmentTree.checks = fileDto.fileAuthList.filter(ele => ele.authType == 10).map(ele => {
             return ele.authValue
         });
+        //加载默认选中的权限用户
+        userFileAuthList = fileDto.fileAuthList.filter(ele => ele.authType == 20).map(ele => {
+            fileUserIds.add(ele.authValue);
+            return {realName: ele.authText, id: ele.authValue, position: null, departmentId: null};
+        });
+        setTimeout(() => {
+            _grid.bootstrapTable('load', userFileAuthList);
+        }, 500);
         <% } %>
         //初始化文本上的的值
         $('input:radio[name="isDownload"][value="' + fileDto.isDownload + '"]').prop('checked', true);
@@ -111,6 +140,12 @@
         //权限类型改变监听事件 如果当前是部门权限重新选择了其它权限则需要重新初始化权限
         $('input:radio[name="authTypeId"]').click(function () {
             fileDto.fileAuthList = [];
+            //如果选择的时候用户权限 则需要显示或者隐藏用户列表
+            if ($(':radio[name="authTypeId"]:checked').val() == 20) {
+                $("#systemUserAndDepartDev").show();
+            } else {
+                $("#systemUserAndDepartDev").hide();
+            }
         });
         //加载文件类型树
         fileTypeTree.zNodes =${fileTypeList!};
@@ -137,12 +172,9 @@
 
     //弹出用户选择界面
     function openUserPageHandler() {
-        let ids = fileDto.fileAuthList.filter(ele => ele.authType == 30).map(ele => {
-            return ele.authValue
-        });
         dia = bs4pop.dialog({
             title: '选择库存商品',// 对话框title
-            content: '${contextPath}/component/userSelect.html?ids=' + ids, // 对话框内容，可以是
+            content: '${contextPath}/component/userSelect.html?ids=' + Array.from(fileUserIds), // 对话框内容，可以是
             width: '85%',// 宽度
             height: '95%',// 高度
             isIframe: true,// 默认是页面层，非iframe
@@ -152,12 +184,41 @@
 
     //选择用户回调函数
     function selectUsersCallback(items) {
-        fileDto.fileAuthList = [];
         if (items) {
             items.forEach((item) => {
-                fileDto.fileAuthList.push({authType: 30, authValue: item.id, authText: item.realName});
+                if (!fileUserIds.has(item.id)) {
+                    fileUserIds.add(item.id);
+                    userFileAuthList.push({
+                        id: item.id,
+                        realName: item.realName,
+                        position: item.position,
+                        departmentId: item.departmentId
+                    });
+                }
             });
+            _grid.bootstrapTable('load', userFileAuthList);
         }
+    }
+
+
+    //删除用户
+    function deleteUser() {
+        let rows = _grid.bootstrapTable('getSelections');
+        if (!rows || rows.length <= 0) {
+            bs4pop.alert('请选择数据进行删除!');
+            return;
+        }
+        var ids = [];
+        rows.forEach((row) => {
+            ids.push(row.id);
+            //删除已经选中的用户
+            fileUserIds.delete(row.id);
+        });
+        _grid.bootstrapTable('remove', {
+            field: 'id',//对应该字段ID的columns的field
+            values: ids//字段ID的值
+        })
+        _grid.bootstrapTable('refreshOptions', {});
     }
 
     //上传文件回掉

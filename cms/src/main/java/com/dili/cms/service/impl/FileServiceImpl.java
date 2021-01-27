@@ -57,8 +57,6 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
     private FileTypeMapper fileTypeMapper;
     @Autowired
     private FileAuthMapper fileAuthMapper;
-    @Autowired
-    private FileAuthItemMapper fileAuthItemMapper;
 
     public FileMapper getActualDao() {
         return (FileMapper) getDao();
@@ -152,18 +150,22 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public BaseOutput deleteByIds(List<Long> ids) {
+    public BaseOutput deleteById(Long id) {
+        IFile file = get(id);
         //删除文件信息
-        int delete = delete(ids);
-        if (delete != ids.size()) {
+        int delete = delete(id);
+        if (Objects.isNull(file) || delete <= 0) {
             throw new AppException("文件删除失败!");
         }
         Example example = new Example(IFileItem.class);
-        example.createCriteria().andIn("fileId", ids);
+        example.createCriteria().andEqualTo("fileId", id);
         //删除下面的文件
         fileItemMapper.deleteByExample(example);
         //删除文件的权限数据
         fileAuthMapper.deleteByExample(example);
+        //类型减一
+        Set<Long> fileTypeIds = findFileTypeLinkNode(file.getTypeId());
+        fileTypeMapper.updateNodeCountBatch(fileTypeIds, -1);
         return BaseOutput.success();
     }
 
