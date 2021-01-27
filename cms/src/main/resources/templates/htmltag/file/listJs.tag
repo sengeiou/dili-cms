@@ -262,7 +262,7 @@
     }
 
     /**
-     * 新增或修改分类
+     * 删除分类
      */
     function deleteFileType(nodes) {
         bui.loading.show('努力提交中，请稍候。。。');
@@ -382,6 +382,7 @@
             success: function (res) {
                 if (res.code == "200") {
                     bs4pop.alert(res.message);
+                    treeInit();
                     _grid.bootstrapTable('refresh');
                 } else {
                     bs4pop.alert(res.message, {type: 'error'});
