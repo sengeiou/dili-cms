@@ -6,6 +6,7 @@
 package com.dili.cms.controller;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
+import com.alibaba.fastjson.JSON;
 import com.dili.cms.commons.Constants;
 import com.dili.cms.sdk.domain.Annunciate;
 import com.dili.cms.sdk.dto.AnnunciateDto;
@@ -18,17 +19,22 @@ import com.dili.cms.service.AnnunciateService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.domain.PageOutput;
+import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.metadata.ValueProviderUtils;
+import com.dili.uap.sdk.domain.Department;
 import com.dili.uap.sdk.domain.User;
 import com.dili.uap.sdk.domain.UserTicket;
+import com.dili.uap.sdk.domain.dto.DepartmentDto;
+import com.dili.uap.sdk.rpc.DepartmentRpc;
 import com.dili.uap.sdk.session.SessionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,9 +52,12 @@ import java.util.List;
   */
 @Controller
 @RequestMapping("/annunciate")
-public class AnnunciateController{
+public class AnnunciateController extends BaseController{
     @Autowired
     AnnunciateService annunciateService;
+
+    @Resource
+    private DepartmentRpc departmentRpc;
 
     /**
       * 进入信息通告列表页面
@@ -89,7 +98,10 @@ public class AnnunciateController{
      */
     @RequestMapping(value="/add.html", method = RequestMethod.GET)
     public String add(ModelMap modelMap) {
-        modelMap.addAttribute("userList",new ArrayList<>());
+        DepartmentDto departmentDto = DTOUtils.newInstance(DepartmentDto.class);
+        departmentDto.setFirmId(getFirmId());
+        BaseOutput<List<Department>> departmentList = departmentRpc.listByExample(departmentDto);
+        modelMap.put("departmentList", JSON.toJSONString(departmentList.getData()));
         return "annunciate/add";
     }
 
