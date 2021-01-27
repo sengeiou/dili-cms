@@ -371,12 +371,10 @@
             bs4pop.alert('请选数据');
             return;
         }
-        let ids = rows.map(item => item.id);
         $.ajax({
             type: "POST",
-            url: "/file/delete.action",
+            url: "/file/delete.action?id="+rows[0].id,
             processData: false,
-            data: JSON.stringify(ids),
             contentType: false,
             dataType: "JSON",
             success: function (res) {
