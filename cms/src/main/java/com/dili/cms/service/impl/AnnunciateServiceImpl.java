@@ -11,10 +11,7 @@ import com.dili.cms.sdk.domain.AnnunciateItem;
 import com.dili.cms.sdk.domain.AnnunciateTarget;
 import com.dili.cms.sdk.dto.AnnunciateDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
-import com.dili.cms.sdk.glossary.AnnunciateSendState;
-import com.dili.cms.sdk.glossary.AnnunciateStickState;
-import com.dili.cms.sdk.glossary.AnnunciateTargetRange;
-import com.dili.cms.sdk.glossary.ReadType;
+import com.dili.cms.sdk.glossary.*;
 import com.dili.cms.service.AnnunciateItemService;
 import com.dili.cms.service.AnnunciateService;
 import com.dili.cms.service.AnnunciateTargetService;
@@ -282,6 +279,7 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
             annunciateItemNew.setAnnunciateId(annunciateDto.getId());
             annunciateItemNew.setReadState(ReadType.NO_READ.getValue());
             annunciateItemNew.setSendTime(annunciateDto.getStartTime());
+            annunciateItemNew.setTargetType(AnnunciateTargetType.SYSTEM_USER.getValue());
             annunciateItemNew.setCreateTime(annunciateDto.getCreateTime());
             return annunciateItemNew;
         }
@@ -292,6 +290,8 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
             annunciateItem.setReadState(ReadType.NO_READ.getValue());
             annunciateItem.setSendTime(annunciateDto.getStartTime());
             annunciateItem.setCreateTime(annunciateDto.getCreateTime());
+            annunciateItem.setTargetType(AnnunciateTargetType.SYSTEM_USER.getValue());
+            annunciateItem.setTargetName(user.getRealName());
         }
         if (customer != null) {
             annunciateItem.setAnnunciateId(annunciateDto.getId());
@@ -299,6 +299,7 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
             annunciateItem.setReadState(ReadType.NO_READ.getValue());
             annunciateItem.setSendTime(annunciateDto.getStartTime());
             annunciateItem.setCreateTime(annunciateDto.getCreateTime());
+            annunciateItem.setTargetType(AnnunciateTargetType.CUSTOMER.getValue());
         }
         return annunciateItem;
     }

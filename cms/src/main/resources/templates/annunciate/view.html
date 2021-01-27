@@ -14,13 +14,13 @@
             <div class="row row-cols-2">
                 <div class="form-group col">
                     <label for="title">通告标题<i class="red">*</i></label>
-                    <input id="title" class="form-control" name="title"  maxlength="20" required>
+                    <input id="title" class="form-control" name="title"  maxlength="20" disabled required>
                 </div>
             </div>
             <div class="row row-cols-4">
                 <div class="form-group col">
                     <label for="publishType">发布方式<i class="red">*</i></label>
-                    <select id="publishType" name="publishType" class="form-control" required>
+                    <select id="publishType" name="publishType" class="form-control" disabled required>
                         <option value="1">立即发布</option>
                         <option value="2">定时发布</option>
                     </select>
@@ -32,7 +32,7 @@
                     <div class="input-group">
                         <input  type="text" name="startTime"
                                id="startTime"
-                               readonly
+                               readonly disabled
                                autocomplete="off"
                                class="form-control settletime laystart"/>
                         <div class="input-group-append">
@@ -48,7 +48,7 @@
                         <input  type="text" name="endTime"
                                 id="endTime"
                                 required
-                                readonly
+                                readonly disabled
                                 autocomplete="off"
                                 class="form-control settletime laystart"/>
                         <div class="input-group-append">
@@ -76,24 +76,24 @@
                 <div class="form-group col">
                     <label for="title">发送范围<i class="red">*</i>：</label>
                     <div id="systemDev" class="btn-group" role="group" aria-label="Basic example ml-3">
-                        <label class="radio-inline"><input id="allUserBtn" type="radio" name="systemVal" value="1">所有人</label>
-                        <label class="radio-inline"><input id="departmentBtn" type="radio" name="systemVal" value="3">指定部门</label>
-                        <label class="radio-inline"><input id="userBtn" type="radio" name="systemVal" value="2">指定人员</label>
+                        <label class="radio-inline"><input id="allUserBtn" type="radio" name="systemVal" value="1" disabled>所有人</label>
+                        <label class="radio-inline"><input id="departmentBtn" type="radio" name="systemVal" value="3" disabled>指定部门</label>
+                        <label class="radio-inline"><input id="userBtn" type="radio" name="systemVal" value="2" disabled>指定人员</label>
                     </div>
                     <div id="customerDev" class="btn-group" role="group" aria-label="Basic example ml-3" style="display: none">
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input type="checkbox" id="driverBtn" class="form-check-input" value="5">司机
+                                <input type="checkbox" id="driverBtn" class="form-check-input" value="5" disabled>司机
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input type="checkbox" id="bureyBtn" class="form-check-input" value="6">买家
+                                <input type="checkbox" id="bureyBtn" class="form-check-input" value="6" disabled>买家
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input type="checkbox" id="sellerBtn" class="form-check-input" value="7">经营户
+                                <input type="checkbox" id="sellerBtn" class="form-check-input" value="7" disabled>经营户
                             </label>
                         </div>
                     </div>
@@ -106,12 +106,6 @@
                         <div style="width: 300px;overflow:hidden;cursor: pointer" id="departmentTree">选择部门</div>
                     </div>
                     <div id="userDev" class="container-fluid" style="display: none">
-                        <button type="button" class="btn btn-outline-primary mr-2" onclick="openUserPageHandler()">
-                            <i class="fa fa-search"></i>添加用户
-                        </button>
-                        <button type="button" class="btn btn-outline-primary mr-2" onclick="deleteUser()">
-                            <i class="fa"></i>删除用户
-                        </button>
                         <div class="row">
                             <div class="col-sm-12 offset-sm-0">
                                 <table id="grid" data-toggle="table" data-title="用户查询" class="table"
@@ -146,15 +140,7 @@
             <div class="row row-cols-2">
                 <div class="form-group col">
                     <label for="notes">备注</label>
-                    <input id="notes" class="form-control" name="notes"  maxlength="120">
-                </div>
-            </div>
-            <div style="height: 100px">
-            </div>
-            <div class="modal-footer-wrap">
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary px-5" onclick="javascript: parent.diaAdd.hide()" data-hotkey="{key: 'Ctrl+E'}">取消</button>
-                    <button type="button" class="btn btn-primary px-5" onclick="bui.util.debounce(saveOrUpdateHandler,1000,true)()" id="formSubmit" data-hotkey="{key: 'Ctrl+S'}">保存</button>
+                    <input id="notes" class="form-control" name="notes"  maxlength="120" disabled>
                 </div>
             </div>
         </form>
@@ -165,8 +151,6 @@
 
 <script>
 
-    //操作类型
-    var opType=${opType!};
     const E = window.wangEditor;
     const editor = new E('#editor');
     // 或者 const editor = new E(document.getElementById('div1'))
@@ -241,11 +225,7 @@
 
     function initTree() {
         var checks=[];
-        if(opType=="update"){
-            //初始化数据时将部门id返回生成树
-            checks=initDate();
-        }
-
+        checks=initDate();
         //文件部门权限树配置
         let departmentTree = Object.assign({}, zTreeConfig);
 
@@ -336,6 +316,21 @@
     }
 
     /**
+     * 发布状态的选择
+     */
+    function publishTypeSelectFun() {
+        var publishType=$("#publishType").val();
+        if(publishType==2){
+            $("#startTimeDev").show();
+            $("#startTime").attr("required",true);
+        }else{
+            $("#startTime").val("");
+            $("#startTimeDev").hide();
+            $("#startTime").attr("required",false);
+        }
+    }
+
+    /**
      * 查询处理
      */
     function queryDataHandler() {
@@ -384,196 +379,6 @@
         });
     }
 
-    /**
-     * 发布状态的选择
-     */
-    function publishTypeSelectFun() {
-        var publishType=$("#publishType").val();
-        if(publishType==2){
-            $("#startTimeDev").show();
-            $("#startTime").attr("required",true);
-        }else{
-            $("#startTime").val("");
-            $("#startTimeDev").hide();
-            $("#startTime").attr("required",false);
-        }
-    }
-
-    /**
-     * 保存数据信息
-     */
-    function saveOrUpdateHandler() {
-        // 提交保存
-        if (!$('#saveForm').validate().form()) {
-            return false;
-        }
-        //校验开始时间必须小于结束时间
-        var startTime=$("#startTime").val();
-        var endTime=$("#endTime").val();
-        if(startTime!=""){
-            if(startTime>=endTime){
-                bs4pop.alert("开始时间必须小于结束时间！", {type: 'error'});
-                return ;
-            }
-        }
-        var annunciateTargets=[];
-        var annunciateItems=[];
-        var systemSelectVal;
-        var users=[];
-        if(systemSelectVal=$('input:radio:checked').val()){
-            var annunciateTarget={};
-            annunciateTarget.targetType=1;
-            //所有人
-            if(systemSelectVal==1){
-                annunciateTarget.targetRange=1;
-                annunciateTargets.push(annunciateTarget);
-            }
-            //指定用户
-            if(systemSelectVal==2){
-                annunciateTarget.targetRange=2;
-                annunciateTargets.push(annunciateTarget);
-                users=_grid.bootstrapTable("getData");
-                if(users.length==0){
-                    bs4pop.alert("指定用户时，最少选择一个用户！", {type: 'error'});
-                    return ;
-                }
-                for(var i=0;i<users.length;i++){
-                    var annunciateItem={};
-                    annunciateItem.targetId=users[i].id;
-                    annunciateItem.targetName=users[i].realName;
-                    annunciateItems.push(annunciateItem);
-                }
-            }
-            //指定部门
-            if(systemSelectVal==3){
-                var departments=departmentAuthResult.getCheckedObject()
-                if(departments.length==0){
-                    bs4pop.alert("指定部门时，最少选择一个部门！", {type: 'error'});
-                    return ;
-                }
-                for(var i=0;i<departments.length;i++){
-                    annunciateTarget={};
-                    annunciateTarget.targetType=1;
-                    annunciateTarget.targetRange=3;
-                    annunciateTarget.targetRangeId=departments[i].id;
-                    annunciateTargets.push(annunciateTarget);
-                }
-            }
-        }
-        if($("#driverBtn").is(":checked")){
-            var annunciateTarget={};
-            annunciateTarget.targetType=2;
-            annunciateTarget.targetRange=5;
-            annunciateTargets.push(annunciateTarget);
-        }
-        if($("#bureyBtn").is(":checked")){
-            var annunciateTarget={};
-            annunciateTarget.targetType=2;
-            annunciateTarget.targetRange=6;
-            annunciateTargets.push(annunciateTarget);
-        }
-        if($("#sellerBtn").is(":checked")){
-            var annunciateTarget={};
-            annunciateTarget.targetType=2;
-            annunciateTarget.targetRange=7;
-            annunciateTargets.push(annunciateTarget);
-        }
-        if(annunciateTargets.length==0){
-            bs4pop.alert("请选择发送范围！", {type: 'error'});
-            return ;
-        }
-        var annunciateDto=getAnnunciateDto();
-        annunciateDto.annunciateTargets=annunciateTargets;
-        annunciateDto.annunciateItems=annunciateItems;
-        var url=opType=="update"?"update.action":"insert.action";
-        var tips =opType=="update"?'更新成功！':'新增成功！';
-        bui.loading.show('努力提交中，请稍候。。。');
-        $.ajax({
-            type: "POST",
-            url: "/annunciate/"+url,
-            data: JSON.stringify(annunciateDto),
-            contentType: 'application/json',
-            dataType: "json",
-            async: true,
-            success: function (res) {
-                bui.loading.hide();
-                if (res.code == "200") {
-                    parent.bs4pop.alert(tips, {type: 'success',onHideStart(){
-                            parent.diaAdd.hide();
-                            parent.location.reload();
-                        }});
-                } else {
-                    bui.loading.hide();
-                    bs4pop.alert(res.message, {type: 'error'});
-                }
-            },
-            error: function (error) {
-                bui.loading.hide();
-                bs4pop.alert(error.message, {type: 'error'});
-            }
-        });
-    }
-
-    /**
-     * 组装提交主表值
-     */
-    function getAnnunciateDto() {
-        annunciateDto.title=$("#title").val();
-        annunciateDto.publishType=$("#publishType").val();
-        annunciateDto.startTime=$("#startTime").val();
-        if(annunciateDto.startTime!=""){
-            annunciateDto.startTime=annunciateDto.startTime+":00:00"
-        }
-        annunciateDto.endTime=$("#endTime").val();
-        if(annunciateDto.endTime!=""){
-            annunciateDto.endTime=annunciateDto.endTime+":00:00"
-        }
-        annunciateDto.notes=$("#notes").val();
-        annunciateDto.content=editor.txt.html();
-        return annunciateDto;
-    }
-
-    //弹出用户选择界面
-    function openUserPageHandler() {
-        let ids = [];
-        diaUserAdd = bs4pop.dialog({
-            title: '选择用户',// 对话框title
-            content: '${contextPath}/component/userSelect.html?ids=' + ids, // 对话框内容，可以是
-            width: '100%',// 宽度
-            height: '100%',// 高度
-            isIframe: true,// 默认是页面层，非iframe
-            backdrop: 'static',
-        });
-    }
-
-    //选择用户回调函数
-    function selectUsersCallback(items) {
-        authList = [];
-        if (items) {
-            items.forEach((item) => {
-                authList.push({id: item.id, realName: item.realName,position:item.position,departmentId:item.departmentId});
-            });
-        }
-        _grid.bootstrapTable('load', authList);
-    }
-
-    //删除用户
-    function deleteUser() {
-        let rows = _grid.bootstrapTable('getSelections');
-        if (!rows || rows.length <= 0) {
-            bs4pop.alert('请选择数据进行删除!');
-            return;
-        }
-        var ids=[];
-        rows.forEach((row) => {
-            ids.push(row.id);
-        });
-        _grid.bootstrapTable('remove', {
-            field: 'id',//对应该字段ID的columns的field
-            values: ids//字段ID的值
-        })
-        _grid.bootstrapTable('refreshOptions', {});
-    }
 
 
     /**
