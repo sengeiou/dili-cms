@@ -69,6 +69,7 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
     public BaseOutput create(IFileDto fileDto) {
         fileDto.setCreateTime(LocalDateTime.now());
         fileDto.setUpdateTime(LocalDateTime.now());
+        fileDto.setVersion(0);
         //先插入文件数据得到文件的id
         int fileResult = insertSelective(fileDto);
         if (fileResult <= 0) {
@@ -84,9 +85,9 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         if (CollectionUtils.isNotEmpty(fileDto.getFileAuthList())) {
             //填入文件的id
             fileDto.getFileAuthList().forEach(auth -> auth.setFileId(fileDto.getId()));
+            //新增文件权限
+            fileAuthMapper.insertList(fileDto.getFileAuthList());
         }
-        //新增文件权限
-        fileAuthMapper.insertList(fileDto.getFileAuthList());
         //得到精确到人的权限，再新增一次具体权限
         return BaseOutput.success();
     }
@@ -98,6 +99,7 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         if (Objects.isNull(file)) {
             throw new AppException("文件不存在!");
         }
+        fileDto.setVersion(file.getVersion() + 1);
         int update = update(fileDto);
         if (update <= 0) {
             throw new AppException("编辑失败!");
@@ -146,6 +148,23 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         List<IFileAuth> fileAuthList = fileAuthMapper.selectByExample(example);
         fileDto.setFileAuthList(fileAuthList);
         return fileDto;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public BaseOutput deleteByIds(List<Long> ids) {
+        //删除文件信息
+        int delete = delete(ids);
+        if (delete != ids.size()) {
+            throw new AppException("文件删除失败!");
+        }
+        Example example = new Example(IFileItem.class);
+        example.createCriteria().andIn("fileId", ids);
+        //删除下面的文件
+        fileItemMapper.deleteByExample(example);
+        //删除文件的权限数据
+        fileAuthMapper.deleteByExample(example);
+        return BaseOutput.success();
     }
 
 
