@@ -111,9 +111,19 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
     }
 
     @Override
-    public BaseOutput<List<AnnunciateVo>> getListByUserId(Long userId) {
-        List<AnnunciateVo> annunciates = getActualDao().getListByUserId(userId);
-        return BaseOutput.successData(annunciates);
+    public PageOutput<List<AnnunciateVo>> getListByUserId(AnnunciateDto annunciateDto) {
+        Integer page = annunciateDto.getPage();
+        page = (page == null) ? Integer.valueOf(1) : page;
+        if (annunciateDto.getRows() != null && annunciateDto.getRows() >= 1) {
+            PageHelper.startPage(page, annunciateDto.getRows());
+        }
+        List<AnnunciateVo> list = getActualDao().getListByUserId(annunciateDto);
+        Long total = list instanceof Page ? ((Page) list).getTotal() : list.size();
+        int totalPage = list instanceof Page ? ((Page) list).getPages() : 1;
+        int pageNum = list instanceof Page ? ((Page) list).getPageNum() : 1;
+        PageOutput<List<AnnunciateVo>> output = PageOutput.success();
+        output.setData(list).setPageNum(pageNum).setTotal(total).setPageSize(annunciateDto.getPage()).setPages(totalPage);
+        return output;
     }
 
     @Transactional(rollbackFor = Exception.class)

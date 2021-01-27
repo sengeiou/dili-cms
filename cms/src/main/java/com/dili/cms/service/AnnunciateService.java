@@ -59,13 +59,13 @@ public interface AnnunciateService extends BaseService<Annunciate, Long> {
     BaseOutput bachUpdateReadCountById(List<Annunciate> annunciates);
 
     /**
-     * 根据用户id查询消息列表(不包括富文本消息内容，以节约带宽)
-     * @param userId:
-     * @return：com.dili.ss.domain.BaseOutput<List<Annunciate>>
+     * 根据用户id查询消息列表(不包括富文本消息内容，以节约带宽) 分页
+     * @param annunciateDto:
+     * @return：com.dili.ss.domain.PageOutput<List<Annunciate>>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    BaseOutput<List<AnnunciateVo>> getListByUserId(Long userId);
+    PageOutput<List<AnnunciateVo>> getListByUserId(AnnunciateDto annunciateDto);
 
     /**
       * 新增Annunciate
