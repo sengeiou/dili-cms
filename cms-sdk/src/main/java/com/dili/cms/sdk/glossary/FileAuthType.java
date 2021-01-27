@@ -28,9 +28,9 @@ public enum FileAuthType {
      */
     DEPARTMENT("部门", 10),
     /**
-     * 市场
+     * 人员
      */
-    MARKET("市场", 20),
+    PERSON("人员", 20),
     ;
 
     private String name;
