@@ -12,8 +12,6 @@ import com.dili.ss.base.BaseService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.EasyuiPageOutput;
 
-import java.util.List;
-
 /**
  * <pre>
  * Description
@@ -59,10 +57,10 @@ public interface FileService extends BaseService<IFile, Long> {
     /**
      * 根据id删除文件
      *
-     * @param ids
+     * @param id
      * @return
      */
-    BaseOutput deleteByIds(List<Long> ids);
+    BaseOutput deleteById(Long id);
 
     /**
      * TODO 文件列表查询
