@@ -128,6 +128,8 @@
         bs4pop.confirm(" 确定删除" + treeNode.name + "分类吗？", {title: "信息确认"}, function (sure) {
             if (sure) {
                 deleteFileType(treeNode);
+            } else {
+                treeInit();
             }
         });
     }
@@ -151,7 +153,7 @@
         var zTree = $.fn.zTree.getZTreeObj("fileTree");
         var node = zTree.getNodeByParam("id", id);//根据ID找到该节点
         zTree.checkNode(node);
-        zTreeOnClick(null,null,node);
+        zTreeOnClick(null, null, node);
     }
 
     /**
