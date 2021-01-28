@@ -151,7 +151,7 @@
         var zTree = $.fn.zTree.getZTreeObj("fileTree");
         var node = zTree.getNodeByParam("id", id);//根据ID找到该节点
         zTree.checkNode(node);
-        zTreeOnClick(null,null,node);
+        zTreeOnClick(null, null, node);
     }
 
     /**
@@ -400,6 +400,11 @@
         let rows = _grid.bootstrapTable('getSelections');
         if (null == rows || rows.length == 0) {
             bs4pop.alert('请选一条数据');
+            return;
+        }
+        //判断文件可不可以下载
+        if (rows[0].isDownload != 1) {
+            bs4pop.alert('该文件不可下载!', {type: 'error'});
             return;
         }
         $.ajax({
