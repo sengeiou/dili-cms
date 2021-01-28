@@ -6,10 +6,8 @@
 package com.dili.cms.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.dili.ss.domain.BaseOutput;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,17 +63,13 @@ public class UploadFileController extends BaseController {
     @ResponseBody
     public BaseOutput doUpload(@RequestParam("file") MultipartFile file) {
         try {
-            String resultUrl = doUploadFileToDFS(file);
+            BaseOutput resultUrl = doUploadFileToDFS(file);
             if (logger.isInfoEnabled()) {
-                logger.info("====>>>upload result:" + resultUrl);
+                logger.info("====>>>upload result:" + JSON.toJSONString(resultUrl));
             }
-            if (StringUtils.isNotBlank(resultUrl)) {
-                JSONObject resultUrlJsonObj = JSON.parseObject(resultUrl);
-                if (resultUrlJsonObj.get("code").equals("200")) {
-                    //换成可以直接访问的url
-                    resultUrlJsonObj.put("data", "https://dfs.diligrp.com/file/download/" + resultUrlJsonObj.get("data"));
-                    return BaseOutput.success().setData(resultUrlJsonObj);
-                }
+            if (resultUrl.isSuccess()) {
+                resultUrl.setData("https://dfs.diligrp.com/file/download/" + resultUrl.getData());
+                return resultUrl;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,7 +87,7 @@ public class UploadFileController extends BaseController {
      * @author：Henry.Huang
      * @date：2021/1/12 14:10
      */
-    private String doUploadFileToDFS(MultipartFile file) throws Exception {
+    private BaseOutput doUploadFileToDFS(MultipartFile file) throws Exception {
         String uploadPath = baseUrl + "/file/upload";
         String fileName = file.getOriginalFilename();
         //暂存
@@ -109,7 +103,7 @@ public class UploadFileController extends BaseController {
         if (logger.isInfoEnabled()) {
             logger.info("===========>>>>RestTemplate Url:" + uploadPath + "|uploadMap:" + param);
         }
-        String res = restTemplate.postForObject(uploadPath, param, String.class);
+        BaseOutput res = restTemplate.postForObject(uploadPath, param, BaseOutput.class);
         if (targetFile.exists()) {
             targetFile.delete();
         }
