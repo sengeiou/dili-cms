@@ -163,7 +163,6 @@
         if (id == '' || null == id) {
             $('#typeId').val(null);
         }
-        console.info("id:" + id);
         var zTree = $.fn.zTree.getZTreeObj("fileTree");
         var node = zTree.getNodeByParam("id", id);//根据ID找到该节点
         zTree.checkNode(node);
