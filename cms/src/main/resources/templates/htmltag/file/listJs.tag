@@ -128,6 +128,8 @@
         bs4pop.confirm(" 确定删除" + treeNode.name + "分类吗？", {title: "信息确认"}, function (sure) {
             if (sure) {
                 deleteFileType(treeNode);
+            } else {
+                treeInit();
             }
         });
     }
@@ -150,7 +152,8 @@
         var id = $("#fileType").val();
         var zTree = $.fn.zTree.getZTreeObj("fileTree");
         var node = zTree.getNodeByParam("id", id);//根据ID找到该节点
-        zTree.checkNode(node)
+        zTree.checkNode(node);
+        zTreeOnClick(null, null, node);
     }
 
     /**
@@ -371,12 +374,10 @@
             bs4pop.alert('请选数据');
             return;
         }
-        let ids = rows.map(item => item.id);
         $.ajax({
             type: "POST",
-            url: "/file/delete.action",
+            url: "/file/delete.action?id=" + rows[0].id,
             processData: false,
-            data: JSON.stringify(ids),
             contentType: false,
             dataType: "JSON",
             success: function (res) {
@@ -403,6 +404,11 @@
             bs4pop.alert('请选一条数据');
             return;
         }
+        //判断文件可不可以下载
+        if (rows[0].isDownload != 1) {
+            bs4pop.alert('该文件不可下载!', {type: 'error'});
+            return;
+        }
         $.ajax({
             type: "POST",
             url: "/fileItem/listByFileId.action?fileId=" + rows[0].id,
@@ -411,8 +417,16 @@
             dataType: "JSON",
             success: function (res) {
                 if (res.code == "200") {
-                    console.log(res)
-                    //aDownloadFile(rows[0].coverImg);
+                    for (let i = 0; i < res.data.length; i++) {
+                        let html = "<a class='test' download='' href='" + res.data[i].fileUrl + "'></a>"
+                        $("body").append(html); // 修复firefox中无法触发click
+                    }
+                    $.each($(".test"), function (index, item) {
+                        setTimeout(function () {
+                            item.click();
+                            item.remove();
+                        }, 200 * index)
+                    });
                 } else {
                     bs4pop.alert(res.message, {type: 'error'});
                 }
@@ -426,17 +440,13 @@
     /**
      * 用a标签下载文件
      */
-    function aDownloadFile(...url) {
-
-        if (url.length > 0) {
+    function aDownloadFile(url) {
+        if (url) {
             var a = document.createElement("a");
             $("body").append(a); // 修复firefox中无法触发click
-            url.forEach(item => {
-                console.log(item)
-                a.download = '';
-                a.href = item;
-                a.click();
-            });
+            a.download = '';
+            a.href = url;
+            a.click();
             $(a).remove();
         }
     }

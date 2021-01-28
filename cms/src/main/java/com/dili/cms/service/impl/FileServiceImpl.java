@@ -5,7 +5,10 @@
  */
 package com.dili.cms.service.impl;
 
-import com.dili.cms.mapper.*;
+import com.dili.cms.mapper.FileAuthMapper;
+import com.dili.cms.mapper.FileItemMapper;
+import com.dili.cms.mapper.FileMapper;
+import com.dili.cms.mapper.FileTypeMapper;
 import com.dili.cms.sdk.domain.IFile;
 import com.dili.cms.sdk.domain.IFileAuth;
 import com.dili.cms.sdk.domain.IFileItem;
@@ -20,6 +23,8 @@ import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.exception.AppException;
 import com.dili.ss.metadata.ValueProviderUtils;
 import com.dili.ss.util.POJOUtils;
+import com.dili.uap.sdk.domain.UserTicket;
+import com.dili.uap.sdk.session.SessionContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
@@ -83,6 +88,10 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         if (CollectionUtils.isNotEmpty(fileDto.getFileAuthList())) {
             //填入文件的id
             fileDto.getFileAuthList().forEach(auth -> auth.setFileId(fileDto.getId()));
+            //把当前登录用户的权限增加进去
+            IFileAuth userFileAuth = getCurrentUserFileAuth();
+            userFileAuth.setFileId(fileDto.getId());
+            fileDto.getFileAuthList().add(userFileAuth);
             //新增文件权限
             fileAuthMapper.insertList(fileDto.getFileAuthList());
         }
@@ -97,8 +106,11 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         if (Objects.isNull(file)) {
             throw new AppException("文件不存在!");
         }
+        //获取一个带乐观锁条件的对象
+        Example versionLockExample = buildVersionLockExample(fileDto.getVersion(), IFile.class);
+        versionLockExample.createCriteria().andEqualTo("id", file.getId());
         fileDto.setVersion(file.getVersion() + 1);
-        int update = update(fileDto);
+        int update = getActualDao().updateByExample(fileDto, versionLockExample);
         if (update <= 0) {
             throw new AppException("编辑失败!");
         }
@@ -125,6 +137,10 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         //新增文件权限
         if (CollectionUtils.isNotEmpty(fileDto.getFileAuthList())) {
             fileDto.getFileAuthList().forEach(auth -> auth.setFileId(fileDto.getId()));
+            //把当前登录用户的权限增加进去
+            IFileAuth userFileAuth = getCurrentUserFileAuth();
+            userFileAuth.setFileId(fileDto.getId());
+            fileDto.getFileAuthList().add(userFileAuth);
             fileAuthMapper.insertList(fileDto.getFileAuthList());
         }
         return BaseOutput.success();
@@ -204,5 +220,21 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         long total = iFileDtos instanceof Page ? ((Page) iFileDtos).getTotal() : (long) iFileDtos.size();
         List results = useProvider ? ValueProviderUtils.buildDataByProvider(iFileDto, iFileDtos) : iFileDtos;
         return new EasyuiPageOutput(total, results);
+    }
+
+    private IFileAuth getCurrentUserFileAuth() {
+        IFileAuth fileAuth = DTOUtils.newInstance(IFileAuth.class);
+        fileAuth.setAuthType(FileAuthType.PERSON.getValue());
+        UserTicket userTicket = SessionContext.getSessionContext().getUserTicket();
+        fileAuth.setAuthValue(userTicket.getId());
+        fileAuth.setAuthText(userTicket.getRealName());
+        return fileAuth;
+    }
+
+    private Example buildVersionLockExample(Object version, Class c) {
+        Example example = new Example(c);
+        example.createCriteria()
+                .andEqualTo("version", version);
+        return example;
     }
 }
