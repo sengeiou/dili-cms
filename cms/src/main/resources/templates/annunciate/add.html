@@ -11,7 +11,7 @@
         <input type="hidden" id="_sourceChannel" value="<#config name='ia.source.channel.earnest_order'/>">
         <form id="saveForm" role="form" novalidate>
             <input type="text" hidden="true"  id="customerType"  class="form-control" name="customerType"  maxlength="100">
-            <div class="row row-cols-2">
+            <div class="row row-cols-1">
                 <div class="form-group col">
                     <label for="title">通告标题<i class="red">*</i></label>
                     <input id="title" class="form-control" name="title"  maxlength="20" required>
@@ -143,7 +143,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row row-cols-2">
+            <div class="row row-cols-1">
                 <div class="form-group col">
                     <label for="notes">备注</label>
                     <input id="notes" class="form-control" name="notes"  maxlength="120">
@@ -171,6 +171,7 @@
     const editor = new E('#editor');
     // 或者 const editor = new E(document.getElementById('div1'))
     editor.config.zIndex=5;
+    editor.config.height = 200;
     editor.create();
     let _grid = $('#grid');
     var departmentAuthResult;
@@ -540,8 +541,8 @@
         diaUserAdd = bs4pop.dialog({
             title: '选择用户',// 对话框title
             content: '${contextPath}/component/userSelect.html?ids=' + ids, // 对话框内容，可以是
-            width: '100%',// 宽度
-            height: '100%',// 高度
+            width: '70%',// 宽度
+            height: '90%',// 高度
             isIframe: true,// 默认是页面层，非iframe
             backdrop: 'static',
         });

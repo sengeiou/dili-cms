@@ -46,7 +46,7 @@
      */
     function operationFormatter(value, row, index, field){
         var operationValue='';
-        if(row.$_sendState==2){
+        if(row.$_sendState==2&&row.stickState==1){
             operationValue+='<#resource code="annunciate_stick">';
             operationValue+='<a href="#" class="mr-2" onclick="stickHandler(\'' + value+ '\')"><i class="fa fa-search">置顶</i></a>';
             operationValue+='</#resource>';
@@ -62,7 +62,7 @@
             title: '新增通告信息',//对话框title
             className: 'dialog-center',
             content: '${contextPath}/annunciate/add.html', //对话框内容，可以是 string、element，$object
-            width: '95%',//宽度
+            width: '50%',//宽度
             height: '95%',//高度
             backdrop: 'static',
             isIframe: true//默认是页面层，非iframe
@@ -177,7 +177,7 @@
                 content: '/annunciate/add.html?id=' + selectDatas[0].id,
                 isIframe: true,
                 backdrop: 'static',
-                width: '75%',
+                width: '50%',
                 height: '95%'
             });
         }else{
@@ -220,7 +220,7 @@
             content: '/annunciate/view.html?id=' + id,
             isIframe: true,
             backdrop: 'static',
-            width: '75%',
+            width: '50%',
             height: '95%'
         });
     }

@@ -227,6 +227,21 @@ public class AnnunciateApi {
         }
     }
 
+    /**
+     * 扫描通告，每整点扫描一次，将开始发布的消息进行发布，将结束的消息进行结束
+     * @return：com.dili.ss.domain.BaseOutput
+     * @author：Henry.Huang
+     * @date：2021/1/21 16:38
+     */
+    @PostMapping(value = "/scanningAnnunciate")
+    public BaseOutput scanningAnnunciate() {
+        try{
+            return annunciateService.scanningAnnunciate();
+        }catch (AppException e) {
+            return BaseOutput.failure(e.getMessage());
+        }
+    }
+
 
 
 }

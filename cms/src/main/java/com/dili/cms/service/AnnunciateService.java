@@ -129,4 +129,12 @@ public interface AnnunciateService extends BaseService<Annunciate, Long> {
       * @date：2021/1/27 17:39
       */
     BaseOutput<Annunciate> readByAnnunciateDto(AnnunciateDto annunciateDto);
+
+    /**
+      * 扫描通告，每整点扫描一次，将开始发布的消息进行发布，将结束的消息进行结束
+      * @return：com.dili.ss.domain.BaseOutput
+      * @author：Henry.Huang
+      * @date：2021/1/28 10:42
+      */
+    BaseOutput scanningAnnunciate();
 }
