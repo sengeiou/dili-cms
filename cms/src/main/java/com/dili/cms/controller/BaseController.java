@@ -25,36 +25,37 @@ import com.dili.uap.sdk.session.SessionContext;
  */
 public abstract class BaseController {
     protected Logger logger = LoggerFactory.getLogger(getClass());
+
     protected UserTicket getCurrentUser() {
         return SessionContext.getSessionContext().getUserTicket();
     }
 
 
     protected Long getUserId() {
-        return 0L;//getCurrentUser().getId();
+        return getCurrentUser().getId();
     }
 
     protected Long getDepartmentId() {
-        return 0L;//getCurrentUser().getDepartmentId();
+        return getCurrentUser().getDepartmentId();
     }
 
     protected Long getOrgId() {
-        return 0L;//getCurrentUser().getId();
+        return getCurrentUser().getId();
     }
 
     protected String getUserName() {
-        return "0";//getCurrentUser().getUserName();
+        return getCurrentUser().getUserName();
     }
 
     protected String getRealName() {
-        return "0";//getCurrentUser().getRealName();
+        return getCurrentUser().getRealName();
     }
 
     protected Long getFirmId() {
-        return 8L;//getCurrentUser().getFirmCode();
+        return getCurrentUser().getFirmId();
     }
 
     protected String getFirmCode() {
-        return "sg";//getCurrentUser().getFirmCode();
+        return getCurrentUser().getFirmCode();
     }
 }
