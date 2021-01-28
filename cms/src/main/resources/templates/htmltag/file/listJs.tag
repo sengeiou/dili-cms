@@ -37,7 +37,16 @@
     /******************************驱动执行区 end****************************/
 
     /*****************************************函数区 begin************************************/
-
+    /**
+     * 选中行判断是否有下载权限
+     */
+    _grid.on("check.bs.table", function () {
+        $('#download_btn').prop('disabled', false);
+        let rows = _grid.bootstrapTable('getSelections');
+        if (!rows[0].isDownload == 1) {
+            $('#download_btn').prop('disabled', true);
+        }
+    });
     /**
      * 树初始化
      */
@@ -475,10 +484,16 @@
 
     function imgFormatter(value, row, index) {
         var operationValue = '';
-        operationValue += '<img src="' + value + '" alt="" style="height: 70px;width: 70px" />';
+        operationValue += '<img src="' + value + '" onclick="openFile(\'' + value + '\')" alt="" class="img-thumbnail" style="height: 70px;width: 70px"/>';
         return operationValue;
     }
 
+    //预览文件
+    function openFile(url) {
+        var showUrl = "https://dfs.diligrp.com/file/view/" + url.substring(url.lastIndexOf("/") + 1)
+        $("#imgModal").find("#imgshow").html("<img src='" + showUrl + "' class='carousel-inner img-responsive img-rounded' data-dismiss='modal'>");
+        $("#imgModal").modal('show');
+    }
     /*****************************************函数区 end**************************************/
 
 </script>
