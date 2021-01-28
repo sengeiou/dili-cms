@@ -23,6 +23,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <pre>
@@ -77,6 +79,41 @@ public class UploadFileController extends BaseController {
             return BaseOutput.failure();
         }
         return BaseOutput.failure();
+    }
+
+    /**
+     * TODO 富文本多文件上传
+     *
+     * @param file:
+     * @return：com.dili.ss.domsain.BaseOutput
+     * @author：Henry.Huang
+     * @date：2021/1/12 14:10
+     */
+    @RequestMapping(value = "/doUploads.action", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public BaseOutput<List<String>> doUploads(@RequestParam("file") MultipartFile[] file) {
+        try {
+            List<String> fileAdress=new ArrayList<>();
+            if(file!=null&&file.length>0){
+                for (MultipartFile multipartFile:file) {
+                    BaseOutput resultUrl = doUploadFileToDFS(multipartFile);
+                    if (logger.isInfoEnabled()) {
+                        logger.info("====>>>upload result:" + resultUrl);
+                    }
+                    if (resultUrl.isSuccess()) {
+                        fileAdress.add("https://dfs.diligrp.com/file/download/" + resultUrl.getData());
+                    }
+                }
+                if(fileAdress.size()==0){
+                    return BaseOutput.failure();
+                }
+            }
+            return BaseOutput.successData(fileAdress);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("=====>>>upload error" + e.getMessage());
+            return BaseOutput.failure("上传失败");
+        }
     }
 
     /**
