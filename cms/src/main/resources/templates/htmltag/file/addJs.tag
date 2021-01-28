@@ -173,7 +173,7 @@
     //弹出用户选择界面
     function openUserPageHandler() {
         dia = bs4pop.dialog({
-            title: '选择库存商品',// 对话框title
+            title: '选择人员',// 对话框title
             content: '${contextPath}/component/userSelect.html?ids=' + Array.from(fileUserIds), // 对话框内容，可以是
             width: '85%',// 宽度
             height: '95%',// 高度
