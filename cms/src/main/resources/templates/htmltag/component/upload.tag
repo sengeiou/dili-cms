@@ -101,7 +101,7 @@
             singleFileUploads: true,
             maxNumberOfFiles: 1,//最大上传文件数目
             done: function (e, data) {
-                if (data.result.code != '200') {
+                if (!data.result.success) {
                     let resultData = {
                         name: data.files[0].name,
                         size: data.files[0].size,
