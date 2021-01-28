@@ -102,13 +102,11 @@ public class FileTypeServiceImpl extends BaseServiceImpl<IFileType, Long> implem
      */
     @Transactional(rollbackFor = Exception.class)
     public void addFileType(IFileType iFileType) {
-        //UserTicket userTicket = SessionContext.getSessionContext().getUserTicket();
+        UserTicket userTicket = SessionContext.getSessionContext().getUserTicket();
         iFileType.setParentId(DEFAULT_PARENT_ID);
         iFileType.setNodeFileCount(DEFAULT_NODE_COUNT);
-        /*iFileType.setFirmCode(userTicket.getFirmCode());
-        iFileType.setCreatorId(userTicket.getId());*/
-        iFileType.setFirmCode("group");
-        iFileType.setCreatorId(1L);
+        iFileType.setFirmCode(userTicket.getFirmCode());
+        iFileType.setCreatorId(userTicket.getId());
         iFileType.setCreateTime(LocalDateTime.now());
         iFileType.setUpdateTime(LocalDateTime.now());
         iFileType.setVersion(DEFAULT_VERSION);
