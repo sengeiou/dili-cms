@@ -128,6 +128,8 @@
         bs4pop.confirm(" 确定删除" + treeNode.name + "分类吗？", {title: "信息确认"}, function (sure) {
             if (sure) {
                 deleteFileType(treeNode);
+            } else {
+                treeInit();
             }
         });
     }
