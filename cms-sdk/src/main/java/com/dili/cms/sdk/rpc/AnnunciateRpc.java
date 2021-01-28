@@ -113,4 +113,14 @@ public interface AnnunciateRpc {
     @PostMapping(value = "/api/annunciate/getContentById")
     BaseOutput<String> getContentById(@RequestBody Long id);
 
+    /**
+     * 根据targetId获取未读信息通告数
+     * @param annunciateDto:
+     * @return：com.dili.ss.domain.BaseOutput<java.land.Integer>
+     * @author：Henry.Huang
+     * @date：2021/1/21 16:38
+     */
+    @PostMapping(value = "/api/annunciate/getNoReadCountByTargetId")
+    BaseOutput<String> getNoReadCountByTargetId(@RequestBody AnnunciateDto annunciateDto);
+
 }

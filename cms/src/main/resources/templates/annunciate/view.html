@@ -11,7 +11,7 @@
         <input type="hidden" id="_sourceChannel" value="<#config name='ia.source.channel.earnest_order'/>">
         <form id="saveForm" role="form" novalidate>
             <input type="text" hidden="true"  id="customerType"  class="form-control" name="customerType"  maxlength="100">
-            <div class="row row-cols-2">
+            <div class="row row-cols-1">
                 <div class="form-group col">
                     <label for="title">通告标题<i class="red">*</i></label>
                     <input id="title" class="form-control" name="title"  maxlength="20" disabled required>
@@ -137,7 +137,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row row-cols-2">
+            <div class="row row-cols-1">
                 <div class="form-group col">
                     <label for="notes">备注</label>
                     <input id="notes" class="form-control" name="notes"  maxlength="120" disabled>
@@ -155,7 +155,9 @@
     const editor = new E('#editor');
     // 或者 const editor = new E(document.getElementById('div1'))
     editor.config.zIndex=5;
+    editor.config.height = 200;
     editor.create();
+    editor.disable()
     let _grid = $('#grid');
     var departmentAuthResult;
 

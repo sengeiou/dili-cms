@@ -80,4 +80,13 @@ public interface AnnunciateMapper extends MyMapper<Annunciate> {
       * @date：2021/1/27 16:54 
       */
     List<AnnunciateVo> getStickListByTargetId(Long targetId);
+
+    /**
+      * 根据开始时间或结束时间增加通告的版本号，乐观锁锁住行数据
+      * @param exampleDto:
+      * @return：void 
+      * @author：Henry.Huang 
+      * @date：2021/1/28 11:07 
+      */
+    int updateStartOrEndAnnunciate(AnnunciateDto exampleDto);
 }

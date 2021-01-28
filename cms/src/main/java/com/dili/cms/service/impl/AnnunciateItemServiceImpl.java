@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +63,7 @@ public class AnnunciateItemServiceImpl extends BaseServiceImpl<AnnunciateItem, L
         Example example=new Example(AnnunciateItem.class);
         if(AnnunciateItemOpType.OP_READ.getValue().equals(updateType)){
             annunciateItem.setReadState(ReadType.READ.getValue());
+            annunciateItem.setReadTime(LocalDateTime.now());
             example.createCriteria().andEqualTo("annunciateId",annunciateId)
                     .andEqualTo("readState",ReadType.NO_READ.getValue());
             int updateCount=getActualDao().updateByExampleSelective(annunciateItem,example);
@@ -101,6 +103,7 @@ public class AnnunciateItemServiceImpl extends BaseServiceImpl<AnnunciateItem, L
                 BaseOutput.failure("该用户不存在未读信息！");
             }
             annunciateItem.setReadState(ReadType.READ.getValue());
+            annunciateItem.setReadTime(LocalDateTime.now());
             int updateCount=getActualDao().updateByExampleSelective(annunciateItem,example);
             if(updateCount != annunciateItems.size()){
                 throw new AppException("系统出错，请刷新后重试！");
@@ -131,6 +134,7 @@ public class AnnunciateItemServiceImpl extends BaseServiceImpl<AnnunciateItem, L
         Example example=new Example(AnnunciateItem.class);
         if(AnnunciateItemOpType.OP_READ.getValue().equals(updateType)){
             annunciateItem.setReadState(ReadType.READ.getValue());
+            annunciateItem.setReadTime(LocalDateTime.now());
             example.createCriteria().andEqualTo("annunciateId",annunciateId)
                     .andEqualTo("targetId",targetId)
                     .andEqualTo("readState",ReadType.NO_READ.getValue());
