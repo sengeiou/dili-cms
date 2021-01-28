@@ -47,6 +47,7 @@
             $('#download_btn').prop('disabled', true);
         }
     });
+
     /**
      * 树初始化
      */
@@ -159,6 +160,10 @@
      */
     function chooseType() {
         var id = $("#fileType").val();
+        if (id == '' || null == id) {
+            $('#typeId').val(null);
+        }
+        console.info("id:" + id);
         var zTree = $.fn.zTree.getZTreeObj("fileTree");
         var node = zTree.getNodeByParam("id", id);//根据ID找到该节点
         zTree.checkNode(node);
@@ -477,7 +482,7 @@
             rows: params.limit,   //页面大小
             page: ((params.offset / params.limit) + 1) || 1, //页码
             sort: params.sort,
-            order: params.order
+            order: params.order,
         };
         return $.extend(temp, bui.util.bindGridMeta2Form('grid', 'queryForm'));
     }
@@ -494,6 +499,7 @@
         $("#imgModal").find("#imgshow").html("<img src='" + showUrl + "' class='carousel-inner img-responsive img-rounded' data-dismiss='modal'>");
         $("#imgModal").modal('show');
     }
+
     /*****************************************函数区 end**************************************/
 
 </script>
