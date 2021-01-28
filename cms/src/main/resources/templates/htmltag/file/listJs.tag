@@ -373,7 +373,7 @@
         }
         $.ajax({
             type: "POST",
-            url: "/file/delete.action?id="+rows[0].id,
+            url: "/file/delete.action?id=" + rows[0].id,
             processData: false,
             contentType: false,
             dataType: "JSON",
@@ -409,8 +409,16 @@
             dataType: "JSON",
             success: function (res) {
                 if (res.code == "200") {
-                    console.log(res)
-                    //aDownloadFile(rows[0].coverImg);
+                    for (let i = 0; i < res.data.length; i++) {
+                        let html = "<a class='test' download='' href='" + res.data[i].fileUrl + "'></a>"
+                        $("body").append(html); // 修复firefox中无法触发click
+                    }
+                    $.each($(".test"), function (index, item) {
+                        setTimeout(function () {
+                            item.click();
+                            item.remove();
+                        }, 200 * index)
+                    });
                 } else {
                     bs4pop.alert(res.message, {type: 'error'});
                 }
@@ -424,17 +432,13 @@
     /**
      * 用a标签下载文件
      */
-    function aDownloadFile(...url) {
-
-        if (url.length > 0) {
+    function aDownloadFile(url) {
+        if (url) {
             var a = document.createElement("a");
             $("body").append(a); // 修复firefox中无法触发click
-            url.forEach(item => {
-                console.log(item)
-                a.download = '';
-                a.href = item;
-                a.click();
-            });
+            a.download = '';
+            a.href = url;
+            a.click();
             $(a).remove();
         }
     }
