@@ -224,7 +224,7 @@
     //上传文件回掉
     function uploadFileCallback(state, data) {
         // 获取上传成功的文件数据
-        if (!state || data.data.code != '200') {
+        if (!state || !data.success) {
             alert("文件：" + data.name + "上传失败!");
             return;
         }
