@@ -141,9 +141,9 @@ public class AnnunciateController extends BaseController{
                     }
                     UserQuery userQuery = DTOUtils.newInstance(UserQuery.class);
                     userQuery.setIds(ids);
-                    BaseOutput<List<User>> UserResult = userRpc.listByExample(userQuery);
-                    if(UserResult.isSuccess()){
-                        modelMap.put("appointUsers",JSON.toJSONString(UserResult.getData()));
+                    BaseOutput<List<User>> userResult = userRpc.listByExample(userQuery);
+                    if(userResult.isSuccess()){
+                        modelMap.put("appointUsers",JSON.toJSONString(userResult.getData()));
                         flag=true;
                     }
                     break;
@@ -203,9 +203,9 @@ public class AnnunciateController extends BaseController{
                 }
                 UserQuery userQuery = DTOUtils.newInstance(UserQuery.class);
                 userQuery.setIds(ids);
-                BaseOutput<List<User>> UserResult = userRpc.listByExample(userQuery);
-                if(UserResult.isSuccess()){
-                    modelMap.put("appointUsers",JSON.toJSONString(UserResult.getData()));
+                BaseOutput<List<User>> userResult = userRpc.listByExample(userQuery);
+                if(userResult.isSuccess()){
+                    modelMap.put("appointUsers",JSON.toJSONString(userResult.getData()));
                     flag=true;
                 }
                 break;

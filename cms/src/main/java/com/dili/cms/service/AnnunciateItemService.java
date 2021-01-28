@@ -5,18 +5,15 @@
   */
 package com.dili.cms.service;
 
-import com.dili.cms.sdk.domain.Annunciate;
 import com.dili.cms.sdk.domain.AnnunciateItem;
 import com.dili.cms.sdk.dto.AnnunciateDto;
 import com.dili.ss.base.BaseService;
 import com.dili.ss.domain.BaseOutput;
 
-import java.util.List;
-
 /**
   * <pre> 
   * Description 
-  * TODO file description here 
+  * 信息通告项service
   *
   * @author Henry.Huang 
   * @since 1.0 
@@ -51,6 +48,7 @@ public interface AnnunciateItemService extends BaseService<AnnunciateItem, Long>
     /**
       * 根据信息通告项id标记该消息已读
       * @param annunciateId:
+      * @param targetId:
       * @param updateType:  更新方式 1更新为已读 2更新为已删除
       * @return：com.dili.ss.domain.BaseOutput
       * @author：Henry.Huang

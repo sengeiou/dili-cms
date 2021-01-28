@@ -12,7 +12,6 @@ import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.ss.base.BaseService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.PageOutput;
-import com.dili.uap.sdk.domain.User;
 
 import java.util.List;
 
