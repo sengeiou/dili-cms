@@ -7,6 +7,7 @@ package com.dili.cms.api;
 
 import com.dili.cms.sdk.domain.Annunciate;
 import com.dili.cms.sdk.dto.AnnunciateDto;
+import com.dili.cms.sdk.dto.AnnunciateQueryDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.cms.sdk.glossary.AnnunciateItemOpType;
 import com.dili.cms.service.AnnunciateItemService;
@@ -144,18 +145,18 @@ public class AnnunciateApi {
 
     /**
      * 根据用户id查询消息列表(不包括富文本消息内容，以节约带宽) 分页
-     * @param annunciateDto:
+     * @param annunciateQueryDto:
      * @return：com.dili.ss.domain.BaseOutput<String>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
     @PostMapping(value = "/getListByTargetId")
-    public String getListByTargetId(@RequestBody AnnunciateDto annunciateDto) {
+    public BaseOutput<String> getListByTargetId(AnnunciateQueryDto annunciateQueryDto) {
         try{
-            PageOutput<List<AnnunciateVo>> output =annunciateService.getListByUserId(annunciateDto);
-            return new EasyuiPageOutput(output.getTotal(), ValueProviderUtils.buildDataByProvider(annunciateDto, output.getData())).toString();
+            PageOutput<List<AnnunciateVo>> output =annunciateService.getListByUserId(annunciateQueryDto);
+            return BaseOutput.successData(new EasyuiPageOutput(output.getTotal(), ValueProviderUtils.buildDataByProvider(annunciateQueryDto, output.getData())).toString());
         }catch (Exception e) {
-            return e.getMessage();
+            return BaseOutput.failure(e.getMessage());
         }
     }
 
@@ -187,7 +188,7 @@ public class AnnunciateApi {
      * @date：2021/1/21 16:38
      */
     @PostMapping(value = "/getStickListByTargetId")
-    public BaseOutput<List<AnnunciateVo>> getStickListByTargetId(@RequestBody AnnunciateDto annunciateDto) {
+    public BaseOutput<List<AnnunciateVo>> getStickListByTargetId(AnnunciateDto annunciateDto) {
         try{
             return annunciateService.getStickListByTargetId(annunciateDto.getTargetId());
         }catch (AppException e) {
@@ -203,7 +204,7 @@ public class AnnunciateApi {
      * @date：2021/1/21 16:38
      */
     @PostMapping(value = "/readByAnnunciateDto")
-    public BaseOutput<Annunciate> readByAnnunciateDto(@RequestBody AnnunciateDto annunciateDto) {
+    public BaseOutput<Annunciate> readByAnnunciateDto(AnnunciateDto annunciateDto) {
         try{
             return annunciateService.readByAnnunciateDto(annunciateDto);
         }catch (AppException e) {
@@ -219,7 +220,7 @@ public class AnnunciateApi {
      * @date：2021/1/21 16:38
      */
     @PostMapping(value = "/getNoReadCountByTargetId")
-    public BaseOutput<Integer> getNoReadCountByTargetId(@RequestBody AnnunciateDto annunciateDto) {
+    public BaseOutput<Integer> getNoReadCountByTargetId(AnnunciateDto annunciateDto) {
         try{
             return annunciateItemService.getNoReadCountByTargetId(annunciateDto);
         }catch (AppException e) {

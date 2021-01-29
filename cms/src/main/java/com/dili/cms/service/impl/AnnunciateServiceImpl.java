@@ -12,6 +12,7 @@ import com.dili.cms.sdk.domain.Annunciate;
 import com.dili.cms.sdk.domain.AnnunciateItem;
 import com.dili.cms.sdk.domain.AnnunciateTarget;
 import com.dili.cms.sdk.dto.AnnunciateDto;
+import com.dili.cms.sdk.dto.AnnunciateQueryDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.cms.sdk.glossary.*;
 import com.dili.cms.service.AnnunciateItemService;
@@ -113,18 +114,18 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
     }
 
     @Override
-    public PageOutput<List<AnnunciateVo>> getListByUserId(AnnunciateDto annunciateDto) {
-        Integer page = annunciateDto.getPage();
+    public PageOutput<List<AnnunciateVo>> getListByUserId(AnnunciateQueryDto annunciateQueryDto) {
+        Integer page = annunciateQueryDto.getPage();
         page = (page == null) ? Integer.valueOf(1) : page;
-        if (annunciateDto.getRows() != null && annunciateDto.getRows() >= 1) {
-            PageHelper.startPage(page, annunciateDto.getRows());
+        if (annunciateQueryDto.getRows() != null && annunciateQueryDto.getRows() >= 1) {
+            PageHelper.startPage(page, annunciateQueryDto.getRows());
         }
-        List<AnnunciateVo> list = getActualDao().getListByUserId(annunciateDto);
+        List<AnnunciateVo> list = getActualDao().getListByUserId(annunciateQueryDto);
         Long total = list instanceof Page ? ((Page) list).getTotal() : list.size();
         int totalPage = list instanceof Page ? ((Page) list).getPages() : 1;
         int pageNum = list instanceof Page ? ((Page) list).getPageNum() : 1;
         PageOutput<List<AnnunciateVo>> output = PageOutput.success();
-        output.setData(list).setPageNum(pageNum).setTotal(total).setPageSize(annunciateDto.getPage()).setPages(totalPage);
+        output.setData(list).setPageNum(pageNum).setTotal(total).setPageSize(annunciateQueryDto.getPage()).setPages(totalPage);
         return output;
     }
 

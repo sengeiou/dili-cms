@@ -8,6 +8,7 @@ package com.dili.cms.mapper;
 
 import com.dili.cms.sdk.domain.Annunciate;
 import com.dili.cms.sdk.dto.AnnunciateDto;
+import com.dili.cms.sdk.dto.AnnunciateQueryDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.ss.base.MyMapper;
 
@@ -56,12 +57,12 @@ public interface AnnunciateMapper extends MyMapper<Annunciate> {
 
     /**
       * 根据用户id获取信息列表，过滤掉已删除的
-      * @param annunciateDto:
+      * @param annunciateQueryDto:
       * @return：java.util.List<com.dili.cms.sdk.domain.Annunciate>
       * @author：Henry.Huang
       * @date：2021/1/22 15:58
       */
-    List<AnnunciateVo> getListByUserId(AnnunciateDto annunciateDto);
+    List<AnnunciateVo> getListByUserId(AnnunciateQueryDto annunciateQueryDto);
 
     /**
       * 将条件内的所有消息改为非置顶 条件：发布时间未结束 发布状态为已发布 市场id

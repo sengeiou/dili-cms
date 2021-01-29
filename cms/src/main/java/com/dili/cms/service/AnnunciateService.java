@@ -8,6 +8,7 @@ package com.dili.cms.service;
 
 import com.dili.cms.sdk.domain.Annunciate;
 import com.dili.cms.sdk.dto.AnnunciateDto;
+import com.dili.cms.sdk.dto.AnnunciateQueryDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.ss.base.BaseService;
 import com.dili.ss.domain.BaseOutput;
@@ -59,12 +60,12 @@ public interface AnnunciateService extends BaseService<Annunciate, Long> {
 
     /**
      * 根据用户id查询消息列表(不包括富文本消息内容，以节约带宽) 分页
-     * @param annunciateDto:
+     * @param annunciateQueryDto:
      * @return：com.dili.ss.domain.PageOutput<List<Annunciate>>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    PageOutput<List<AnnunciateVo>> getListByUserId(AnnunciateDto annunciateDto);
+    PageOutput<List<AnnunciateVo>> getListByUserId(AnnunciateQueryDto annunciateQueryDto);
 
     /**
       * 新增Annunciate
