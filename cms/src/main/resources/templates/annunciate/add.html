@@ -572,7 +572,7 @@
     //弹出用户选择界面
     function openUserPageHandler() {
         let ids = [];
-        diaUserAdd = bs4pop.dialog({
+        dia = bs4pop.dialog({
             title: '选择用户',// 对话框title
             content: '${contextPath}/component/userSelect.html?ids=' + ids, // 对话框内容，可以是
             width: '70%',// 宽度
@@ -583,24 +583,26 @@
     }
 
     //选择用户回调函数
-    function selectUsersCallback(items) {
-        var oldUsers=_grid.bootstrapTable("getData");
+    function selectUsersCallback(rows) {
         authList = [];
-        if (items) {
-            items.forEach((item) => {
-                var addFlag=true;
-                oldUsers.forEach((userItem) => {
-                    if(userItem.id==item.id){
-                        addFlag=false;
-                        return;
-                    }
-                });
-                if(addFlag){
-                    authList.push({id: item.id, realName: item.realName,position:item.position,departmentId:item.departmentId});
-                }
+        if (rows) {
+            var ids=[];
+            rows.forEach((item) => {
+                ids.push(item.id);
+                authList.push({id: item.id, realName: item.realName,position:item.position,departmentId:item.departmentId});
             });
+            var oldUsers=_grid.bootstrapTable("getData");
+            if(oldUsers.length>0){
+                _grid.bootstrapTable('remove', {
+                    field: 'id',//对应该字段ID的columns的field
+                    values: ids//字段ID的值
+                });
+            }
+            _grid.bootstrapTable('refreshOptions', {});
         }
-        _grid.bootstrapTable('load', authList);
+        authList.forEach((newItem) => {
+            _grid.bootstrapTable('append', newItem);
+        });
     }
 
     //删除用户
