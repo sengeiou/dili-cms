@@ -235,7 +235,18 @@
     /**
      * 查询处理
      */
-    function queryDataHandler() {
+    function queryDataHandler(flag) {
+        if(flag==0){
+            $("#sendState").val("");
+        }else if(flag==1){
+            $("#sendState").val("1");
+        }else if(flag==2){
+            $("#sendState").val("2");
+        }else if(flag==3){
+            $("#sendState").val("3");
+        }else if(flag==4){
+            $("#sendState").val("4");
+        }
         _grid.bootstrapTable('refresh');
     }
 

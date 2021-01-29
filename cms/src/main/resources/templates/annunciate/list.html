@@ -7,7 +7,7 @@
             </div>
             <form class="form collapse show" id="queryForm" role="form" style="margin-left: 10px" >
                 <div class="row  row-cols-6">
-                    <div class="form-group col">
+                    <div class="form-group col" hidden>
                         <label for="sendState">发送状态</label>
                         <select id="sendState" name="sendState" class="form-control">
                             <option value="">--全部--</option>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="col-auto align-self-center mt-3">
                         <button type="button" class="btn btn-outline-primary mr-2" onclick="javascript:$('#queryForm input,select').val('');"><i class="fa fa-refresh"></i> 清空</button>
-                        <button type="button" class="btn btn-outline-primary" onclick="queryDataHandler()"><i class="fa fa-search"></i> 查询</button>
+                        <button type="button" class="btn btn-outline-primary" onclick="queryDataHandler(0)"><i class="fa fa-search"></i> 查询</button>
                     </div>
                 </div>
 
@@ -61,8 +61,16 @@
             <div class="breadcrumb">
                 结果列表
             </div>
-
-            <div id="toolbar" class="btn-group" role="group" aria-label="Toolbar with button groups">
+            <div id="toolbar">
+                <div class="ml-1 btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-secondary" onclick="queryDataHandler(0)">全部</button>
+                    <button type="button" class="btn btn-secondary" onclick="queryDataHandler(2)">已发布</button>
+                    <button type="button" class="btn btn-secondary" onclick="queryDataHandler(1)">未发布</button>
+                    <button type="button" class="btn btn-secondary" onclick="queryDataHandler(3)">已撤发</button>
+                    <button type="button" class="btn btn-secondary" onclick="queryDataHandler(4)">已结束</button>
+                </div>
+            </div>
+            <div   aria-label="Toolbar with button groups">
                 <#resource code="annunciate_add">
                     <button id="btn_add" type="button" class="ml-1 btn btn-primary" onclick="openInsertHandler()"><i
                             class="fa fa-plus"></i> 新增

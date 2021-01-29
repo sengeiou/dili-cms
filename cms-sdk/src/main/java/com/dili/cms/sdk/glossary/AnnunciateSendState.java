@@ -24,7 +24,7 @@ public enum AnnunciateSendState {
      */
     CREATED("未发布", 1),
     PUBLISH("已发布", 2),
-    REVOKE("已撤销", 3),
+    REVOKE("已撤发", 3),
     END("已结束", 4);
 
     private String name;
