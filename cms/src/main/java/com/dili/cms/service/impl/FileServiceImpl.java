@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <pre>
@@ -93,6 +94,8 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
             IFileAuth userFileAuth = getCurrentUserFileAuth();
             userFileAuth.setFileId(fileDto.getId());
             fileAuthList.add(userFileAuth);
+            //去重 可能已经选择了当前用户的权限
+            fileAuthList = fileAuthList.stream().distinct().collect(Collectors.toList());
             //新增文件权限
             fileAuthMapper.insertList(fileAuthList);
         }
@@ -143,6 +146,8 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
             IFileAuth userFileAuth = getCurrentUserFileAuth();
             userFileAuth.setFileId(fileDto.getId());
             fileAuthList.add(userFileAuth);
+            //去重 可能已经选择了当前用户的权限
+            fileAuthList = fileAuthList.stream().distinct().collect(Collectors.toList());
             fileAuthMapper.insertList(fileAuthList);
         }
         return BaseOutput.success();
