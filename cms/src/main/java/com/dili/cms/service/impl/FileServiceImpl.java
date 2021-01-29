@@ -23,8 +23,6 @@ import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.exception.AppException;
 import com.dili.ss.metadata.ValueProviderUtils;
 import com.dili.ss.util.POJOUtils;
-import com.dili.uap.sdk.domain.UserTicket;
-import com.dili.uap.sdk.session.SessionContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.CollectionUtils;
@@ -40,7 +38,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * <pre>
@@ -87,17 +84,10 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         fileTypeMapper.updateNodeCountBatch(linkNodeIds, 1);
         //判断有没有权限限制
         if (CollectionUtils.isNotEmpty(fileDto.getFileAuthList())) {
-            List<IFileAuth> fileAuthList = fileDto.getFileAuthList();
             //填入文件的id
-            fileAuthList.forEach(auth -> auth.setFileId(fileDto.getId()));
-            //把当前登录用户的权限增加进去
-            IFileAuth userFileAuth = getCurrentUserFileAuth();
-            userFileAuth.setFileId(fileDto.getId());
-            fileAuthList.add(userFileAuth);
-            //去重 可能已经选择了当前用户的权限
-            fileAuthList = fileAuthList.stream().distinct().collect(Collectors.toList());
+            fileDto.getFileAuthList().forEach(auth -> auth.setFileId(fileDto.getId()));
             //新增文件权限
-            fileAuthMapper.insertList(fileAuthList);
+            fileAuthMapper.insertList(fileDto.getFileAuthList());
         }
         //得到精确到人的权限，再新增一次具体权限
         return BaseOutput.success();
@@ -140,15 +130,8 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         fileItemMapper.insertList(fileDto.getFileItemList());
         //新增文件权限
         if (CollectionUtils.isNotEmpty(fileDto.getFileAuthList())) {
-            List<IFileAuth> fileAuthList = fileDto.getFileAuthList();
-            fileAuthList.forEach(auth -> auth.setFileId(fileDto.getId()));
-            //把当前登录用户的权限增加进去
-            IFileAuth userFileAuth = getCurrentUserFileAuth();
-            userFileAuth.setFileId(fileDto.getId());
-            fileAuthList.add(userFileAuth);
-            //去重 可能已经选择了当前用户的权限
-            fileAuthList = fileAuthList.stream().distinct().collect(Collectors.toList());
-            fileAuthMapper.insertList(fileAuthList);
+            fileDto.getFileAuthList().forEach(auth -> auth.setFileId(fileDto.getId()));
+            fileAuthMapper.insertList(fileDto.getFileAuthList());
         }
         return BaseOutput.success();
     }
@@ -227,15 +210,6 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         long total = iFileDtos instanceof Page ? ((Page) iFileDtos).getTotal() : (long) iFileDtos.size();
         List results = useProvider ? ValueProviderUtils.buildDataByProvider(iFileDto, iFileDtos) : iFileDtos;
         return new EasyuiPageOutput(total, results);
-    }
-
-    private IFileAuth getCurrentUserFileAuth() {
-        IFileAuth fileAuth = DTOUtils.newInstance(IFileAuth.class);
-        fileAuth.setAuthType(FileAuthType.PERSON.getValue());
-        UserTicket userTicket = SessionContext.getSessionContext().getUserTicket();
-        fileAuth.setAuthValue(userTicket.getId());
-        fileAuth.setAuthText(userTicket.getRealName());
-        return fileAuth;
     }
 
     private Example buildVersionLockExample(Object version, Class c) {
