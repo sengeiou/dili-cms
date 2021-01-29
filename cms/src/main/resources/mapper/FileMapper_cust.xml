@@ -36,10 +36,10 @@
         <choose>
             <when test="authTypeId == null">
                 <if test="departmentId != null">
-                    AND (f.auth_type_id=10 AND au.auth_value=#{departmentId})
+                    AND (au.auth_type=10 AND au.auth_value=#{departmentId})
                 </if>
                 <if test="personId != null">
-                    OR (f.auth_type_id=20 AND au.auth_value=#{personId})
+                    OR (au.auth_type=20 AND au.auth_value=#{personId})
                 </if>
             </when>
             <otherwise>
@@ -50,12 +50,12 @@
                 </if>
                 <if test="authTypeId == 10">
                     <if test="departmentId != null">
-                        AND f.auth_type_id=10 AND au.auth_value=#{departmentId}
+                        AND au.auth_type=10 AND au.auth_value=#{departmentId}
                     </if>
                 </if>
                 <if test="authTypeId == 20">
                     <if test="personId != null">
-                        AND f.auth_type_id=20 AND au.auth_value=#{personId}
+                        AND au.auth_type=20 AND au.auth_value=#{personId}
                     </if>
                 </if>
             </otherwise>
