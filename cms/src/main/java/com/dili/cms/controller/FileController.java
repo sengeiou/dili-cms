@@ -152,7 +152,7 @@ public class FileController extends BaseController {
     /**
      * TODO 删除文件
      *
-     * @param ids:
+     * @param id:
      * @return：com.dili.ss.domain.BaseOutput
      * @author：Tab.Xie
      * @date：2021/1/27 14:51
