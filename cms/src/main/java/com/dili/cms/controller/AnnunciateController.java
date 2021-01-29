@@ -125,18 +125,18 @@ public class AnnunciateController extends BaseController{
             annunciateTarget.setAnnunciateId(id);
             List<AnnunciateTarget> annunciateTargets=annunciateTargetService.listByExample(annunciateTarget);
             modelMap.put("annunciateTargets", JSON.toJSONString(annunciateTargets));
-            //获取通告项
-            AnnunciateItem annunciateItem=DTOUtils.newInstance(AnnunciateItem.class);
-            annunciateItem.setAnnunciateId(id);
-            List<AnnunciateItem> annunciateItems=annunciateItemService.listByExample(annunciateItem);
             //如果是指定用户的需要查出用户数据进行填充到列表
             boolean flag=false;
             for (AnnunciateTarget obj:annunciateTargets) {
                 if(AnnunciateTargetRange.APPOINT_USER.getValue().equals(obj.getTargetRange())){
+                    //获取通告项
+                    AnnunciateItem annunciateItem=DTOUtils.newInstance(AnnunciateItem.class);
+                    annunciateItem.setAnnunciateId(id);
+                    List<AnnunciateItem> annunciateItems=annunciateItemService.listByExample(annunciateItem);
                     List<String> ids=new ArrayList<>(annunciateItems.size());
                     for (AnnunciateItem objItem : annunciateItems) {
                         if(AnnunciateTargetType.SYSTEM_USER.getValue().equals(objItem.getTargetType())){
-                            ids.add(objItem.getId().toString());
+                            ids.add(objItem.getTargetId().toString());
                         }
                     }
                     UserQuery userQuery = DTOUtils.newInstance(UserQuery.class);
@@ -187,18 +187,18 @@ public class AnnunciateController extends BaseController{
         annunciateTarget.setAnnunciateId(id);
         List<AnnunciateTarget> annunciateTargets=annunciateTargetService.listByExample(annunciateTarget);
         modelMap.put("annunciateTargets", JSON.toJSONString(annunciateTargets));
-        //获取通告项
-        AnnunciateItem annunciateItem=DTOUtils.newInstance(AnnunciateItem.class);
-        annunciateItem.setAnnunciateId(id);
-        List<AnnunciateItem> annunciateItems=annunciateItemService.listByExample(annunciateItem);
         //如果是指定用户的需要查出用户数据进行填充到列表
         boolean flag=false;
         for (AnnunciateTarget obj:annunciateTargets) {
             if(AnnunciateTargetRange.APPOINT_USER.getValue().equals(obj.getTargetRange())){
+                //获取通告项
+                AnnunciateItem annunciateItem=DTOUtils.newInstance(AnnunciateItem.class);
+                annunciateItem.setAnnunciateId(id);
+                List<AnnunciateItem> annunciateItems=annunciateItemService.listByExample(annunciateItem);
                 List<String> ids=new ArrayList<>(annunciateItems.size());
                 for (AnnunciateItem objItem : annunciateItems) {
                     if(AnnunciateTargetType.SYSTEM_USER.getValue().equals(objItem.getTargetType())){
-                        ids.add(objItem.getId().toString());
+                        ids.add(objItem.getTargetId().toString());
                     }
                 }
                 UserQuery userQuery = DTOUtils.newInstance(UserQuery.class);
