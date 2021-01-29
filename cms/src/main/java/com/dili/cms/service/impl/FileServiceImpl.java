@@ -112,7 +112,7 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         }
         //获取一个带乐观锁条件的对象
         Example versionLockExample = buildVersionLockExample(fileDto.getVersion(), IFile.class);
-        versionLockExample.createCriteria().andEqualTo("id", file.getId());
+        versionLockExample.and().andEqualTo("id", file.getId());
         fileDto.setVersion(file.getVersion() + 1);
         int update = getActualDao().updateByExample(fileDto, versionLockExample);
         if (update <= 0) {
