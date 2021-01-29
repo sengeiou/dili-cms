@@ -150,14 +150,13 @@
                        data-side-pagination="server" data-method="POST"
                        data-content-type="application/x-www-form-urlencoded" data-single-select="true"
                        data-click-to-select="true" data-checkbox-header="true"
-                       data-unique-id="id" data-sort-name="id" data-sort-order="desc" data-icons="bui.variable.icons"
+                       data-unique-id="id" data-sort-name="create_time" data-sort-order="desc" data-icons="bui.variable.icons"
                        data-buttons-class="primary" data-show-refresh="true" data-show-fullscreen="true"
                        data-show-columns="true">
                     <thead>
                     <tr>
                         <th data-checkbox="true"></th>
-                        <th data-field="coverImg" data-align="center" data-sortable="true"
-                            data-sort-name="cover_img" data-formatter="imgFormatter">
+                        <th data-field="coverImg" data-align="center" data-formatter="imgFormatter">
                             资料配图
                         </th>
                         <th data-field="fileName" data-align="center">
@@ -166,12 +165,11 @@
                         <th data-field="authTypeId" data-align="center" data-provider="fileAuthTypeProvider">
                             访问权限
                         </th>
-                        <th data-field="typeId" data-align="center" data-sortable="true" data-provider="fileTypeProvider"
-                            data-sort-name="type_id">
+                        <th data-field="typeId" data-align="center" data-provider="fileTypeProvider">
                             资料类型
                         </th>
                         <th data-field="createTime" data-align="center" data-provider="datetimeProvider"
-                            data-sortable="true" data-sort-name="start_time">
+                            data-sortable="true" data-sort-name="create_time">
                             发布时间
                         </th>
                     </tr>
