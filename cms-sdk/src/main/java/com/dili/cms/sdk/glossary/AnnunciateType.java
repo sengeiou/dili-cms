@@ -34,6 +34,24 @@ public enum AnnunciateType {
         this.value = value;
     }
 
+    public static AnnunciateType getAnnunciateType(Integer code) {
+        switch (code) {
+            case 1: return AnnunciateType.PLATFFORM;
+            case 2: return AnnunciateType.WAIT_DO;
+            case 3: return AnnunciateType.BUSINESS;
+            default:  return null;
+        }
+    }
+
+    public static String getName(Integer code) {
+        switch (code) {
+            case 1: return AnnunciateType.PLATFFORM.getName();
+            case 2: return AnnunciateType.WAIT_DO.getName();
+            case 3: return AnnunciateType.BUSINESS.getName();
+            default:  return null;
+        }
+    }
+    
     public String getName() {
         return name;
     }

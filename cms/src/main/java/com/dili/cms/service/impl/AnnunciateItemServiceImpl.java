@@ -162,12 +162,9 @@ public class AnnunciateItemServiceImpl extends BaseServiceImpl<AnnunciateItem, L
     }
 
     @Override
-    public BaseOutput<Integer> getNoReadCountByTargetId(AnnunciateDto annunciateDto) {
+    public BaseOutput<Integer> getNoReadCountByTargetId(Long targetId) {
         AnnunciateItem annunciateItem= DTOUtils.newInstance(AnnunciateItem.class);
-        if(annunciateDto==null){
-            BaseOutput.successData(0);
-        }
-        annunciateItem.setTargetId(annunciateDto.getTargetId());
+        annunciateItem.setTargetId(targetId);
         annunciateItem.setReadState(ReadType.NO_READ.getValue());
         Integer onReadCount=getActualDao().selectCount(annunciateItem);
         return BaseOutput.successData(onReadCount);

@@ -6,6 +6,7 @@
 package com.dili.cms.sdk.rpc;
 
 import com.dili.cms.sdk.dto.AnnunciateDto;
+import com.dili.cms.sdk.dto.AnnunciateQueryDto;
 import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.ss.domain.BaseOutput;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -43,13 +44,13 @@ public interface AnnunciateRpc {
 
     /**
      * 根据用户id标记该用户所有消息已读
-     * @param userId:
+     * @param targetId:
      * @return：com.dili.ss.domain.BaseOutput<java.lang.String>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @PostMapping(value = "/api/annunciate/readByUserId")
-    BaseOutput readByUserId(@RequestBody Long userId);
+    @PostMapping(value = "/api/annunciate/readByTargetId")
+    BaseOutput readByTargetId(@RequestBody Long targetId);
 
     /**
      * 根据annunciate_id标记该消息删除
@@ -63,13 +64,13 @@ public interface AnnunciateRpc {
 
     /**
      * 根据用户id标记该用户所有消息已删除
-     * @param userId:
+     * @param targetId:
      * @return：com.dili.ss.domain.BaseOutput<java.lang.String>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    @PostMapping(value = "/api/annunciate/deleteByUserId")
-    BaseOutput deleteByUserId(@RequestBody Long userId);
+    @PostMapping(value = "/api/annunciate/deleteByTargetId")
+    BaseOutput deleteByTargetId(@RequestBody Long targetId);
 
     /**
      * 根据信息通告id和targetId标记该消息已读
@@ -101,7 +102,7 @@ public interface AnnunciateRpc {
      * @date：2021/1/21 16:38
      */
     @PostMapping(value = "/api/annunciate/getListByTargetId")
-    String getListByTargetId(@RequestBody AnnunciateDto annunciateDto);
+    BaseOutput<String> getListByTargetId(@RequestBody AnnunciateQueryDto annunciateQueryDto);
 
     /**
      * 根据annunciate_id查询富文本消息内容
@@ -115,12 +116,12 @@ public interface AnnunciateRpc {
 
     /**
      * 根据targetId获取未读信息通告数
-     * @param annunciateDto:
+     * @param targetId:
      * @return：com.dili.ss.domain.BaseOutput<java.land.Integer>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
     @PostMapping(value = "/api/annunciate/getNoReadCountByTargetId")
-    BaseOutput<String> getNoReadCountByTargetId(@RequestBody AnnunciateDto annunciateDto);
+    BaseOutput<Integer> getNoReadCountByTargetId(@RequestBody Long targetId);
 
 }

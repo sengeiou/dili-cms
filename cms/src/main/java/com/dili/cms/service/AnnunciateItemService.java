@@ -58,10 +58,10 @@ public interface AnnunciateItemService extends BaseService<AnnunciateItem, Long>
 
     /**
      * 根据targetId获取未读信息通告数
-     * @param annunciateDto:
+     * @param targetId:
      * @return：com.dili.ss.domain.BaseOutput<Integer>
      * @author：Henry.Huang
      * @date：2021/1/21 16:38
      */
-    BaseOutput<Integer> getNoReadCountByTargetId(AnnunciateDto annunciateDto);
+    BaseOutput<Integer> getNoReadCountByTargetId(Long targetId);
 }
