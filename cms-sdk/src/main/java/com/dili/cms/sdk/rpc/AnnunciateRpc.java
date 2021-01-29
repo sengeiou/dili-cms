@@ -5,16 +5,12 @@
   */
 package com.dili.cms.sdk.rpc;
 
-import com.dili.cms.sdk.dto.AnnunciateDto;
 import com.dili.cms.sdk.dto.AnnunciateQueryDto;
-import com.dili.cms.sdk.dto.AnnunciateVo;
 import com.dili.ss.domain.BaseOutput;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 /**
   * <pre>
@@ -96,7 +92,7 @@ public interface AnnunciateRpc {
 
     /**
      * 根据用户id查询消息列表(不包括富文本消息内容，以节约带宽)
-     * @param annunciateDto:
+     * @param annunciateQueryDto:
      * @return：String
      * @author：Henry.Huang
      * @date：2021/1/21 16:38

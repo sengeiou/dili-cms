@@ -6,7 +6,6 @@
 package com.dili.cms.service;
 
 import com.dili.cms.sdk.domain.AnnunciateItem;
-import com.dili.cms.sdk.dto.AnnunciateDto;
 import com.dili.ss.base.BaseService;
 import com.dili.ss.domain.BaseOutput;
 
