@@ -259,6 +259,7 @@
                         width: '350px', height: "200px", type: 'success', onHideStart: () => {
                             $("#fileType").val(null);
                             treeInit();
+                            queryDataHandler();
                         }
                     });
                 } else {
@@ -302,6 +303,7 @@
                         width: '350px', height: "200px", type: 'success', onHideStart: () => {
                             $("#fileType").val(null);
                             treeInit();
+                            queryDataHandler();
                         }
                     });
                 } else {
