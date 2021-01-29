@@ -401,6 +401,7 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
         if (customer != null) {
             annunciateItem.setAnnunciateId(annunciateDto.getId());
             annunciateItem.setTargetId(customer.getId());
+            annunciateItem.setTargetName(customer.getName());
             annunciateItem.setReadState(ReadType.NO_READ.getValue());
             annunciateItem.setSendTime(annunciateDto.getStartTime());
             annunciateItem.setCreateTime(annunciateDto.getCreateTime());
@@ -464,21 +465,21 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
                     || AnnunciateTargetRange.SELLER.getValue().equals(annunciateTarget.getTargetRange())){
                 String customerType=null;
                 if(AnnunciateTargetRange.DRIVER.getValue().equals(annunciateTarget.getTargetRange())){
-                    customerType= CustomerEnum.CharacterType.其他类型.getValue();
+                    customerType= CustomerEnum.CharacterType.其他类型.getCode();
                 }
                 //买家
                 if(AnnunciateTargetRange.BUYER.getValue().equals(annunciateTarget.getTargetRange())){
-                    customerType=CustomerEnum.CharacterType.买家.getValue();
+                    customerType=CustomerEnum.CharacterType.买家.getCode();
                 }
                 //卖家
                 if(AnnunciateTargetRange.SELLER.getValue().equals(annunciateTarget.getTargetRange())){
-                    customerType=CustomerEnum.CharacterType.经营户.getValue();
+                    customerType=CustomerEnum.CharacterType.经营户.getCode();
                 }
                 CustomerQueryInput customerQueryInput=new CustomerQueryInput();
                 CharacterType characterType=new CharacterType();
                 characterType.setCharacterType(customerType);
                 customerQueryInput.setCharacterType(characterType);
-                customerQueryInput.setMarketId(annunciateDto.getFirmId());
+                customerQueryInput.setMarketId(8L);
                 BaseOutput<List<CustomerSimpleExtendDto>> customerResult= customerRpc.listSimple(customerQueryInput);
                 if (!customerResult.isSuccess()) {
                     throw new AppException("查询其他客户类型失败");
