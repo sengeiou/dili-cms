@@ -297,12 +297,12 @@
     //上传图片文件回掉
     function uploadImgCallback(state, data) {
         // 获取上传成功的文件数据
-        if (!state || data.data.code != '200') {
+        if (!state || !data.success) {
             alert("文件：" + data.name + "上传失败!");
             return;
         }
         //设置封面图片url
-        fileDto.coverImg = data.data.data;
+        fileDto.coverImg = data.data;
         appendImgHtml({coverImg: fileDto.coverImg, fid: data.fid});
     }
 

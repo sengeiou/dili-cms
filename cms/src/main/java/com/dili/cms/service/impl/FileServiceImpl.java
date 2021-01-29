@@ -86,14 +86,15 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         fileTypeMapper.updateNodeCountBatch(linkNodeIds, 1);
         //判断有没有权限限制
         if (CollectionUtils.isNotEmpty(fileDto.getFileAuthList())) {
+            List<IFileAuth> fileAuthList = fileDto.getFileAuthList();
             //填入文件的id
-            fileDto.getFileAuthList().forEach(auth -> auth.setFileId(fileDto.getId()));
+            fileAuthList.forEach(auth -> auth.setFileId(fileDto.getId()));
             //把当前登录用户的权限增加进去
             IFileAuth userFileAuth = getCurrentUserFileAuth();
             userFileAuth.setFileId(fileDto.getId());
-            fileDto.getFileAuthList().add(userFileAuth);
+            fileAuthList.add(userFileAuth);
             //新增文件权限
-            fileAuthMapper.insertList(fileDto.getFileAuthList());
+            fileAuthMapper.insertList(fileAuthList);
         }
         //得到精确到人的权限，再新增一次具体权限
         return BaseOutput.success();
@@ -136,12 +137,13 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         fileItemMapper.insertList(fileDto.getFileItemList());
         //新增文件权限
         if (CollectionUtils.isNotEmpty(fileDto.getFileAuthList())) {
-            fileDto.getFileAuthList().forEach(auth -> auth.setFileId(fileDto.getId()));
+            List<IFileAuth> fileAuthList = fileDto.getFileAuthList();
+            fileAuthList.forEach(auth -> auth.setFileId(fileDto.getId()));
             //把当前登录用户的权限增加进去
             IFileAuth userFileAuth = getCurrentUserFileAuth();
             userFileAuth.setFileId(fileDto.getId());
-            fileDto.getFileAuthList().add(userFileAuth);
-            fileAuthMapper.insertList(fileDto.getFileAuthList());
+            fileAuthList.add(userFileAuth);
+            fileAuthMapper.insertList(fileAuthList);
         }
         return BaseOutput.success();
     }
