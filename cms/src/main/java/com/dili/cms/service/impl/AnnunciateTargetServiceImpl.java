@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 /**
   * <pre>
   * Description
-  * TODO file description here
+  * 信息通告目标mapper
   *
   * @author Henry.Huang
   * @since 1.0

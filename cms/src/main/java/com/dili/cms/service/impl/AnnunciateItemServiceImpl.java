@@ -6,7 +6,6 @@
 package com.dili.cms.service.impl;
 
 import com.dili.cms.mapper.AnnunciateItemMapper;
-import com.dili.cms.sdk.domain.Annunciate;
 import com.dili.cms.sdk.domain.AnnunciateItem;
 import com.dili.cms.sdk.dto.AnnunciateDto;
 import com.dili.cms.sdk.glossary.AnnunciateItemOpType;
@@ -23,8 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

@@ -1,3 +1,8 @@
+/**
+  * Copyright (C) DiliGroup. All Rights Reserved. 
+  *
+  * AnnunciateItemDto.java created on 2021/1/28 18:05 by Henry.Huang
+  */
 package com.dili.cms.sdk.dto;
 
 import com.dili.cms.sdk.domain.AnnunciateItem;
@@ -7,10 +12,18 @@ import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 /**
- * Copyright (C) DiliGroup. All Rights Reserved.
- * <p>
- * AnnunciateTargetDto created on 2021/1/26 20:11 by Ron.Peng
- */
+  * <pre> 
+  * Description 
+  * 信息通告项dto
+  *
+  * @author Henry.Huang 
+  * @since 1.0 
+  *
+  * Change History 
+  * Date Modifier DESC. 
+  * 2021/1/28 Henry.Huang Initial version. 
+  * </pre> 
+  */
 public interface AnnunciateItemDto extends AnnunciateItem {
 
     @Column(name = "`read_time`")

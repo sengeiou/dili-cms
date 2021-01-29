@@ -1,10 +1,23 @@
+/**
+  * Copyright (C) DiliGroup. All Rights Reserved. 
+  *
+  * TerminalType.java created on 2021/1/28 18:07 by Henry.Huang 
+  */
 package com.dili.cms.sdk.glossary;
 
 /**
- * Copyright (C) DiliGroup. All Rights Reserved.
- * <p>
- * TerminalType created on 2021/1/26 16:17 by Ron.Peng
- */
+  * <pre>
+  * Description
+  * 终端类型
+  *
+  * @author Henry.Huang
+  * @since 1.0
+  *
+  * Change History
+  * Date Modifier DESC.
+  * 2021/1/28 Henry.Huang Initial version.
+  * </pre>
+  */
 public enum TerminalType {
     /**
      * 信息通告项状态

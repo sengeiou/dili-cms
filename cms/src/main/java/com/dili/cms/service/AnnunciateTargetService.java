@@ -11,7 +11,7 @@ import com.dili.ss.base.BaseService;
 /**
   * <pre> 
   * Description 
-  * TODO file description here 
+  * 信息通告目标service
   *
   * @author Henry.Huang 
   * @since 1.0 

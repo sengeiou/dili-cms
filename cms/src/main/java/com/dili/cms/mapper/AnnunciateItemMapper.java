@@ -11,7 +11,7 @@ import com.dili.ss.base.MyMapper;
 /**
   * <pre> 
   * Description 
-  * TODO file description here 
+  * 信息通告项mapper
   *
   * @author Henry.Huang 
   * @since 1.0 
