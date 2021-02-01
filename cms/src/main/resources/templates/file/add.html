@@ -8,7 +8,7 @@
         <label for="lastname" class="col-sm-2 control-label"><i class="red">*</i>文件：</label>
     </div>
     <div class="row" style="margin-left: 15px;margin-bottom: 15px;">
-        <#component_upload _class="col-sm-1.5" _cid="bbb" _types="" _maxFileCount="5" _uploadInitCount="${fileCount!}"
+        <#component_upload _class="col-sm-1.5" _cid="fileUpload" _types="" _maxFileCount="5" _uploadInitCount="${fileCount!}"
         _uploadCallback="uploadFileCallback"
         _deleteCallback="deleteFileHandler" _uploadUrl="/uploadFile/doUpload.action"/>
         <div class="col-sm-5">
@@ -35,7 +35,7 @@
     <div class="form-group">
         <label class="col-sm-2 control-label"><i class="red">*</i>配图：</label>
         <div class="col-sm-10">
-            <#component_upload _class="form-inline" _cid="aaa"
+            <#component_upload _class="form-inline" _cid="imgUpload"
             _types="image/png;image/PNG;image/jpg;image/JPG;image/jpeg;image/JPEG;image/gif;image/GIF" _maxFileCount="1"
             _uploadInitCount=""
             _uploadCallback="uploadImgCallback"
