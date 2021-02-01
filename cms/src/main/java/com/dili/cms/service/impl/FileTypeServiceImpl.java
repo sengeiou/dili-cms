@@ -69,12 +69,12 @@ public class FileTypeServiceImpl extends BaseServiceImpl<IFileType, Long> implem
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseOutput deleteFileType(IFileType iFileType) {
-        if (FIRST_PARENT_ID.equals(iFileType.getParentId())) {
-            throw new AppException("不能删除顶级节点");
-        }
         IFileType iFileTypeByQuery = this.get(iFileType.getId());
         if (!Objects.nonNull(iFileTypeByQuery)) {
             throw new AppException("文档类型不存在或该文档类型已删除");
+        }
+        if (FIRST_PARENT_ID.equals(iFileTypeByQuery.getParentId())) {
+            throw new AppException("不能删除顶级节点");
         }
         //删除文档类型
         int deleteTypeResult = this.delete(iFileType.getId());
