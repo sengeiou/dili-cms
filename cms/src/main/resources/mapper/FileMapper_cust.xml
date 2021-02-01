@@ -13,6 +13,9 @@
        ON f.id = fa.file_id
        WHERE
        f.auth_type_id = 0
+       <if test="creatorId != null">
+       OR f.creator_id = #{creatorId}
+       </if>
        <if test="departmentId != null">
        OR ( fa.auth_value = #{departmentId} AND fa.auth_type = 10 )
        </if><if test="personId != null">

@@ -180,6 +180,7 @@ public class FileController extends BaseController {
     public EasyuiPageOutput listPage(IFileDto iFileDto) throws Exception {
         iFileDto.setDepartmentId(getDepartmentId());
         iFileDto.setPersonId(getUserId());
+        iFileDto.setCreatorId(getUserId());
         return fileService.listPage(iFileDto, true);
     }
 }
