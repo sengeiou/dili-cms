@@ -389,25 +389,34 @@
             bs4pop.alert('请选数据');
             return;
         }
-        $.ajax({
-            type: "POST",
-            url: "/file/delete.action?id=" + rows[0].id,
-            processData: false,
-            contentType: false,
-            dataType: "JSON",
-            success: function (res) {
-                if (res.code == "200") {
-                    bs4pop.alert(res.message);
-                    treeInit();
-                    _grid.bootstrapTable('refresh');
-                } else {
-                    bs4pop.alert(res.message, {type: 'error'});
-                }
-            },
-            error: function (error) {
-                bs4pop.alert(error.message, {type: 'error'});
+
+        bs4pop.confirm("确认删除？", {title: "信息确认"}, function (sure) {
+            if (sure) {
+                bui.loading.show();
+                $.ajax({
+                    type: "POST",
+                    url: "/file/delete.action?id=" + rows[0].id,
+                    processData: false,
+                    contentType: false,
+                    dataType: "JSON",
+                    success: function (res) {
+                        bui.loading.hide();
+                        if (res.code == "200") {
+                            bs4pop.alert(res.message);
+                            treeInit();
+                            _grid.bootstrapTable('refresh');
+                        } else {
+                            bs4pop.alert(res.message, {type: 'error'});
+                        }
+                    },
+                    error: function (error) {
+                        bui.loading.hide();
+                        bs4pop.alert(error.message, {type: 'error'});
+                    }
+                });
             }
         });
+
     }
 
     /**

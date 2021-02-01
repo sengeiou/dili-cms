@@ -189,7 +189,7 @@ public class FileServiceImpl extends BaseServiceImpl<IFile, Long> implements Fil
         if (Objects.nonNull(fileType) && fileType.getParentId() != 0) {
             //一直向上查找直到找到顶级节点为止
             IFileType parentFileType = fileType;
-            while (parentFileType.getParentId() != 0 && !Objects.isNull(parentFileType)) {
+            while (Objects.nonNull(parentFileType) && parentFileType.getParentId() != 0) {
                 linkNodeIds.add(parentFileType.getParentId());
                 parentFileType = fileTypeMapper.selectByPrimaryKey(parentFileType.getParentId());
             }

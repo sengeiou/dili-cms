@@ -49,6 +49,7 @@
             return;
         }
         let url = fileDto.id ? "update" : "insert";
+        bui.loading.show();
         $.ajax({
             type: "POST",
             url: "/file/" + url + ".action",
@@ -56,6 +57,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
+                bui.loading.hide();
                 if (result.success) {
                     bs4pop.alert(result.result, {
                         width: '350px', height: "200px", type: 'success', onHideStart: () => {
@@ -73,6 +75,8 @@
                 }
             },
             error: function () {
+                bui.loading.hide();
+                bs4pop.alert('提交失败，未知错误!', {type: 'error'});
             }
         });
     }
@@ -229,7 +233,7 @@
             return;
         }
         let file = {
-            fileUrl: data.data.data,
+            fileUrl: data.data,
             fileType: data.type,
             fileName: data.name,
             fileSize: data.size,
@@ -260,7 +264,7 @@
                 fileDto.fileItemList.splice(index, 1);
             }
         });
-        $("#bbb").triggerHandler("updateCount");
+        $("#fileUpload").triggerHandler("updateCount");
     }
 
     //树
@@ -308,16 +312,21 @@
 
     //在页面上添加一个图片
     function appendImgHtml(data) {
-        let fileItemHtml = "<div class='file-item' id='" + data.fid + "'>" +
+        //如果原先有图片则删除原先的图片
+        let coverImgEl = $(".cover-img");
+        if (coverImgEl.length > 0) {
+            coverImgEl.remove();
+        }
+        let fileItemHtml = "<div class='file-item cover-img' id='" + data.fid + "'>" +
             "<span class='recommends-content-item__info' onclick='deleteImgFileHandler(\"" + data.fid + "\")'>删除</span>" +
             "<img class='img-thumbnail' onclick='openFile(\"" + data.coverImg + "\")' src='" + data.coverImg + "'></div>";
-        $("#aaa").append(fileItemHtml);
+        $("#imgUpload").append(fileItemHtml);
     }
 
     //删除封面
     function deleteImgFileHandler(fid) {
         $("#" + fid).remove();
-        $("#aaa").triggerHandler("updateCount");
+        $("#imgUpload").triggerHandler("updateCount");
         fileDto.coverImg = "";
     }
 
