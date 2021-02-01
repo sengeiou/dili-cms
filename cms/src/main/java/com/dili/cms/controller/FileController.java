@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -108,6 +109,7 @@ public class FileController extends BaseController {
         if (validResult.hasErrors()) {
             return BaseOutput.failure(validResult.getErrors());
         }
+        fileDto.setCreatorId(getUserId());
         return fileService.create(fileDto);
     }
 
@@ -126,6 +128,8 @@ public class FileController extends BaseController {
         if (validResult.hasErrors()) {
             return BaseOutput.failure(validResult.getErrors());
         }
+        fileDto.setCreatorId(getUserId());
+        fileDto.setUpdateTime(LocalDateTime.now());
         return fileService.edit(fileDto);
     }
 
