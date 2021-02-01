@@ -282,6 +282,10 @@
      * 删除分类
      */
     function deleteFileType(nodes) {
+        if (nodes.parentId == 0) {
+            bs4pop.alert("不能删除顶级节点", {type: 'error'});
+            return;
+        }
         bui.loading.show('努力提交中，请稍候。。。');
         if (null != nodes) {
             var iFileType = JSON.stringify(nodes);
