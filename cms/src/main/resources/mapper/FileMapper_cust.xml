@@ -14,9 +14,9 @@
        WHERE
        f.auth_type_id = 0
        <if test="departmentId != null">
-       OR ( fa.auth_value = 1 AND fa.auth_type = 10 )
+       OR ( fa.auth_value = #{departmentId} AND fa.auth_type = 10 )
        </if><if test="personId != null">
-       OR ( fa.auth_value = 1 AND fa.auth_type = 20 )
+       OR ( fa.auth_value = #{personId} AND fa.auth_type = 20 )
        </if>
        ) AS res
        WHERE 1=1
