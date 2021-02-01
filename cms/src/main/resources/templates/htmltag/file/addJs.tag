@@ -49,6 +49,7 @@
             return;
         }
         let url = fileDto.id ? "update" : "insert";
+        bui.loading.show();
         $.ajax({
             type: "POST",
             url: "/file/" + url + ".action",
@@ -56,6 +57,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
+                bui.loading.hide();
                 if (result.success) {
                     bs4pop.alert(result.result, {
                         width: '350px', height: "200px", type: 'success', onHideStart: () => {
@@ -73,6 +75,8 @@
                 }
             },
             error: function () {
+                bui.loading.hide();
+                bs4pop.alert('提交失败，未知错误!', {type: 'error'});
             }
         });
     }
