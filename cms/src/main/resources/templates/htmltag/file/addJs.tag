@@ -229,7 +229,7 @@
             return;
         }
         let file = {
-            fileUrl: data.data;
+            fileUrl: data.data,
             fileType: data.type,
             fileName: data.name,
             fileSize: data.size,
