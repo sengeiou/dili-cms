@@ -260,7 +260,7 @@
                 fileDto.fileItemList.splice(index, 1);
             }
         });
-        $("#bbb").triggerHandler("updateCount");
+        $("#fileUpload").triggerHandler("updateCount");
     }
 
     //树
@@ -308,16 +308,21 @@
 
     //在页面上添加一个图片
     function appendImgHtml(data) {
-        let fileItemHtml = "<div class='file-item' id='" + data.fid + "'>" +
+        //如果原先有图片则删除原先的图片
+        let coverImgEl = $(".cover-img");
+        if (coverImgEl.length > 0) {
+            coverImgEl.remove();
+        }
+        let fileItemHtml = "<div class='file-item cover-img' id='" + data.fid + "'>" +
             "<span class='recommends-content-item__info' onclick='deleteImgFileHandler(\"" + data.fid + "\")'>删除</span>" +
             "<img class='img-thumbnail' onclick='openFile(\"" + data.coverImg + "\")' src='" + data.coverImg + "'></div>";
-        $("#aaa").append(fileItemHtml);
+        $("#imgUpload").append(fileItemHtml);
     }
 
     //删除封面
     function deleteImgFileHandler(fid) {
         $("#" + fid).remove();
-        $("#aaa").triggerHandler("updateCount");
+        $("#imgUpload").triggerHandler("updateCount");
         fileDto.coverImg = "";
     }
 
