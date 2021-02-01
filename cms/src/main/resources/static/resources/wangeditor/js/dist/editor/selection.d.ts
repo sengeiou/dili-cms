@@ -54,6 +54,12 @@ declare class SelectionAndRange {
      */
     createEmptyRange(): void;
     /**
+     * 重新设置选区
+     * @param startDom 选区开始的元素
+     * @param endDom 选区结束的元素
+     */
+    createRangeByElems(startDom: Node, endDom: Node): void;
+    /**
      * 根据 DOM 元素设置选区
      * @param $elem DOM 元素
      * @param toStart true 开始位置，false 结束位置
@@ -64,7 +70,7 @@ declare class SelectionAndRange {
      * 获取 当前 选取范围的 顶级(段落) 元素
      * @param $editor
      */
-    getSelectionRangeTopNodes(editor: Editor): DomElement[];
+    getSelectionRangeTopNodes(): DomElement[];
     /**
      * 移动光标位置,默认情况下在尾部
      * 有一个特殊情况是firefox下的文本节点会自动补充一个br元素，会导致自动换行
@@ -77,5 +83,14 @@ declare class SelectionAndRange {
      * 获取光标在当前选区的位置
      */
     getCursorPos(): number | undefined;
+    /**
+     * 清除当前选区的Range,notice:不影响已保存的Range
+     */
+    clearWindowSelectionRange(): void;
+    /**
+     * 记录节点 - 从选区开始节点开始 一直到匹配到选区结束节点为止
+     * @param $node 节点
+     */
+    recordSelectionNodes($node: DomElement, $endElem: DomElement): DomElement[];
 }
 export default SelectionAndRange;

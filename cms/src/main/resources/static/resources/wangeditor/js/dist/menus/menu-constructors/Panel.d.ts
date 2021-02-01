@@ -4,7 +4,7 @@
  */
 import { DomElement } from '../../utils/dom-core';
 import PanelMenu from './PanelMenu';
-declare type _TabEventConf = {
+export declare type TabEventConf = {
     selector: string;
     type: string;
     fn: Function;
@@ -12,7 +12,7 @@ declare type _TabEventConf = {
 export declare type PanelTabConf = {
     title: string;
     tpl: string;
-    events: _TabEventConf[];
+    events: TabEventConf[];
 };
 export declare type PanelConf = {
     width: number | 0;

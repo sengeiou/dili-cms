@@ -17,7 +17,10 @@ export declare type UploadImageHooksType = {
     customInsert?: (inserImg: (this: Editor, src: string) => void, result: ResType, editor: Editor) => void;
 };
 declare const _default: {
+    linkImgCheck: (src: string, alt?: string | undefined, href?: string | undefined) => string | boolean;
     showLinkImg: boolean;
+    showLinkImgAlt: boolean;
+    showLinkImgHref: boolean;
     linkImgCallback: typeof EMPTY_FN;
     uploadImgAccept: string[];
     uploadImgServer: string;

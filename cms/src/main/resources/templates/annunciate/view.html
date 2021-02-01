@@ -280,6 +280,7 @@
             }
             //指定部门
             if(targe.targetRange==3){
+                $("#departmentBtn").attr("disabled", false);
                 if(systemSelectVal!=3){
                     $(':radio[name="systemVal"]').eq(1).attr("checked",true);
                     $("#systemUserAndDepartDev").show();
@@ -370,6 +371,7 @@
             $("#systemUserAndDepartDev").show();
             $("#userDev").hide();
             $("#departmentDev").show();
+            $("#departmentTree").click();
         });
         $("#userBtn").click(function (val) {
             $("#systemUserAndDepartDev").show();

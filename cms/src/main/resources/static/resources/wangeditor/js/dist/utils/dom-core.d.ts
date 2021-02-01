@@ -10,12 +10,13 @@ declare type OffsetDataType = {
     height: number;
     parent: Element | null;
 };
-export declare type DomElementSelector = string | DomElement | HTMLElement | Element | Document | HTMLCollection | Node | NodeList | HTMLElement[] | EventTarget | null | undefined;
+export declare type DomElementSelector = string | DomElement | Document | Node | NodeList | ChildNode | ChildNode[] | Element | HTMLElement | HTMLElement[] | HTMLCollection | EventTarget | null | undefined;
 export declare class DomElement<T extends DomElementSelector = DomElementSelector> {
     selector: T;
     length: number;
     elems: HTMLElement[];
     dataSource: Map<string, any>;
+    prior?: DomElement;
     /**
      * 构造函数
      * @param selector 任一类型的选择器
@@ -187,8 +188,14 @@ export declare class DomElement<T extends DomElementSelector = DomElementSelecto
     prev(): DomElement;
     /**
      * 当前元素后一个兄弟节点
+     * 不包括文本节点、注释节点）
      */
     next(): DomElement;
+    /**
+     * 获取当前节点的下一个兄弟节点
+     * 包括文本节点、注释节点即回车、换行、空格、文本等等）
+     */
+    getNextSibling(): DomElement;
     /**
      * 获取父元素
      */

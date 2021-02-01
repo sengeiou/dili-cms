@@ -17,6 +17,12 @@ declare class Menus {
      */
     extend(key: string, Menu: any): void;
     init(): void;
+    /**
+     * 创建 menu 实例，并放到 menuList 中
+     * @param menuKey 菜单 key ，和 editor.config.menus 对应
+     * @param MenuConstructor 菜单构造函数
+     */
+    private _initMenuList;
     private _bindMenuTooltips;
     private _addToToolbar;
     /**

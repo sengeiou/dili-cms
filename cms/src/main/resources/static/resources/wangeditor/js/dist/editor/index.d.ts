@@ -11,6 +11,7 @@ import Menus from '../menus/index';
 import ZIndex from './z-index';
 import Change from './change/index';
 import History from './history/index';
+import { MenuListType } from '../menus/menu-list';
 import BtnMenu from '../menus/menu-constructors/BtnMenu';
 import DropList from '../menus/menu-constructors/DropList';
 import DropListMenu from '../menus/menu-constructors/DropListMenu';
@@ -25,6 +26,7 @@ declare class Editor {
     static Panel: typeof Panel;
     static PanelMenu: typeof PanelMenu;
     static Tooltip: typeof Tooltip;
+    static globalCustomMenuConstructorList: MenuListType;
     id: string;
     toolbarSelector: DomElementSelector;
     textSelector?: DomElementSelector;
@@ -88,5 +90,11 @@ declare class Editor {
      * @param id 标题锚点id
      */
     scrollToHead(id: string): void;
+    /**
+     * 自定义添加菜单
+     * @param key 菜单 key
+     * @param Menu 菜单构造函数
+     */
+    static registerMenu(key: string, Menu: any): void;
 }
 export default Editor;

@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 129);
+/******/ 	return __webpack_require__(__webpack_require__.s = 140);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -110,7 +110,7 @@ module.exports = _interopRequireDefault;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(130);
+module.exports = __webpack_require__(141);
 
 /***/ }),
 /* 2 */
@@ -125,25 +125,25 @@ module.exports = __webpack_require__(130);
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _bind = _interopRequireDefault(__webpack_require__(88));
+var _bind = _interopRequireDefault(__webpack_require__(55));
 
-var _includes = _interopRequireDefault(__webpack_require__(89));
+var _includes = _interopRequireDefault(__webpack_require__(70));
 
-var _filter = _interopRequireDefault(__webpack_require__(66));
+var _filter = _interopRequireDefault(__webpack_require__(71));
 
-var _splice = _interopRequireDefault(__webpack_require__(90));
+var _splice = _interopRequireDefault(__webpack_require__(92));
 
-var _indexOf = _interopRequireDefault(__webpack_require__(54));
+var _indexOf = _interopRequireDefault(__webpack_require__(31));
 
-var _map = _interopRequireDefault(__webpack_require__(114));
+var _map = _interopRequireDefault(__webpack_require__(118));
 
 var _trim = _interopRequireDefault(__webpack_require__(19));
 
-var _map2 = _interopRequireDefault(__webpack_require__(29));
+var _map2 = _interopRequireDefault(__webpack_require__(26));
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
-var _isArray = _interopRequireDefault(__webpack_require__(93));
+var _isArray = _interopRequireDefault(__webpack_require__(95));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -868,12 +868,23 @@ function () {
   };
   /**
    * 当前元素后一个兄弟节点
+   * 不包括文本节点、注释节点）
    */
 
 
   DomElement.prototype.next = function () {
     var elem = this.elems[0];
     return $(elem.nextElementSibling);
+  };
+  /**
+   * 获取当前节点的下一个兄弟节点
+   * 包括文本节点、注释节点即回车、换行、空格、文本等等）
+   */
+
+
+  DomElement.prototype.getNextSibling = function () {
+    var elem = this.elems[0];
+    return $(elem.nextSibling);
   };
   /**
    * 获取父元素
@@ -1026,16 +1037,26 @@ function () {
 
 
   DomElement.prototype.getNodeTop = function (editor) {
+    // 异常抛出，空的 DomElement 直接返回
     if (this.length < 1) {
       return this;
-    }
+    } // 获取父级元素，并判断是否是 编辑区域
+    // 如果是则返回当前节点
+
 
     var $parent = this.parent();
 
     if (editor.$textElem.equal($parent)) {
       return this;
-    }
+    } // 到了此处，即代表当前节点不是顶级段落
+    // 将当前节点存放于父节点的 prior 字段下
+    // 主要用于 回溯 子节点
+    // 例如：ul ol 等标签
+    // 实际操作的节点是 li 但是一个 ul ol 的子节点可能有多个
+    // 所以需要对其进行 回溯 找到对应的子节点
 
+
+    $parent.prior = this;
     return $parent.getNodeTop(editor);
   };
   /**
@@ -1088,21 +1109,33 @@ exports["default"] = $;
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(134);
+module.exports = __webpack_require__(187);
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(145);
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(320);
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 var global = __webpack_require__(8);
-var getOwnPropertyDescriptor = __webpack_require__(68).f;
-var isForced = __webpack_require__(101);
-var path = __webpack_require__(10);
-var bind = __webpack_require__(47);
+var getOwnPropertyDescriptor = __webpack_require__(73).f;
+var isForced = __webpack_require__(103);
+var path = __webpack_require__(9);
+var bind = __webpack_require__(49);
 var createNonEnumerableProperty = __webpack_require__(17);
-var has = __webpack_require__(15);
+var has = __webpack_require__(16);
 
 var wrapConstructor = function (NativeConstructor) {
   var Wrapper = function (a, b, c) {
@@ -1196,18 +1229,6 @@ module.exports = function (options, source) {
 
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(178);
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(306);
-
-/***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1220,17 +1241,17 @@ module.exports = __webpack_require__(306);
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _map = _interopRequireDefault(__webpack_require__(29));
+var _map = _interopRequireDefault(__webpack_require__(26));
 
-var _isArray = _interopRequireDefault(__webpack_require__(93));
+var _isArray = _interopRequireDefault(__webpack_require__(95));
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(94));
+var _typeof2 = _interopRequireDefault(__webpack_require__(96));
 
-var _setTimeout2 = _interopRequireDefault(__webpack_require__(121));
+var _setTimeout2 = _interopRequireDefault(__webpack_require__(127));
 
-var _slice = _interopRequireDefault(__webpack_require__(43));
+var _slice = _interopRequireDefault(__webpack_require__(45));
 
-var _parseInt2 = _interopRequireDefault(__webpack_require__(261));
+var _parseInt2 = _interopRequireDefault(__webpack_require__(268));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -1512,18 +1533,25 @@ module.exports =
   // eslint-disable-next-line no-new-func
   (function () { return this; })() || Function('return this')();
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(133)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(144)))
 
 /***/ }),
 /* 9 */
+/***/ (function(module, exports) {
+
+module.exports = {};
+
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(8);
-var shared = __webpack_require__(74);
-var has = __webpack_require__(15);
-var uid = __webpack_require__(60);
-var NATIVE_SYMBOL = __webpack_require__(78);
-var USE_SYMBOL_AS_UID = __webpack_require__(104);
+var shared = __webpack_require__(79);
+var has = __webpack_require__(16);
+var uid = __webpack_require__(63);
+var NATIVE_SYMBOL = __webpack_require__(83);
+var USE_SYMBOL_AS_UID = __webpack_require__(107);
 
 var WellKnownSymbolsStore = shared('wks');
 var Symbol = global.Symbol;
@@ -1538,31 +1566,7 @@ module.exports = function (name) {
 
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = {};
-
-
-/***/ }),
 /* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var path = __webpack_require__(10);
-var has = __webpack_require__(15);
-var wrappedWellKnownSymbolModule = __webpack_require__(95);
-var defineProperty = __webpack_require__(18).f;
-
-module.exports = function (NAME) {
-  var Symbol = path.Symbol || (path.Symbol = {});
-  if (!has(Symbol, NAME)) defineProperty(Symbol, NAME, {
-    value: wrappedWellKnownSymbolModule.f(NAME)
-  });
-};
-
-
-/***/ }),
-/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = function (exec) {
@@ -1571,6 +1575,23 @@ module.exports = function (exec) {
   } catch (error) {
     return true;
   }
+};
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var path = __webpack_require__(9);
+var has = __webpack_require__(16);
+var wrappedWellKnownSymbolModule = __webpack_require__(97);
+var defineProperty = __webpack_require__(18).f;
+
+module.exports = function (NAME) {
+  var Symbol = path.Symbol || (path.Symbol = {});
+  if (!has(Symbol, NAME)) defineProperty(Symbol, NAME, {
+    value: wrappedWellKnownSymbolModule.f(NAME)
+  });
 };
 
 
@@ -1587,7 +1608,7 @@ module.exports = function (it) {
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var fails = __webpack_require__(12);
+var fails = __webpack_require__(11);
 
 // Detect IE8's incomplete defineProperty implementation
 module.exports = !fails(function () {
@@ -1597,6 +1618,17 @@ module.exports = !fails(function () {
 
 /***/ }),
 /* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var path = __webpack_require__(9);
+
+module.exports = function (CONSTRUCTOR) {
+  return path[CONSTRUCTOR + 'Prototype'];
+};
+
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports) {
 
 var hasOwnProperty = {}.hasOwnProperty;
@@ -1607,23 +1639,12 @@ module.exports = function (it, key) {
 
 
 /***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var path = __webpack_require__(10);
-
-module.exports = function (CONSTRUCTOR) {
-  return path[CONSTRUCTOR + 'Prototype'];
-};
-
-
-/***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DESCRIPTORS = __webpack_require__(14);
 var definePropertyModule = __webpack_require__(18);
-var createPropertyDescriptor = __webpack_require__(35);
+var createPropertyDescriptor = __webpack_require__(37);
 
 module.exports = DESCRIPTORS ? function (object, key, value) {
   return definePropertyModule.f(object, key, createPropertyDescriptor(1, value));
@@ -1638,9 +1659,9 @@ module.exports = DESCRIPTORS ? function (object, key, value) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var DESCRIPTORS = __webpack_require__(14);
-var IE8_DOM_DEFINE = __webpack_require__(100);
-var anObject = __webpack_require__(24);
-var toPrimitive = __webpack_require__(56);
+var IE8_DOM_DEFINE = __webpack_require__(102);
+var anObject = __webpack_require__(25);
+var toPrimitive = __webpack_require__(59);
 
 var nativeDefineProperty = Object.defineProperty;
 
@@ -1663,7 +1684,7 @@ exports.f = DESCRIPTORS ? nativeDefineProperty : function defineProperty(O, P, A
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(213);
+module.exports = __webpack_require__(222);
 
 /***/ }),
 /* 20 */
@@ -2044,6 +2065,39 @@ function toComment(sourceMap) {
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var DESCRIPTORS = __webpack_require__(14);
+var fails = __webpack_require__(11);
+var has = __webpack_require__(16);
+
+var defineProperty = Object.defineProperty;
+var cache = {};
+
+var thrower = function (it) { throw it; };
+
+module.exports = function (METHOD_NAME, options) {
+  if (has(cache, METHOD_NAME)) return cache[METHOD_NAME];
+  if (!options) options = {};
+  var method = [][METHOD_NAME];
+  var ACCESSORS = has(options, 'ACCESSORS') ? options.ACCESSORS : false;
+  var argument0 = has(options, 0) ? options[0] : thrower;
+  var argument1 = has(options, 1) ? options[1] : undefined;
+
+  return cache[METHOD_NAME] = !!method && !fails(function () {
+    if (ACCESSORS && !DESCRIPTORS) return true;
+    var O = { length: -1 };
+
+    if (ACCESSORS) defineProperty(O, 1, { enumerable: true, get: thrower });
+    else O[1] = 1;
+
+    method.call(O, argument0, argument1);
+  });
+};
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 /**
@@ -2055,9 +2109,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -2095,7 +2149,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var Menu_1 = __importDefault(__webpack_require__(96));
+var Menu_1 = __importDefault(__webpack_require__(98));
 
 var BtnMenu =
 /** @class */
@@ -2112,7 +2166,7 @@ function (_super) {
 exports["default"] = BtnMenu;
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2124,13 +2178,13 @@ exports["default"] = BtnMenu;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -2170,9 +2224,9 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var Menu_1 = __importDefault(__webpack_require__(96));
+var Menu_1 = __importDefault(__webpack_require__(98));
 
-var DropList_1 = __importDefault(__webpack_require__(125));
+var DropList_1 = __importDefault(__webpack_require__(133));
 
 var DropListMenu =
 /** @class */
@@ -2240,7 +2294,7 @@ function (_super) {
 exports["default"] = DropListMenu;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(13);
@@ -2253,40 +2307,133 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var DESCRIPTORS = __webpack_require__(14);
-var fails = __webpack_require__(12);
-var has = __webpack_require__(15);
+module.exports = __webpack_require__(227);
 
-var defineProperty = Object.defineProperty;
-var cache = {};
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
 
-var thrower = function (it) { throw it; };
+module.exports = __webpack_require__(291);
 
-module.exports = function (METHOD_NAME, options) {
-  if (has(cache, METHOD_NAME)) return cache[METHOD_NAME];
-  if (!options) options = {};
-  var method = [][METHOD_NAME];
-  var ACCESSORS = has(options, 'ACCESSORS') ? options.ACCESSORS : false;
-  var argument0 = has(options, 0) ? options[0] : thrower;
-  var argument1 = has(options, 1) ? options[1] : undefined;
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
 
-  return cache[METHOD_NAME] = !!method && !fails(function () {
-    if (ACCESSORS && !DESCRIPTORS) return true;
-    var O = { length: -1 };
+// toObject with fallback for non-array-like ES3 strings
+var IndexedObject = __webpack_require__(74);
+var requireObjectCoercible = __webpack_require__(48);
 
-    if (ACCESSORS) defineProperty(O, 1, { enumerable: true, get: thrower });
-    else O[1] = 1;
-
-    method.call(O, argument0, argument1);
-  });
+module.exports = function (it) {
+  return IndexedObject(requireObjectCoercible(it));
 };
 
 
 /***/ }),
-/* 26 */
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var path = __webpack_require__(9);
+var global = __webpack_require__(8);
+
+var aFunction = function (variable) {
+  return typeof variable == 'function' ? variable : undefined;
+};
+
+module.exports = function (namespace, method) {
+  return arguments.length < 2 ? aFunction(path[namespace]) || aFunction(global[namespace])
+    : path[namespace] && path[namespace][method] || global[namespace] && global[namespace][method];
+};
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var bind = __webpack_require__(49);
+var IndexedObject = __webpack_require__(74);
+var toObject = __webpack_require__(40);
+var toLength = __webpack_require__(38);
+var arraySpeciesCreate = __webpack_require__(91);
+
+var push = [].push;
+
+// `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterOut }` methods implementation
+var createMethod = function (TYPE) {
+  var IS_MAP = TYPE == 1;
+  var IS_FILTER = TYPE == 2;
+  var IS_SOME = TYPE == 3;
+  var IS_EVERY = TYPE == 4;
+  var IS_FIND_INDEX = TYPE == 6;
+  var IS_FILTER_OUT = TYPE == 7;
+  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
+  return function ($this, callbackfn, that, specificCreate) {
+    var O = toObject($this);
+    var self = IndexedObject(O);
+    var boundFunction = bind(callbackfn, that, 3);
+    var length = toLength(self.length);
+    var index = 0;
+    var create = specificCreate || arraySpeciesCreate;
+    var target = IS_MAP ? create($this, length) : IS_FILTER || IS_FILTER_OUT ? create($this, 0) : undefined;
+    var value, result;
+    for (;length > index; index++) if (NO_HOLES || index in self) {
+      value = self[index];
+      result = boundFunction(value, index, O);
+      if (TYPE) {
+        if (IS_MAP) target[index] = result; // map
+        else if (result) switch (TYPE) {
+          case 3: return true;              // some
+          case 5: return value;             // find
+          case 6: return index;             // findIndex
+          case 2: push.call(target, value); // filter
+        } else switch (TYPE) {
+          case 4: return false;             // every
+          case 7: push.call(target, value); // filterOut
+        }
+      }
+    }
+    return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : target;
+  };
+};
+
+module.exports = {
+  // `Array.prototype.forEach` method
+  // https://tc39.es/ecma262/#sec-array.prototype.foreach
+  forEach: createMethod(0),
+  // `Array.prototype.map` method
+  // https://tc39.es/ecma262/#sec-array.prototype.map
+  map: createMethod(1),
+  // `Array.prototype.filter` method
+  // https://tc39.es/ecma262/#sec-array.prototype.filter
+  filter: createMethod(2),
+  // `Array.prototype.some` method
+  // https://tc39.es/ecma262/#sec-array.prototype.some
+  some: createMethod(3),
+  // `Array.prototype.every` method
+  // https://tc39.es/ecma262/#sec-array.prototype.every
+  every: createMethod(4),
+  // `Array.prototype.find` method
+  // https://tc39.es/ecma262/#sec-array.prototype.find
+  find: createMethod(5),
+  // `Array.prototype.findIndex` method
+  // https://tc39.es/ecma262/#sec-array.prototype.findIndex
+  findIndex: createMethod(6),
+  // `Array.prototype.filterOut` method
+  // https://github.com/tc39/proposal-array-filtering
+  filterOut: createMethod(7)
+};
+
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(214);
+
+/***/ }),
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2303,62 +2450,16 @@ var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 (0, _defineProperty["default"])(exports, "__esModule", {
   value: true
 });
-exports.videoRegex = exports.urlRegex = exports.imgRegex = exports.EMPTY_FN = void 0;
+exports.urlRegex = exports.EMPTY_FN = void 0;
 
 function EMPTY_FN() {}
 
-exports.EMPTY_FN = EMPTY_FN; //用于校验图片链接是否符合规范
+exports.EMPTY_FN = EMPTY_FN; //用于校验是否为url格式字符串
 
-exports.imgRegex = /\.(gif|jpg|jpeg|png)$/i; //用于校验是否为url格式字符串
-
-exports.urlRegex = /^(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-.,@?^=%&amp;:/~+#]*[\w\-@?^=%&amp;/~+#])?/; //用于校验在线视频是否符合规范
-
-exports.videoRegex = /((<iframe|video|embed|object)\s+[\s\S]*<\/(iframe|video|embed|object))>|<(iframe|video|embed|object)\s+[\s\S]*\/?>/;
+exports.urlRegex = /^(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-.,@?^=%&amp;:/~+#]*[\w\-@?^=%&amp;/~+#])?/;
 
 /***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// toObject with fallback for non-array-like ES3 strings
-var IndexedObject = __webpack_require__(69);
-var requireObjectCoercible = __webpack_require__(46);
-
-module.exports = function (it) {
-  return IndexedObject(requireObjectCoercible(it));
-};
-
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var path = __webpack_require__(10);
-var global = __webpack_require__(8);
-
-var aFunction = function (variable) {
-  return typeof variable == 'function' ? variable : undefined;
-};
-
-module.exports = function (namespace, method) {
-  return arguments.length < 2 ? aFunction(path[namespace]) || aFunction(global[namespace])
-    : path[namespace] && path[namespace][method] || global[namespace] && global[namespace][method];
-};
-
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(218);
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(285);
-
-/***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2370,13 +2471,162 @@ module.exports = __webpack_require__(285);
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _set = _interopRequireDefault(__webpack_require__(124));
+var _set = _interopRequireDefault(__webpack_require__(130));
 
-var _find = _interopRequireDefault(__webpack_require__(30));
+var _find = _interopRequireDefault(__webpack_require__(27));
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var _iterator = _interopRequireDefault(__webpack_require__(323));
+
+var _symbol = _interopRequireDefault(__webpack_require__(325));
+
+var _promise = _interopRequireDefault(__webpack_require__(106));
+
+var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = _promise["default"]))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+var __generator = void 0 && (void 0).__generator || function (thisArg, body) {
+  var _ = {
+    label: 0,
+    sent: function sent() {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    },
+    trys: [],
+    ops: []
+  },
+      f,
+      y,
+      t,
+      g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof _symbol["default"] === "function" && (g[_iterator["default"]] = function () {
+    return this;
+  }), g;
+
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+
+    while (_) {
+      try {
+        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+        if (y = 0, t) op = [op[0] & 2, t.value];
+
+        switch (op[0]) {
+          case 0:
+          case 1:
+            t = op;
+            break;
+
+          case 4:
+            _.label++;
+            return {
+              value: op[1],
+              done: false
+            };
+
+          case 5:
+            _.label++;
+            y = op[1];
+            op = [0];
+            continue;
+
+          case 7:
+            op = _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+
+          default:
+            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+              _ = 0;
+              continue;
+            }
+
+            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+              _.label = op[1];
+              break;
+            }
+
+            if (op[0] === 6 && _.label < t[1]) {
+              _.label = t[1];
+              t = op;
+              break;
+            }
+
+            if (t && _.label < t[2]) {
+              _.label = t[2];
+
+              _.ops.push(op);
+
+              break;
+            }
+
+            if (t[2]) _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+        }
+
+        op = body.call(thisArg, _);
+      } catch (e) {
+        op = [6, e];
+        y = 0;
+      } finally {
+        f = t = 0;
+      }
+    }
+
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+};
 
 var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   return mod && mod.__esModule ? mod : {
@@ -2390,7 +2640,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var const_1 = __webpack_require__(26);
+var const_1 = __webpack_require__(32);
 
 var Panel =
 /** @class */
@@ -2514,12 +2764,30 @@ function () {
         var fn = event.fn || const_1.EMPTY_FN;
         var $content = tabContentArr[index];
         (0, _find["default"])($content).call($content, selector).on(type, function (e) {
-          e.stopPropagation();
-          var needToHide = fn(e); // 执行完事件之后，是否要关闭 panel
+          return __awaiter(_this, void 0, void 0, function () {
+            var needToHide;
+            return __generator(this, function (_a) {
+              switch (_a.label) {
+                case 0:
+                  e.stopPropagation();
+                  return [4
+                  /*yield*/
+                  , fn(e) // 执行完事件之后，是否要关闭 panel
+                  ];
 
-          if (needToHide) {
-            _this.remove();
-          }
+                case 1:
+                  needToHide = _a.sent(); // 执行完事件之后，是否要关闭 panel
+
+                  if (needToHide) {
+                    this.remove();
+                  }
+
+                  return [2
+                  /*return*/
+                  ];
+              }
+            });
+          });
         });
       });
     }); // focus 第一个 elem
@@ -2578,7 +2846,7 @@ function () {
 exports["default"] = Panel;
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports) {
 
 module.exports = function (it) {
@@ -2589,85 +2857,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var bind = __webpack_require__(47);
-var IndexedObject = __webpack_require__(69);
-var toObject = __webpack_require__(38);
-var toLength = __webpack_require__(36);
-var arraySpeciesCreate = __webpack_require__(86);
-
-var push = [].push;
-
-// `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterOut }` methods implementation
-var createMethod = function (TYPE) {
-  var IS_MAP = TYPE == 1;
-  var IS_FILTER = TYPE == 2;
-  var IS_SOME = TYPE == 3;
-  var IS_EVERY = TYPE == 4;
-  var IS_FIND_INDEX = TYPE == 6;
-  var IS_FILTER_OUT = TYPE == 7;
-  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
-  return function ($this, callbackfn, that, specificCreate) {
-    var O = toObject($this);
-    var self = IndexedObject(O);
-    var boundFunction = bind(callbackfn, that, 3);
-    var length = toLength(self.length);
-    var index = 0;
-    var create = specificCreate || arraySpeciesCreate;
-    var target = IS_MAP ? create($this, length) : IS_FILTER || IS_FILTER_OUT ? create($this, 0) : undefined;
-    var value, result;
-    for (;length > index; index++) if (NO_HOLES || index in self) {
-      value = self[index];
-      result = boundFunction(value, index, O);
-      if (TYPE) {
-        if (IS_MAP) target[index] = result; // map
-        else if (result) switch (TYPE) {
-          case 3: return true;              // some
-          case 5: return value;             // find
-          case 6: return index;             // findIndex
-          case 2: push.call(target, value); // filter
-        } else switch (TYPE) {
-          case 4: return false;             // every
-          case 7: push.call(target, value); // filterOut
-        }
-      }
-    }
-    return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : target;
-  };
-};
-
-module.exports = {
-  // `Array.prototype.forEach` method
-  // https://tc39.es/ecma262/#sec-array.prototype.foreach
-  forEach: createMethod(0),
-  // `Array.prototype.map` method
-  // https://tc39.es/ecma262/#sec-array.prototype.map
-  map: createMethod(1),
-  // `Array.prototype.filter` method
-  // https://tc39.es/ecma262/#sec-array.prototype.filter
-  filter: createMethod(2),
-  // `Array.prototype.some` method
-  // https://tc39.es/ecma262/#sec-array.prototype.some
-  some: createMethod(3),
-  // `Array.prototype.every` method
-  // https://tc39.es/ecma262/#sec-array.prototype.every
-  every: createMethod(4),
-  // `Array.prototype.find` method
-  // https://tc39.es/ecma262/#sec-array.prototype.find
-  find: createMethod(5),
-  // `Array.prototype.findIndex` method
-  // https://tc39.es/ecma262/#sec-array.prototype.findIndex
-  findIndex: createMethod(6),
-  // `Array.prototype.filterOut` method
-  // https://github.com/tc39/proposal-array-filtering
-  filterOut: createMethod(7)
-};
-
-
-/***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2681,9 +2871,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -2721,7 +2911,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var Menu_1 = __importDefault(__webpack_require__(96));
+var Menu_1 = __importDefault(__webpack_require__(98));
 
 var PanelMenu =
 /** @class */
@@ -2747,229 +2937,7 @@ function (_super) {
 exports["default"] = PanelMenu;
 
 /***/ }),
-/* 35 */
-/***/ (function(module, exports) {
-
-module.exports = function (bitmap, value) {
-  return {
-    enumerable: !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
-  };
-};
-
-
-/***/ }),
 /* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var toInteger = __webpack_require__(58);
-
-var min = Math.min;
-
-// `ToLength` abstract operation
-// https://tc39.es/ecma262/#sec-tolength
-module.exports = function (argument) {
-  return argument > 0 ? min(toInteger(argument), 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
-};
-
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports) {
-
-module.exports = true;
-
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var requireObjectCoercible = __webpack_require__(46);
-
-// `ToObject` abstract operation
-// https://tc39.es/ecma262/#sec-toobject
-module.exports = function (argument) {
-  return Object(requireObjectCoercible(argument));
-};
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var anObject = __webpack_require__(24);
-var isArrayIteratorMethod = __webpack_require__(160);
-var toLength = __webpack_require__(36);
-var bind = __webpack_require__(47);
-var getIteratorMethod = __webpack_require__(161);
-var iteratorClose = __webpack_require__(162);
-
-var Result = function (stopped, result) {
-  this.stopped = stopped;
-  this.result = result;
-};
-
-module.exports = function (iterable, unboundFunction, options) {
-  var that = options && options.that;
-  var AS_ENTRIES = !!(options && options.AS_ENTRIES);
-  var IS_ITERATOR = !!(options && options.IS_ITERATOR);
-  var INTERRUPTED = !!(options && options.INTERRUPTED);
-  var fn = bind(unboundFunction, that, 1 + AS_ENTRIES + INTERRUPTED);
-  var iterator, iterFn, index, length, result, next, step;
-
-  var stop = function (condition) {
-    if (iterator) iteratorClose(iterator);
-    return new Result(true, condition);
-  };
-
-  var callFn = function (value) {
-    if (AS_ENTRIES) {
-      anObject(value);
-      return INTERRUPTED ? fn(value[0], value[1], stop) : fn(value[0], value[1]);
-    } return INTERRUPTED ? fn(value, stop) : fn(value);
-  };
-
-  if (IS_ITERATOR) {
-    iterator = iterable;
-  } else {
-    iterFn = getIteratorMethod(iterable);
-    if (typeof iterFn != 'function') throw TypeError('Target is not iterable');
-    // optimisation for array iterators
-    if (isArrayIteratorMethod(iterFn)) {
-      for (index = 0, length = toLength(iterable.length); length > index; index++) {
-        result = callFn(iterable[index]);
-        if (result && result instanceof Result) return result;
-      } return new Result(false);
-    }
-    iterator = iterFn.call(iterable);
-  }
-
-  next = iterator.next;
-  while (!(step = next.call(iterator)).done) {
-    try {
-      result = callFn(step.value);
-    } catch (error) {
-      iteratorClose(iterator);
-      throw error;
-    }
-    if (typeof result == 'object' && result && result instanceof Result) return result;
-  } return new Result(false);
-};
-
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports) {
-
-module.exports = {};
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var TO_STRING_TAG_SUPPORT = __webpack_require__(79);
-var defineProperty = __webpack_require__(18).f;
-var createNonEnumerableProperty = __webpack_require__(17);
-var has = __webpack_require__(15);
-var toString = __webpack_require__(164);
-var wellKnownSymbol = __webpack_require__(9);
-
-var TO_STRING_TAG = wellKnownSymbol('toStringTag');
-
-module.exports = function (it, TAG, STATIC, SET_METHOD) {
-  if (it) {
-    var target = STATIC ? it : it.prototype;
-    if (!has(target, TO_STRING_TAG)) {
-      defineProperty(target, TO_STRING_TAG, { configurable: true, value: TAG });
-    }
-    if (SET_METHOD && !TO_STRING_TAG_SUPPORT) {
-      createNonEnumerableProperty(target, 'toString', toString);
-    }
-  }
-};
-
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var NATIVE_WEAK_MAP = __webpack_require__(169);
-var global = __webpack_require__(8);
-var isObject = __webpack_require__(13);
-var createNonEnumerableProperty = __webpack_require__(17);
-var objectHas = __webpack_require__(15);
-var shared = __webpack_require__(75);
-var sharedKey = __webpack_require__(59);
-var hiddenKeys = __webpack_require__(49);
-
-var WeakMap = global.WeakMap;
-var set, get, has;
-
-var enforce = function (it) {
-  return has(it) ? get(it) : set(it, {});
-};
-
-var getterFor = function (TYPE) {
-  return function (it) {
-    var state;
-    if (!isObject(it) || (state = get(it)).type !== TYPE) {
-      throw TypeError('Incompatible receiver, ' + TYPE + ' required');
-    } return state;
-  };
-};
-
-if (NATIVE_WEAK_MAP) {
-  var store = shared.state || (shared.state = new WeakMap());
-  var wmget = store.get;
-  var wmhas = store.has;
-  var wmset = store.set;
-  set = function (it, metadata) {
-    metadata.facade = it;
-    wmset.call(store, it, metadata);
-    return metadata;
-  };
-  get = function (it) {
-    return wmget.call(store, it) || {};
-  };
-  has = function (it) {
-    return wmhas.call(store, it);
-  };
-} else {
-  var STATE = sharedKey('state');
-  hiddenKeys[STATE] = true;
-  set = function (it, metadata) {
-    metadata.facade = it;
-    createNonEnumerableProperty(it, STATE, metadata);
-    return metadata;
-  };
-  get = function (it) {
-    return objectHas(it, STATE) ? it[STATE] : {};
-  };
-  has = function (it) {
-    return objectHas(it, STATE);
-  };
-}
-
-module.exports = {
-  set: set,
-  get: get,
-  has: has,
-  enforce: enforce,
-  getterFor: getterFor
-};
-
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(257);
-
-/***/ }),
-/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2981,7 +2949,9 @@ module.exports = __webpack_require__(257);
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _bind = _interopRequireDefault(__webpack_require__(55));
+
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -3131,6 +3101,8 @@ function () {
 
 
   Tooltip.prototype.create = function () {
+    var _context, _context2;
+
     var editor = this.editor;
     var $container = this.$container; // 生成 container 的内容
 
@@ -3152,6 +3124,8 @@ function () {
     }
 
     this._show = true;
+    editor.beforeDestroy((0, _bind["default"])(_context = this.remove).call(_context, this));
+    editor.txt.eventHooks.onBlurEvents.push((0, _bind["default"])(_context2 = this.remove).call(_context2, this));
   };
   /**
    * 移除该 tooltip
@@ -3179,7 +3153,399 @@ function () {
 exports["default"] = Tooltip;
 
 /***/ }),
+/* 37 */
+/***/ (function(module, exports) {
+
+module.exports = function (bitmap, value) {
+  return {
+    enumerable: !(bitmap & 1),
+    configurable: !(bitmap & 2),
+    writable: !(bitmap & 4),
+    value: value
+  };
+};
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var toInteger = __webpack_require__(61);
+
+var min = Math.min;
+
+// `ToLength` abstract operation
+// https://tc39.es/ecma262/#sec-tolength
+module.exports = function (argument) {
+  return argument > 0 ? min(toInteger(argument), 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
+};
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports) {
+
+module.exports = true;
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var requireObjectCoercible = __webpack_require__(48);
+
+// `ToObject` abstract operation
+// https://tc39.es/ecma262/#sec-toobject
+module.exports = function (argument) {
+  return Object(requireObjectCoercible(argument));
+};
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var anObject = __webpack_require__(25);
+var isArrayIteratorMethod = __webpack_require__(170);
+var toLength = __webpack_require__(38);
+var bind = __webpack_require__(49);
+var getIteratorMethod = __webpack_require__(171);
+var iteratorClose = __webpack_require__(172);
+
+var Result = function (stopped, result) {
+  this.stopped = stopped;
+  this.result = result;
+};
+
+module.exports = function (iterable, unboundFunction, options) {
+  var that = options && options.that;
+  var AS_ENTRIES = !!(options && options.AS_ENTRIES);
+  var IS_ITERATOR = !!(options && options.IS_ITERATOR);
+  var INTERRUPTED = !!(options && options.INTERRUPTED);
+  var fn = bind(unboundFunction, that, 1 + AS_ENTRIES + INTERRUPTED);
+  var iterator, iterFn, index, length, result, next, step;
+
+  var stop = function (condition) {
+    if (iterator) iteratorClose(iterator);
+    return new Result(true, condition);
+  };
+
+  var callFn = function (value) {
+    if (AS_ENTRIES) {
+      anObject(value);
+      return INTERRUPTED ? fn(value[0], value[1], stop) : fn(value[0], value[1]);
+    } return INTERRUPTED ? fn(value, stop) : fn(value);
+  };
+
+  if (IS_ITERATOR) {
+    iterator = iterable;
+  } else {
+    iterFn = getIteratorMethod(iterable);
+    if (typeof iterFn != 'function') throw TypeError('Target is not iterable');
+    // optimisation for array iterators
+    if (isArrayIteratorMethod(iterFn)) {
+      for (index = 0, length = toLength(iterable.length); length > index; index++) {
+        result = callFn(iterable[index]);
+        if (result && result instanceof Result) return result;
+      } return new Result(false);
+    }
+    iterator = iterFn.call(iterable);
+  }
+
+  next = iterator.next;
+  while (!(step = next.call(iterator)).done) {
+    try {
+      result = callFn(step.value);
+    } catch (error) {
+      iteratorClose(iterator);
+      throw error;
+    }
+    if (typeof result == 'object' && result && result instanceof Result) return result;
+  } return new Result(false);
+};
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports) {
+
+module.exports = {};
+
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var TO_STRING_TAG_SUPPORT = __webpack_require__(84);
+var defineProperty = __webpack_require__(18).f;
+var createNonEnumerableProperty = __webpack_require__(17);
+var has = __webpack_require__(16);
+var toString = __webpack_require__(174);
+var wellKnownSymbol = __webpack_require__(10);
+
+var TO_STRING_TAG = wellKnownSymbol('toStringTag');
+
+module.exports = function (it, TAG, STATIC, SET_METHOD) {
+  if (it) {
+    var target = STATIC ? it : it.prototype;
+    if (!has(target, TO_STRING_TAG)) {
+      defineProperty(target, TO_STRING_TAG, { configurable: true, value: TAG });
+    }
+    if (SET_METHOD && !TO_STRING_TAG_SUPPORT) {
+      createNonEnumerableProperty(target, 'toString', toString);
+    }
+  }
+};
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var NATIVE_WEAK_MAP = __webpack_require__(179);
+var global = __webpack_require__(8);
+var isObject = __webpack_require__(13);
+var createNonEnumerableProperty = __webpack_require__(17);
+var objectHas = __webpack_require__(16);
+var shared = __webpack_require__(80);
+var sharedKey = __webpack_require__(62);
+var hiddenKeys = __webpack_require__(51);
+
+var WeakMap = global.WeakMap;
+var set, get, has;
+
+var enforce = function (it) {
+  return has(it) ? get(it) : set(it, {});
+};
+
+var getterFor = function (TYPE) {
+  return function (it) {
+    var state;
+    if (!isObject(it) || (state = get(it)).type !== TYPE) {
+      throw TypeError('Incompatible receiver, ' + TYPE + ' required');
+    } return state;
+  };
+};
+
+if (NATIVE_WEAK_MAP) {
+  var store = shared.state || (shared.state = new WeakMap());
+  var wmget = store.get;
+  var wmhas = store.has;
+  var wmset = store.set;
+  set = function (it, metadata) {
+    metadata.facade = it;
+    wmset.call(store, it, metadata);
+    return metadata;
+  };
+  get = function (it) {
+    return wmget.call(store, it) || {};
+  };
+  has = function (it) {
+    return wmhas.call(store, it);
+  };
+} else {
+  var STATE = sharedKey('state');
+  hiddenKeys[STATE] = true;
+  set = function (it, metadata) {
+    metadata.facade = it;
+    createNonEnumerableProperty(it, STATE, metadata);
+    return metadata;
+  };
+  get = function (it) {
+    return objectHas(it, STATE) ? it[STATE] : {};
+  };
+  has = function (it) {
+    return objectHas(it, STATE);
+  };
+}
+
+module.exports = {
+  set: set,
+  get: get,
+  has: has,
+  enforce: enforce,
+  getterFor: getterFor
+};
+
+
+/***/ }),
 /* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(264);
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _forEach = _interopRequireDefault(__webpack_require__(3));
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+exports.createElementFragment = exports.createDocumentFragment = exports.createElement = exports.insertBefore = exports.getEndPoint = exports.getStartPoint = exports.updateRange = exports.filterSelectionNodes = void 0;
+
+var _1 = __webpack_require__(137);
+
+var dom_core_1 = __importDefault(__webpack_require__(2));
+/**
+ * 过滤 选择的 node 节点
+ * @returns { DomElement[] } DomElement[]
+ */
+
+
+function filterSelectionNodes($nodes) {
+  var $listHtml = [];
+  (0, _forEach["default"])($nodes).call($nodes, function ($node) {
+    var targerName = $node.getNodeName();
+
+    if (targerName !== _1.ListType.OrderedList && targerName !== _1.ListType.UnorderedList) {
+      // 非序列
+      $listHtml.push($node);
+    } else {
+      // 序列
+      if ($node.prior) {
+        $listHtml.push($node.prior);
+      } else {
+        var $children = $node.children();
+        $children === null || $children === void 0 ? void 0 : (0, _forEach["default"])($children).call($children, function ($li) {
+          $listHtml.push(dom_core_1["default"]($li));
+        });
+      }
+    }
+  });
+  return $listHtml;
+}
+
+exports.filterSelectionNodes = filterSelectionNodes;
+/**
+ * 更新选区
+ * @param $node
+ */
+
+function updateRange(editor, $node, collapsed) {
+  var selection = editor.selection;
+  var range = document.createRange(); // ===============================
+  // length 大于 1
+  // 代表着转换是一个文档节点多段落
+  // ===============================
+
+  if ($node.length > 1) {
+    range.setStart($node.elems[0], 0);
+    range.setEnd($node.elems[$node.length - 1], $node.elems[$node.length - 1].childNodes.length);
+  } // ===============================
+  // 序列节点 或 单段落
+  // ===============================
+  else {
+      range.selectNodeContents($node.elems[0]);
+    } // ===============================
+  // collapsed 为 true 代表是光标
+  // ===============================
+
+
+  collapsed && range.collapse(false);
+  selection.saveRange(range);
+  selection.restoreSelection();
+}
+
+exports.updateRange = updateRange;
+/**
+ * 获取起点元素
+ * @param $startElem 开始序列节点
+ */
+
+function getStartPoint($startElem) {
+  var _a;
+
+  return $startElem.prior ? $startElem.prior // 有 prior 代表不是全选序列
+  : dom_core_1["default"]((_a = $startElem.children()) === null || _a === void 0 ? void 0 : _a.elems[0]); // 没有则代表全选序列
+}
+
+exports.getStartPoint = getStartPoint;
+/**
+ * 获取结束元素
+ * @param $endElem 结束序列节点
+ */
+
+function getEndPoint($endElem) {
+  var _a;
+
+  return $endElem.prior ? $endElem.prior // 有 prior 代表不是全选序列
+  : dom_core_1["default"]((_a = $endElem.children()) === null || _a === void 0 ? void 0 : _a.last().elems[0]); // 没有则代表全选序列
+}
+
+exports.getEndPoint = getEndPoint;
+/**
+ * 在您指定节点的已有子节点之前插入新的子节点。
+ * @param { DomElement } $node 指定节点
+ * @param { ContainerFragment } newNode 插入的新子节点
+ * @param { Node | null } existingNode 指定子节点
+ */
+
+function insertBefore($node, newNode, existingNode) {
+  if (existingNode === void 0) {
+    existingNode = null;
+  }
+
+  $node.parent().elems[0].insertBefore(newNode, existingNode);
+}
+
+exports.insertBefore = insertBefore;
+/**
+ * 创建指定的 element 对象
+ */
+
+function createElement(target) {
+  return document.createElement(target);
+}
+
+exports.createElement = createElement;
+/**
+ * 创建文档片段
+ */
+
+function createDocumentFragment() {
+  return document.createDocumentFragment();
+}
+
+exports.createDocumentFragment = createDocumentFragment;
+/**
+ * 生成 li 标签的元素，并返回 $fragment 文档片段
+ * @param { DomElement[] } $nodes 需要转换成 li 的 dom 元素数组
+ * @param { ContainerFragment } $fragment 用于存储生成后 li 元素的文档片段
+ */
+
+function createElementFragment($nodes, $fragment, tag) {
+  if (tag === void 0) {
+    tag = 'li';
+  }
+
+  (0, _forEach["default"])($nodes).call($nodes, function ($node) {
+    var $list = createElement(tag);
+    $list.innerHTML = $node.html();
+    $fragment.append($list);
+    $node.remove();
+  });
+  return $fragment;
+}
+
+exports.createElementFragment = createElementFragment;
+
+/***/ }),
+/* 47 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -3190,7 +3556,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports) {
 
 // `RequireObjectCoercible` abstract operation
@@ -3202,10 +3568,10 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var aFunction = __webpack_require__(32);
+var aFunction = __webpack_require__(34);
 
 // optional / simple context binding
 module.exports = function (fn, that, length) {
@@ -3232,16 +3598,16 @@ module.exports = function (fn, that, length) {
 
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject = __webpack_require__(24);
-var defineProperties = __webpack_require__(137);
-var enumBugKeys = __webpack_require__(73);
-var hiddenKeys = __webpack_require__(49);
-var html = __webpack_require__(103);
-var documentCreateElement = __webpack_require__(70);
-var sharedKey = __webpack_require__(59);
+var anObject = __webpack_require__(25);
+var defineProperties = __webpack_require__(148);
+var enumBugKeys = __webpack_require__(78);
+var hiddenKeys = __webpack_require__(51);
+var html = __webpack_require__(105);
+var documentCreateElement = __webpack_require__(75);
+var sharedKey = __webpack_require__(62);
 
 var GT = '>';
 var LT = '<';
@@ -3316,14 +3682,14 @@ module.exports = Object.create || function create(O, Properties) {
 
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports) {
 
 module.exports = {};
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var createNonEnumerableProperty = __webpack_require__(17);
@@ -3335,16 +3701,16 @@ module.exports = function (target, key, value, options) {
 
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(175);
-var DOMIterables = __webpack_require__(176);
+__webpack_require__(185);
+var DOMIterables = __webpack_require__(186);
 var global = __webpack_require__(8);
-var classof = __webpack_require__(61);
+var classof = __webpack_require__(64);
 var createNonEnumerableProperty = __webpack_require__(17);
-var Iterators = __webpack_require__(40);
-var wellKnownSymbol = __webpack_require__(9);
+var Iterators = __webpack_require__(42);
+var wellKnownSymbol = __webpack_require__(10);
 
 var TO_STRING_TAG = wellKnownSymbol('toStringTag');
 
@@ -3359,10 +3725,10 @@ for (var COLLECTION_NAME in DOMIterables) {
 
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var classof = __webpack_require__(45);
+var classof = __webpack_require__(47);
 
 // `IsArray` abstract operation
 // https://tc39.es/ecma262/#sec-isarray
@@ -3372,12 +3738,18 @@ module.exports = Array.isArray || function isArray(arg) {
 
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var fails = __webpack_require__(12);
-var wellKnownSymbol = __webpack_require__(9);
-var V8_VERSION = __webpack_require__(83);
+module.exports = __webpack_require__(192);
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var fails = __webpack_require__(11);
+var wellKnownSymbol = __webpack_require__(10);
+var V8_VERSION = __webpack_require__(88);
 
 var SPECIES = wellKnownSymbol('species');
 
@@ -3397,13 +3769,44 @@ module.exports = function (METHOD_NAME) {
 
 
 /***/ }),
-/* 54 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(205);
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+exports.ListHandle = void 0;
+
+var SelectionRangeElem_1 = __importDefault(__webpack_require__(380));
+
+var ListHandle =
+/** @class */
+function () {
+  function ListHandle(options) {
+    this.options = options;
+    this.selectionRangeElem = new SelectionRangeElem_1["default"]();
+  }
+
+  return ListHandle;
+}();
+
+exports.ListHandle = ListHandle;
 
 /***/ }),
-/* 55 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3423,7 +3826,7 @@ exports.f = NASHORN_BUG ? function propertyIsEnumerable(V) {
 
 
 /***/ }),
-/* 56 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(13);
@@ -3443,11 +3846,11 @@ module.exports = function (input, PREFERRED_STRING) {
 
 
 /***/ }),
-/* 57 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var internalObjectKeys = __webpack_require__(102);
-var enumBugKeys = __webpack_require__(73);
+var internalObjectKeys = __webpack_require__(104);
+var enumBugKeys = __webpack_require__(78);
 
 // `Object.keys` method
 // https://tc39.es/ecma262/#sec-object.keys
@@ -3457,7 +3860,7 @@ module.exports = Object.keys || function keys(O) {
 
 
 /***/ }),
-/* 58 */
+/* 61 */
 /***/ (function(module, exports) {
 
 var ceil = Math.ceil;
@@ -3471,11 +3874,11 @@ module.exports = function (argument) {
 
 
 /***/ }),
-/* 59 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var shared = __webpack_require__(74);
-var uid = __webpack_require__(60);
+var shared = __webpack_require__(79);
+var uid = __webpack_require__(63);
 
 var keys = shared('keys');
 
@@ -3485,7 +3888,7 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, exports) {
 
 var id = 0;
@@ -3497,12 +3900,12 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var TO_STRING_TAG_SUPPORT = __webpack_require__(79);
-var classofRaw = __webpack_require__(45);
-var wellKnownSymbol = __webpack_require__(9);
+var TO_STRING_TAG_SUPPORT = __webpack_require__(84);
+var classofRaw = __webpack_require__(47);
+var wellKnownSymbol = __webpack_require__(10);
 
 var TO_STRING_TAG = wellKnownSymbol('toStringTag');
 // ES3 wrong here
@@ -3529,28 +3932,28 @@ module.exports = TO_STRING_TAG_SUPPORT ? classofRaw : function (it) {
 
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports) {
 
 // empty
 
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getBuiltIn = __webpack_require__(28);
+var getBuiltIn = __webpack_require__(29);
 
 module.exports = getBuiltIn('navigator', 'userAgent') || '';
 
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var aFunction = __webpack_require__(32);
+var aFunction = __webpack_require__(34);
 
 var PromiseCapability = function (C) {
   var resolve, reject;
@@ -3570,14 +3973,14 @@ module.exports.f = function (C) {
 
 
 /***/ }),
-/* 65 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var charAt = __webpack_require__(173).charAt;
-var InternalStateModule = __webpack_require__(42);
-var defineIterator = __webpack_require__(84);
+var charAt = __webpack_require__(183).charAt;
+var InternalStateModule = __webpack_require__(44);
+var defineIterator = __webpack_require__(89);
 
 var STRING_ITERATOR = 'String Iterator';
 var setInternalState = InternalStateModule.set;
@@ -3606,13 +4009,36 @@ defineIterator(String, 'String', function (iterated) {
 
 
 /***/ }),
-/* 66 */
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var fails = __webpack_require__(11);
+
+module.exports = function (METHOD_NAME, argument) {
+  var method = [][METHOD_NAME];
+  return !!method && fails(function () {
+    // eslint-disable-next-line no-useless-call,no-throw-literal
+    method.call(null, argument || function () { throw 1; }, 1);
+  });
+};
+
+
+/***/ }),
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(197);
 
 /***/ }),
-/* 67 */
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(206);
+
+/***/ }),
+/* 72 */
 /***/ (function(module, exports) {
 
 // a string of all valid unicode whitespaces
@@ -3621,16 +4047,16 @@ module.exports = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u
 
 
 /***/ }),
-/* 68 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DESCRIPTORS = __webpack_require__(14);
-var propertyIsEnumerableModule = __webpack_require__(55);
-var createPropertyDescriptor = __webpack_require__(35);
-var toIndexedObject = __webpack_require__(27);
-var toPrimitive = __webpack_require__(56);
-var has = __webpack_require__(15);
-var IE8_DOM_DEFINE = __webpack_require__(100);
+var propertyIsEnumerableModule = __webpack_require__(58);
+var createPropertyDescriptor = __webpack_require__(37);
+var toIndexedObject = __webpack_require__(28);
+var toPrimitive = __webpack_require__(59);
+var has = __webpack_require__(16);
+var IE8_DOM_DEFINE = __webpack_require__(102);
 
 var nativeGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
 
@@ -3647,11 +4073,11 @@ exports.f = DESCRIPTORS ? nativeGetOwnPropertyDescriptor : function getOwnProper
 
 
 /***/ }),
-/* 69 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var fails = __webpack_require__(12);
-var classof = __webpack_require__(45);
+var fails = __webpack_require__(11);
+var classof = __webpack_require__(47);
 
 var split = ''.split;
 
@@ -3666,7 +4092,7 @@ module.exports = fails(function () {
 
 
 /***/ }),
-/* 70 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(8);
@@ -3682,12 +4108,12 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 71 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toIndexedObject = __webpack_require__(27);
-var toLength = __webpack_require__(36);
-var toAbsoluteIndex = __webpack_require__(72);
+var toIndexedObject = __webpack_require__(28);
+var toLength = __webpack_require__(38);
+var toAbsoluteIndex = __webpack_require__(77);
 
 // `Array.prototype.{ indexOf, includes }` methods implementation
 var createMethod = function (IS_INCLUDES) {
@@ -3720,10 +4146,10 @@ module.exports = {
 
 
 /***/ }),
-/* 72 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(58);
+var toInteger = __webpack_require__(61);
 
 var max = Math.max;
 var min = Math.min;
@@ -3738,7 +4164,7 @@ module.exports = function (index, length) {
 
 
 /***/ }),
-/* 73 */
+/* 78 */
 /***/ (function(module, exports) {
 
 // IE8- don't enum bug keys
@@ -3754,27 +4180,27 @@ module.exports = [
 
 
 /***/ }),
-/* 74 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var IS_PURE = __webpack_require__(37);
-var store = __webpack_require__(75);
+var IS_PURE = __webpack_require__(39);
+var store = __webpack_require__(80);
 
 (module.exports = function (key, value) {
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
-  version: '3.8.2',
+  version: '3.8.3',
   mode: IS_PURE ? 'pure' : 'global',
   copyright: '© 2021 Denis Pushkarev (zloirock.ru)'
 });
 
 
 /***/ }),
-/* 75 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(8);
-var setGlobal = __webpack_require__(138);
+var setGlobal = __webpack_require__(149);
 
 var SHARED = '__core-js_shared__';
 var store = global[SHARED] || setGlobal(SHARED, {});
@@ -3783,13 +4209,13 @@ module.exports = store;
 
 
 /***/ }),
-/* 76 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var has = __webpack_require__(15);
-var toObject = __webpack_require__(38);
-var sharedKey = __webpack_require__(59);
-var CORRECT_PROTOTYPE_GETTER = __webpack_require__(158);
+var has = __webpack_require__(16);
+var toObject = __webpack_require__(40);
+var sharedKey = __webpack_require__(62);
+var CORRECT_PROTOTYPE_GETTER = __webpack_require__(168);
 
 var IE_PROTO = sharedKey('IE_PROTO');
 var ObjectPrototype = Object.prototype;
@@ -3806,11 +4232,11 @@ module.exports = CORRECT_PROTOTYPE_GETTER ? Object.getPrototypeOf : function (O)
 
 
 /***/ }),
-/* 77 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject = __webpack_require__(24);
-var aPossiblePrototype = __webpack_require__(159);
+var anObject = __webpack_require__(25);
+var aPossiblePrototype = __webpack_require__(169);
 
 // `Object.setPrototypeOf` method
 // https://tc39.es/ecma262/#sec-object.setprototypeof
@@ -3836,10 +4262,10 @@ module.exports = Object.setPrototypeOf || ('__proto__' in {} ? function () {
 
 
 /***/ }),
-/* 78 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var fails = __webpack_require__(12);
+var fails = __webpack_require__(11);
 
 module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
   // Chrome 38 Symbol has incorrect toString conversion
@@ -3849,10 +4275,10 @@ module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
 
 
 /***/ }),
-/* 79 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var wellKnownSymbol = __webpack_require__(9);
+var wellKnownSymbol = __webpack_require__(10);
 
 var TO_STRING_TAG = wellKnownSymbol('toStringTag');
 var test = {};
@@ -3863,7 +4289,7 @@ module.exports = String(test) === '[object z]';
 
 
 /***/ }),
-/* 80 */
+/* 85 */
 /***/ (function(module, exports) {
 
 module.exports = function (it, Constructor, name) {
@@ -3874,17 +4300,17 @@ module.exports = function (it, Constructor, name) {
 
 
 /***/ }),
-/* 81 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var classof = __webpack_require__(45);
+var classof = __webpack_require__(47);
 var global = __webpack_require__(8);
 
 module.exports = classof(global.process) == 'process';
 
 
 /***/ }),
-/* 82 */
+/* 87 */
 /***/ (function(module, exports) {
 
 module.exports = function (exec) {
@@ -3897,11 +4323,11 @@ module.exports = function (exec) {
 
 
 /***/ }),
-/* 83 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(8);
-var userAgent = __webpack_require__(63);
+var userAgent = __webpack_require__(66);
 
 var process = global.process;
 var versions = process && process.versions;
@@ -3923,22 +4349,22 @@ module.exports = version && +version;
 
 
 /***/ }),
-/* 84 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var createIteratorConstructor = __webpack_require__(174);
-var getPrototypeOf = __webpack_require__(76);
-var setPrototypeOf = __webpack_require__(77);
-var setToStringTag = __webpack_require__(41);
+var $ = __webpack_require__(6);
+var createIteratorConstructor = __webpack_require__(184);
+var getPrototypeOf = __webpack_require__(81);
+var setPrototypeOf = __webpack_require__(82);
+var setToStringTag = __webpack_require__(43);
 var createNonEnumerableProperty = __webpack_require__(17);
-var redefine = __webpack_require__(50);
-var wellKnownSymbol = __webpack_require__(9);
-var IS_PURE = __webpack_require__(37);
-var Iterators = __webpack_require__(40);
-var IteratorsCore = __webpack_require__(113);
+var redefine = __webpack_require__(52);
+var wellKnownSymbol = __webpack_require__(10);
+var IS_PURE = __webpack_require__(39);
+var Iterators = __webpack_require__(42);
+var IteratorsCore = __webpack_require__(116);
 
 var IteratorPrototype = IteratorsCore.IteratorPrototype;
 var BUGGY_SAFARI_ITERATORS = IteratorsCore.BUGGY_SAFARI_ITERATORS;
@@ -4020,19 +4446,19 @@ module.exports = function (Iterable, NAME, IteratorConstructor, next, DEFAULT, I
 
 
 /***/ }),
-/* 85 */
+/* 90 */
 /***/ (function(module, exports) {
 
 module.exports = function () { /* empty */ };
 
 
 /***/ }),
-/* 86 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(13);
-var isArray = __webpack_require__(52);
-var wellKnownSymbol = __webpack_require__(9);
+var isArray = __webpack_require__(54);
+var wellKnownSymbol = __webpack_require__(10);
 
 var SPECIES = wellKnownSymbol('species');
 
@@ -4053,49 +4479,20 @@ module.exports = function (originalArray, length) {
 
 
 /***/ }),
-/* 87 */
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(210);
+
+/***/ }),
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var fails = __webpack_require__(12);
-
-module.exports = function (METHOD_NAME, argument) {
-  var method = [][METHOD_NAME];
-  return !!method && fails(function () {
-    // eslint-disable-next-line no-useless-call,no-throw-literal
-    method.call(null, argument || function () { throw 1; }, 1);
-  });
-};
-
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(183);
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(188);
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(201);
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var toPrimitive = __webpack_require__(56);
+var toPrimitive = __webpack_require__(59);
 var definePropertyModule = __webpack_require__(18);
-var createPropertyDescriptor = __webpack_require__(35);
+var createPropertyDescriptor = __webpack_require__(37);
 
 module.exports = function (object, key, value) {
   var propertyKey = toPrimitive(key);
@@ -4105,11 +4502,11 @@ module.exports = function (object, key, value) {
 
 
 /***/ }),
-/* 92 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var requireObjectCoercible = __webpack_require__(46);
-var whitespaces = __webpack_require__(67);
+var requireObjectCoercible = __webpack_require__(48);
+var whitespaces = __webpack_require__(72);
 
 var whitespace = '[' + whitespaces + ']';
 var ltrim = RegExp('^' + whitespace + whitespace + '*');
@@ -4139,18 +4536,18 @@ module.exports = {
 
 
 /***/ }),
-/* 93 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(222);
+module.exports = __webpack_require__(231);
 
 /***/ }),
-/* 94 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _Symbol$iterator = __webpack_require__(225);
+var _Symbol$iterator = __webpack_require__(234);
 
-var _Symbol = __webpack_require__(228);
+var _Symbol = __webpack_require__(236);
 
 function _typeof(obj) {
   "@babel/helpers - typeof";
@@ -4171,16 +4568,16 @@ function _typeof(obj) {
 module.exports = _typeof;
 
 /***/ }),
-/* 95 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var wellKnownSymbol = __webpack_require__(9);
+var wellKnownSymbol = __webpack_require__(10);
 
 exports.f = wellKnownSymbol;
 
 
 /***/ }),
-/* 96 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4192,7 +4589,7 @@ exports.f = wellKnownSymbol;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -4206,7 +4603,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var Panel_1 = __importDefault(__webpack_require__(31));
+var Panel_1 = __importDefault(__webpack_require__(33));
 
 var Menu =
 /** @class */
@@ -4278,7 +4675,7 @@ function () {
 exports["default"] = Menu;
 
 /***/ }),
-/* 97 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4290,11 +4687,11 @@ exports["default"] = Menu;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _indexOf = _interopRequireDefault(__webpack_require__(54));
+var _indexOf = _interopRequireDefault(__webpack_require__(31));
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
-var _bind = _interopRequireDefault(__webpack_require__(88));
+var _bind = _interopRequireDefault(__webpack_require__(55));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -4310,9 +4707,9 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var util_1 = __webpack_require__(7);
 
-var upload_core_1 = __importDefault(__webpack_require__(335));
+var upload_core_1 = __importDefault(__webpack_require__(135));
 
-var progress_1 = __importDefault(__webpack_require__(336));
+var progress_1 = __importDefault(__webpack_require__(136));
 
 var UploadImg =
 /** @class */
@@ -4326,7 +4723,7 @@ function () {
    */
 
 
-  UploadImg.prototype.insertImg = function (src) {
+  UploadImg.prototype.insertImg = function (src, alt, href) {
     var editor = this.editor;
     var config = editor.config;
     var i18nPrefix = 'validate.';
@@ -4337,12 +4734,15 @@ function () {
       }
 
       return editor.i18next.t(prefix + text);
-    }; // 先插入图片，无论是否能成功
+    }; // 设置图片alt
 
 
-    editor.cmd["do"]('insertHTML', "<img src=\"" + src + "\" style=\"max-width:100%;\"/>"); // 执行回调函数
+    var altText = alt ? "alt=\"" + alt + "\" " : '';
+    var hrefText = href ? "data-href=\"" + encodeURIComponent(href) + "\" " : ''; // 先插入图片，无论是否能成功
 
-    config.linkImgCallback(src); // 加载图片
+    editor.cmd["do"]('insertHTML', "<img src=\"" + src + "\" " + altText + hrefText + "style=\"max-width:100%;\"/>"); // 执行回调函数
+
+    config.linkImgCallback(src, alt, href); // 加载图片
 
     var img = document.createElement('img');
 
@@ -4558,7 +4958,11 @@ function () {
 
           var data = result.data;
           (0, _forEach["default"])(data).call(data, function (link) {
-            _this_1.insertImg(link);
+            if (typeof link === 'string') {
+              _this_1.insertImg(link);
+            } else {
+              _this_1.insertImg(link.url, link.alt, link.href);
+            }
           }); // 钩子函数
 
           if (hooks.success) hooks.success(xhr, editor, result);
@@ -4583,8 +4987,9 @@ function () {
 
         reader.onload = function () {
           if (!this.result) return;
+          var imgLink = this.result.toString();
 
-          _this.insertImg(this.result.toString());
+          _this.insertImg(imgLink, imgLink);
         };
       });
     }
@@ -4596,7 +5001,7 @@ function () {
 exports["default"] = UploadImg;
 
 /***/ }),
-/* 98 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4604,11 +5009,11 @@ exports["default"] = UploadImg;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _slice = _interopRequireDefault(__webpack_require__(43));
+var _slice = _interopRequireDefault(__webpack_require__(45));
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
-var _every = _interopRequireDefault(__webpack_require__(381));
+var _every = _interopRequireDefault(__webpack_require__(412));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -4622,7 +5027,11 @@ exports.dealTextNode = exports.isAllTodo = exports.isTodo = exports.getCursorNex
  */
 
 function isTodo($topSelectElem) {
-  return $topSelectElem.attr('class') === 'w-e-todo';
+  if ($topSelectElem.length) {
+    return $topSelectElem.attr('class') === 'w-e-todo';
+  }
+
+  return false;
 }
 
 exports.isTodo = isTodo;
@@ -4632,7 +5041,7 @@ exports.isTodo = isTodo;
  */
 
 function isAllTodo(editor) {
-  var $topSelectElems = editor.selection.getSelectionRangeTopNodes(editor); // 排除为[]的情况
+  var $topSelectElems = editor.selection.getSelectionRangeTopNodes(); // 排除为[]的情况
 
   if ($topSelectElems.length === 0) return;
   return (0, _every["default"])($topSelectElems).call($topSelectElems, function ($topSelectElem) {
@@ -4741,7 +5150,7 @@ function dealTextNode(node, pos, start) {
 exports.dealTextNode = dealTextNode;
 
 /***/ }),
-/* 99 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4759,7 +5168,7 @@ var _defineProperty = _interopRequireDefault(__webpack_require__(1));
   value: true
 });
 
-var stack_1 = __webpack_require__(401);
+var stack_1 = __webpack_require__(432);
 
 var Cache =
 /** @class */
@@ -4850,12 +5259,12 @@ function () {
 exports["default"] = Cache;
 
 /***/ }),
-/* 100 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DESCRIPTORS = __webpack_require__(14);
-var fails = __webpack_require__(12);
-var createElement = __webpack_require__(70);
+var fails = __webpack_require__(11);
+var createElement = __webpack_require__(75);
 
 // Thank's IE8 for his funny defineProperty
 module.exports = !DESCRIPTORS && !fails(function () {
@@ -4866,10 +5275,10 @@ module.exports = !DESCRIPTORS && !fails(function () {
 
 
 /***/ }),
-/* 101 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var fails = __webpack_require__(12);
+var fails = __webpack_require__(11);
 
 var replacement = /#|\.prototype\./;
 
@@ -4893,13 +5302,13 @@ module.exports = isForced;
 
 
 /***/ }),
-/* 102 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var has = __webpack_require__(15);
-var toIndexedObject = __webpack_require__(27);
-var indexOf = __webpack_require__(71).indexOf;
-var hiddenKeys = __webpack_require__(49);
+var has = __webpack_require__(16);
+var toIndexedObject = __webpack_require__(28);
+var indexOf = __webpack_require__(76).indexOf;
+var hiddenKeys = __webpack_require__(51);
 
 module.exports = function (object, names) {
   var O = toIndexedObject(object);
@@ -4916,19 +5325,25 @@ module.exports = function (object, names) {
 
 
 /***/ }),
-/* 103 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getBuiltIn = __webpack_require__(28);
+var getBuiltIn = __webpack_require__(29);
 
 module.exports = getBuiltIn('document', 'documentElement');
 
 
 /***/ }),
-/* 104 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var NATIVE_SYMBOL = __webpack_require__(78);
+module.exports = __webpack_require__(165);
+
+/***/ }),
+/* 107 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var NATIVE_SYMBOL = __webpack_require__(83);
 
 module.exports = NATIVE_SYMBOL
   // eslint-disable-next-line no-undef
@@ -4938,7 +5353,7 @@ module.exports = NATIVE_SYMBOL
 
 
 /***/ }),
-/* 105 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(8);
@@ -4947,10 +5362,10 @@ module.exports = global.Promise;
 
 
 /***/ }),
-/* 106 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var redefine = __webpack_require__(50);
+var redefine = __webpack_require__(52);
 
 module.exports = function (target, src, options) {
   for (var key in src) {
@@ -4961,14 +5376,14 @@ module.exports = function (target, src, options) {
 
 
 /***/ }),
-/* 107 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var getBuiltIn = __webpack_require__(28);
+var getBuiltIn = __webpack_require__(29);
 var definePropertyModule = __webpack_require__(18);
-var wellKnownSymbol = __webpack_require__(9);
+var wellKnownSymbol = __webpack_require__(10);
 var DESCRIPTORS = __webpack_require__(14);
 
 var SPECIES = wellKnownSymbol('species');
@@ -4987,10 +5402,10 @@ module.exports = function (CONSTRUCTOR_NAME) {
 
 
 /***/ }),
-/* 108 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var store = __webpack_require__(75);
+var store = __webpack_require__(80);
 
 var functionToString = Function.toString;
 
@@ -5005,12 +5420,12 @@ module.exports = store.inspectSource;
 
 
 /***/ }),
-/* 109 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject = __webpack_require__(24);
-var aFunction = __webpack_require__(32);
-var wellKnownSymbol = __webpack_require__(9);
+var anObject = __webpack_require__(25);
+var aFunction = __webpack_require__(34);
+var wellKnownSymbol = __webpack_require__(10);
 
 var SPECIES = wellKnownSymbol('species');
 
@@ -5024,16 +5439,16 @@ module.exports = function (O, defaultConstructor) {
 
 
 /***/ }),
-/* 110 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(8);
-var fails = __webpack_require__(12);
-var bind = __webpack_require__(47);
-var html = __webpack_require__(103);
-var createElement = __webpack_require__(70);
-var IS_IOS = __webpack_require__(111);
-var IS_NODE = __webpack_require__(81);
+var fails = __webpack_require__(11);
+var bind = __webpack_require__(49);
+var html = __webpack_require__(105);
+var createElement = __webpack_require__(75);
+var IS_IOS = __webpack_require__(114);
+var IS_NODE = __webpack_require__(86);
 
 var location = global.location;
 var set = global.setImmediate;
@@ -5137,21 +5552,21 @@ module.exports = {
 
 
 /***/ }),
-/* 111 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var userAgent = __webpack_require__(63);
+var userAgent = __webpack_require__(66);
 
 module.exports = /(iphone|ipod|ipad).*applewebkit/i.test(userAgent);
 
 
 /***/ }),
-/* 112 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject = __webpack_require__(24);
+var anObject = __webpack_require__(25);
 var isObject = __webpack_require__(13);
-var newPromiseCapability = __webpack_require__(64);
+var newPromiseCapability = __webpack_require__(67);
 
 module.exports = function (C, x) {
   anObject(C);
@@ -5164,16 +5579,17 @@ module.exports = function (C, x) {
 
 
 /***/ }),
-/* 113 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var getPrototypeOf = __webpack_require__(76);
+var fails = __webpack_require__(11);
+var getPrototypeOf = __webpack_require__(81);
 var createNonEnumerableProperty = __webpack_require__(17);
-var has = __webpack_require__(15);
-var wellKnownSymbol = __webpack_require__(9);
-var IS_PURE = __webpack_require__(37);
+var has = __webpack_require__(16);
+var wellKnownSymbol = __webpack_require__(10);
+var IS_PURE = __webpack_require__(39);
 
 var ITERATOR = wellKnownSymbol('iterator');
 var BUGGY_SAFARI_ITERATORS = false;
@@ -5194,10 +5610,16 @@ if ([].keys) {
   }
 }
 
-if (IteratorPrototype == undefined) IteratorPrototype = {};
+var NEW_ITERATOR_PROTOTYPE = IteratorPrototype == undefined || fails(function () {
+  var test = {};
+  // FF44- legacy iterators case
+  return IteratorPrototype[ITERATOR].call(test) !== test;
+});
+
+if (NEW_ITERATOR_PROTOTYPE) IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-if (!IS_PURE && !has(IteratorPrototype, ITERATOR)) {
+if ((!IS_PURE || NEW_ITERATOR_PROTOTYPE) && !has(IteratorPrototype, ITERATOR)) {
   createNonEnumerableProperty(IteratorPrototype, ITERATOR, returnThis);
 }
 
@@ -5208,30 +5630,308 @@ module.exports = {
 
 
 /***/ }),
-/* 114 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(209);
-
-/***/ }),
-/* 115 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
+/**
+ * @description 编辑器 class
+ * @author wangfupeng
+ */
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _forEach = _interopRequireDefault(__webpack_require__(3));
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var _create = _interopRequireDefault(__webpack_require__(4));
+
+var __createBinding = void 0 && (void 0).__createBinding || (_create["default"] ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  (0, _defineProperty["default"])(o, k2, {
+    enumerable: true,
+    get: function get() {
+      return m[k];
+    }
+  });
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = void 0 && (void 0).__setModuleDefault || (_create["default"] ? function (o, v) {
+  (0, _defineProperty["default"])(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = void 0 && (void 0).__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+
+var dom_core_1 = __importDefault(__webpack_require__(2));
+
+var util_1 = __webpack_require__(7);
+
+var config_1 = __importDefault(__webpack_require__(273));
+
+var selection_1 = __importDefault(__webpack_require__(288));
+
+var command_1 = __importDefault(__webpack_require__(289));
+
+var index_1 = __importDefault(__webpack_require__(290));
+
+var index_2 = __importDefault(__webpack_require__(309));
+
+var init_dom_1 = __importDefault(__webpack_require__(418));
+
+var init_selection_1 = __importDefault(__webpack_require__(419));
+
+var bind_event_1 = __importDefault(__webpack_require__(420));
+
+var i18next_init_1 = __importDefault(__webpack_require__(421));
+
+var set_full_screen_1 = __importStar(__webpack_require__(422));
+
+var scroll_to_head_1 = __importDefault(__webpack_require__(425));
+
+var z_index_1 = __importDefault(__webpack_require__(426));
+
+var index_3 = __importDefault(__webpack_require__(427));
+
+var index_4 = __importDefault(__webpack_require__(429));
+
+var disable_1 = __importDefault(__webpack_require__(439));
+
+var BtnMenu_1 = __importDefault(__webpack_require__(23));
+
+var DropList_1 = __importDefault(__webpack_require__(133));
+
+var DropListMenu_1 = __importDefault(__webpack_require__(24));
+
+var Panel_1 = __importDefault(__webpack_require__(33));
+
+var PanelMenu_1 = __importDefault(__webpack_require__(35));
+
+var Tooltip_1 = __importDefault(__webpack_require__(36));
+
+var EDITOR_ID = 1;
+
+var Editor =
+/** @class */
+function () {
+  /**
+   * 构造函数
+   * @param toolbarSelector 工具栏 DOM selector
+   * @param textSelector 文本区域 DOM selector
+   */
+  function Editor(toolbarSelector, textSelector) {
+    // 实例销毁前需要执行的钩子集合
+    this.beforeDestroyHooks = []; // id，用以区分单个页面不同的编辑器对象
+
+    this.id = "wangEditor-" + EDITOR_ID++;
+    this.toolbarSelector = toolbarSelector;
+    this.textSelector = textSelector;
+
+    if (toolbarSelector == null) {
+      throw new Error('错误：初始化编辑器时候未传入任何参数，请查阅文档');
+    } // 属性的默认值，后面可能会再修改
+    // 默认配置 - 当一个页面有多个编辑器的时候，因为 JS 的特性(引用类型)会导致多个编辑器的 config 引用是同一个，所以需要 深度克隆 断掉引用
+
+
+    this.config = util_1.deepClone(config_1["default"]);
+    this.$toolbarElem = dom_core_1["default"]('<div></div>');
+    this.$textContainerElem = dom_core_1["default"]('<div></div>');
+    this.$textElem = dom_core_1["default"]('<div></div>');
+    this.toolbarElemId = '';
+    this.textElemId = '';
+    this.isFocus = false;
+    this.isComposing = false;
+    this.isCompatibleMode = false;
+    this.selection = new selection_1["default"](this);
+    this.cmd = new command_1["default"](this);
+    this.txt = new index_1["default"](this);
+    this.menus = new index_2["default"](this);
+    this.zIndex = new z_index_1["default"]();
+    this.change = new index_3["default"](this);
+    this.history = new index_4["default"](this);
+
+    var _a = disable_1["default"](this),
+        disable = _a.disable,
+        enable = _a.enable;
+
+    this.disable = disable;
+    this.enable = enable;
+  }
+  /**
+   * 初始化选区
+   * @param newLine 新建一行
+   */
+
+
+  Editor.prototype.initSelection = function (newLine) {
+    init_selection_1["default"](this, newLine);
+  };
+  /**
+   * 创建编辑器实例
+   */
+
+
+  Editor.prototype.create = function () {
+    // 初始化 ZIndex
+    this.zIndex.init(this); // 确定当前的历史记录模式
+
+    this.isCompatibleMode = this.config.compatibleMode(); // 标准模式下，重置延迟时间
+
+    if (!this.isCompatibleMode) {
+      this.config.onchangeTimeout = 30;
+    } // 国际化 因为要在创建菜单前使用 所以要最先 初始化
+
+
+    i18next_init_1["default"](this); // 初始化 DOM
+
+    init_dom_1["default"](this); // 初始化 text
+
+    this.txt.init(); // 初始化菜单
+
+    this.menus.init(); // 初始化全屏功能
+
+    set_full_screen_1["default"](this); // 初始化选区，将光标定位到内容尾部
+
+    this.initSelection(true); // 绑定事件
+
+    bind_event_1["default"](this); // 绑定监听的目标节点
+
+    this.change.observe();
+    this.history.observe();
+  };
+  /**
+   * 提供给用户添加销毁前的钩子函数
+   * @param fn 钩子函数
+   */
+
+
+  Editor.prototype.beforeDestroy = function (fn) {
+    this.beforeDestroyHooks.push(fn);
+    return this;
+  };
+  /**
+   * 销毁当前编辑器实例
+   */
+
+
+  Editor.prototype.destroy = function () {
+    var _context;
+
+    var _this = this; // 调用钩子函数
+
+
+    (0, _forEach["default"])(_context = this.beforeDestroyHooks).call(_context, function (fn) {
+      return fn.call(_this);
+    }); // 销毁 DOM 节点
+
+    this.$toolbarElem.remove();
+    this.$textContainerElem.remove();
+  };
+  /**
+   * 将编辑器设置为全屏
+   */
+
+
+  Editor.prototype.fullScreen = function () {
+    set_full_screen_1.setFullScreen(this);
+  };
+  /**
+   * 将编辑器退出全屏
+   */
+
+
+  Editor.prototype.unFullScreen = function () {
+    set_full_screen_1.setUnFullScreen(this);
+  };
+  /**
+   * 滚动到指定标题锚点
+   * @param id 标题锚点id
+   */
+
+
+  Editor.prototype.scrollToHead = function (id) {
+    scroll_to_head_1["default"](this, id);
+  };
+  /**
+   * 自定义添加菜单
+   * @param key 菜单 key
+   * @param Menu 菜单构造函数
+   */
+
+
+  Editor.registerMenu = function (key, Menu) {
+    if (!Menu || typeof Menu !== 'function') return;
+    Editor.globalCustomMenuConstructorList[key] = Menu;
+  }; // 暴露 $
+
+
+  Editor.$ = dom_core_1["default"];
+  Editor.BtnMenu = BtnMenu_1["default"];
+  Editor.DropList = DropList_1["default"];
+  Editor.DropListMenu = DropListMenu_1["default"];
+  Editor.Panel = Panel_1["default"];
+  Editor.PanelMenu = PanelMenu_1["default"];
+  Editor.Tooltip = Tooltip_1["default"];
+  Editor.globalCustomMenuConstructorList = {};
+  return Editor;
+}();
+
+exports["default"] = Editor;
+
+/***/ }),
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(218);
+
+/***/ }),
+/* 119 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__(6);
 var global = __webpack_require__(8);
-var InternalMetadataModule = __webpack_require__(116);
-var fails = __webpack_require__(12);
+var InternalMetadataModule = __webpack_require__(120);
+var fails = __webpack_require__(11);
 var createNonEnumerableProperty = __webpack_require__(17);
-var iterate = __webpack_require__(39);
-var anInstance = __webpack_require__(80);
+var iterate = __webpack_require__(41);
+var anInstance = __webpack_require__(85);
 var isObject = __webpack_require__(13);
-var setToStringTag = __webpack_require__(41);
+var setToStringTag = __webpack_require__(43);
 var defineProperty = __webpack_require__(18).f;
-var forEach = __webpack_require__(33).forEach;
+var forEach = __webpack_require__(30).forEach;
 var DESCRIPTORS = __webpack_require__(14);
-var InternalStateModule = __webpack_require__(42);
+var InternalStateModule = __webpack_require__(44);
 
 var setInternalState = InternalStateModule.set;
 var internalStateGetterFor = InternalStateModule.getterFor;
@@ -5294,15 +5994,15 @@ module.exports = function (CONSTRUCTOR_NAME, wrapper, common) {
 
 
 /***/ }),
-/* 116 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var hiddenKeys = __webpack_require__(49);
+var hiddenKeys = __webpack_require__(51);
 var isObject = __webpack_require__(13);
-var has = __webpack_require__(15);
+var has = __webpack_require__(16);
 var defineProperty = __webpack_require__(18).f;
-var uid = __webpack_require__(60);
-var FREEZING = __webpack_require__(212);
+var uid = __webpack_require__(63);
+var FREEZING = __webpack_require__(221);
 
 var METADATA = uid('meta');
 var id = 0;
@@ -5361,22 +6061,22 @@ hiddenKeys[METADATA] = true;
 
 
 /***/ }),
-/* 117 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var defineProperty = __webpack_require__(18).f;
-var create = __webpack_require__(48);
-var redefineAll = __webpack_require__(106);
-var bind = __webpack_require__(47);
-var anInstance = __webpack_require__(80);
-var iterate = __webpack_require__(39);
-var defineIterator = __webpack_require__(84);
-var setSpecies = __webpack_require__(107);
+var create = __webpack_require__(50);
+var redefineAll = __webpack_require__(109);
+var bind = __webpack_require__(49);
+var anInstance = __webpack_require__(85);
+var iterate = __webpack_require__(41);
+var defineIterator = __webpack_require__(89);
+var setSpecies = __webpack_require__(110);
 var DESCRIPTORS = __webpack_require__(14);
-var fastKey = __webpack_require__(116).fastKey;
-var InternalStateModule = __webpack_require__(42);
+var fastKey = __webpack_require__(120).fastKey;
+var InternalStateModule = __webpack_require__(44);
 
 var setInternalState = InternalStateModule.set;
 var internalStateGetterFor = InternalStateModule.getterFor;
@@ -5554,10 +6254,22 @@ module.exports = {
 
 
 /***/ }),
-/* 118 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+__webpack_require__(123);
+__webpack_require__(68);
+__webpack_require__(53);
+var WrappedWellKnownSymbolModule = __webpack_require__(97);
+
+module.exports = WrappedWellKnownSymbolModule.f('iterator');
+
+
+/***/ }),
+/* 123 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.iterator` well-known symbol
 // https://tc39.es/ecma262/#sec-symbol.iterator
@@ -5565,11 +6277,40 @@ defineWellKnownSymbol('iterator');
 
 
 /***/ }),
-/* 119 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var internalObjectKeys = __webpack_require__(102);
-var enumBugKeys = __webpack_require__(73);
+__webpack_require__(238);
+__webpack_require__(65);
+__webpack_require__(239);
+__webpack_require__(241);
+__webpack_require__(242);
+__webpack_require__(243);
+__webpack_require__(244);
+__webpack_require__(123);
+__webpack_require__(245);
+__webpack_require__(246);
+__webpack_require__(247);
+__webpack_require__(248);
+__webpack_require__(249);
+__webpack_require__(250);
+__webpack_require__(251);
+__webpack_require__(252);
+__webpack_require__(253);
+__webpack_require__(254);
+__webpack_require__(255);
+__webpack_require__(256);
+var path = __webpack_require__(9);
+
+module.exports = path.Symbol;
+
+
+/***/ }),
+/* 125 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var internalObjectKeys = __webpack_require__(104);
+var enumBugKeys = __webpack_require__(78);
 
 var hiddenKeys = enumBugKeys.concat('length', 'prototype');
 
@@ -5581,20 +6322,20 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 
 
 /***/ }),
-/* 120 */
+/* 126 */
 /***/ (function(module, exports) {
 
 exports.f = Object.getOwnPropertySymbols;
 
 
 /***/ }),
-/* 121 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(255);
+module.exports = __webpack_require__(262);
 
 /***/ }),
-/* 122 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5616,7 +6357,7 @@ exports["default"] = {
 };
 
 /***/ }),
-/* 123 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5628,7 +6369,7 @@ exports["default"] = {
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -5645,7 +6386,7 @@ exports.getPasteImgs = exports.getPasteHtml = exports.getPasteText = void 0;
 
 var util_1 = __webpack_require__(7);
 
-var parse_html_1 = __importDefault(__webpack_require__(294));
+var parse_html_1 = __importDefault(__webpack_require__(300));
 /**
  * 获取粘贴的纯文本
  * @param e Event 参数
@@ -5740,13 +6481,25 @@ function getPasteImgs(e) {
 exports.getPasteImgs = getPasteImgs;
 
 /***/ }),
-/* 124 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(296);
+module.exports = __webpack_require__(302);
 
 /***/ }),
-/* 125 */
+/* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(310);
+
+/***/ }),
+/* 132 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(314);
+
+/***/ }),
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5757,7 +6510,7 @@ module.exports = __webpack_require__(296);
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -5773,7 +6526,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var const_1 = __webpack_require__(26);
+var const_1 = __webpack_require__(32);
 
 var DropList =
 /** @class */
@@ -5898,7 +6651,7 @@ function () {
 exports["default"] = DropList;
 
 /***/ }),
-/* 126 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5919,7 +6672,7 @@ var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 function isActive(editor) {
   var $selectionELem = editor.selection.getSelectionContainerElem();
 
-  if (!$selectionELem) {
+  if (!($selectionELem === null || $selectionELem === void 0 ? void 0 : $selectionELem.length)) {
     return false;
   }
 
@@ -5933,7 +6686,464 @@ function isActive(editor) {
 exports["default"] = isActive;
 
 /***/ }),
-/* 127 */
+/* 135 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * @description 上传的核心方法
+ * @author wangfupeng
+ */
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _typeof2 = _interopRequireDefault(__webpack_require__(96));
+
+var _forEach = _interopRequireDefault(__webpack_require__(3));
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+
+var util_1 = __webpack_require__(7);
+/**
+ * 发送 post 请求（用于文件上传）
+ * @param url url
+ * @param option 配置项
+ */
+
+
+function post(url, option) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', url); // 超时，默认 10s
+
+  xhr.timeout = option.timeout || 10 * 1000;
+
+  xhr.ontimeout = function () {
+    console.error('wangEditor - 请求超时');
+    option.onTimeout && option.onTimeout(xhr);
+  }; // 进度
+
+
+  if (xhr.upload) {
+    xhr.upload.onprogress = function (e) {
+      var percent = e.loaded / e.total;
+      option.onProgress && option.onProgress(percent, e);
+    };
+  } // 自定义 header
+
+
+  if (option.headers) {
+    (0, _forEach["default"])(util_1).call(util_1, option.headers, function (key, val) {
+      xhr.setRequestHeader(key, val);
+    });
+  } // 跨域传 cookie
+
+
+  xhr.withCredentials = !!option.withCredentials; // 上传之前的钩子函数，在 xhr.send() 之前执行
+
+  if (option.beforeSend) {
+    var beforeResult = option.beforeSend(xhr);
+
+    if (beforeResult && (0, _typeof2["default"])(beforeResult) === 'object') {
+      if (beforeResult.prevent) {
+        // 如果返回的结果是 {prevent: true, msg: 'xxxx'} 则表示用户放弃上传
+        return beforeResult.msg;
+      }
+    }
+  } // 服务端返回之后
+
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState !== 4) return;
+    var status = xhr.status;
+    if (status < 200) return; // 请求发送过程中，尚未返回
+
+    if (status >= 300 && status < 400) return; // 重定向
+
+    if (status >= 400) {
+      // 40x 50x 报错
+      console.error('wangEditor - XHR 报错，状态码 ' + status);
+      if (option.onError) option.onError(xhr); // 有，则执行 onError 函数即可
+
+      return;
+    } // status = 200 ，得到结果
+
+
+    var resultStr = xhr.responseText;
+    var result;
+
+    if ((0, _typeof2["default"])(resultStr) !== 'object') {
+      try {
+        result = JSON.parse(resultStr);
+      } catch (ex) {
+        console.error('wangEditor - 返回结果不是 JSON 格式', resultStr);
+        if (option.onFail) option.onFail(xhr, resultStr);
+        return;
+      }
+    } else {
+      result = resultStr;
+    }
+
+    option.onSuccess(xhr, result);
+  }; // 发送请求
+
+
+  xhr.send(option.formData || null);
+  return xhr;
+}
+
+exports["default"] = post;
+
+/***/ }),
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * @description 上传进度条
+ * @author wangfupeng
+ */
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _now = _interopRequireDefault(__webpack_require__(352));
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+
+var dom_core_1 = __importDefault(__webpack_require__(2));
+
+var Progress =
+/** @class */
+function () {
+  function Progress(editor) {
+    this.editor = editor;
+    this.$textContainer = editor.$textContainerElem;
+    this.$bar = dom_core_1["default"]('<div class="w-e-progress"></div>');
+    this.isShow = false;
+    this.time = 0;
+    this.timeoutId = 0;
+  }
+  /**
+   * 显示进度条
+   * @param progress 进度百分比
+   */
+
+
+  Progress.prototype.show = function (progress) {
+    var _this = this; // 不要重新显示
+
+
+    if (this.isShow) {
+      return;
+    }
+
+    this.isShow = true; // 渲染 $bar
+
+    var $bar = this.$bar;
+    var $textContainer = this.$textContainer;
+    $textContainer.append($bar); // 改变进度条（防抖，100ms 渲染一次）
+
+    if ((0, _now["default"])() - this.time > 100) {
+      if (progress <= 1) {
+        $bar.css('width', progress * 100 + '%');
+        this.time = (0, _now["default"])();
+      }
+    } // 500ms 之后隐藏
+
+
+    var timeoutId = this.timeoutId;
+
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    this.timeoutId = window.setTimeout(function () {
+      _this.hide();
+    }, 500);
+  };
+  /**
+   * 隐藏
+   */
+
+
+  Progress.prototype.hide = function () {
+    var $bar = this.$bar;
+    $bar.remove();
+    this.isShow = false;
+    this.time = 0;
+    this.timeoutId = 0;
+  };
+
+  return Progress;
+}();
+
+exports["default"] = Progress;
+
+/***/ }),
+/* 137 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * @description 无序列表/有序列表
+ * @author tonghan
+ */
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var _create = _interopRequireDefault(__webpack_require__(4));
+
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
+
+var __extends = void 0 && (void 0).__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = _setPrototypeOf["default"] || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? (0, _create["default"])(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __createBinding = void 0 && (void 0).__createBinding || (_create["default"] ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  (0, _defineProperty["default"])(o, k2, {
+    enumerable: true,
+    get: function get() {
+      return m[k];
+    }
+  });
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = void 0 && (void 0).__setModuleDefault || (_create["default"] ? function (o, v) {
+  (0, _defineProperty["default"])(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = void 0 && (void 0).__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+exports.ListType = void 0;
+
+var dom_core_1 = __importDefault(__webpack_require__(2));
+
+var DropListMenu_1 = __importDefault(__webpack_require__(24));
+
+var utils_1 = __webpack_require__(46);
+
+var ListHandle_1 = __importStar(__webpack_require__(378));
+/**
+ * 列表的种类
+ */
+
+
+var ListType;
+
+(function (ListType) {
+  ListType["OrderedList"] = "OL";
+  ListType["UnorderedList"] = "UL";
+})(ListType = exports.ListType || (exports.ListType = {}));
+
+var List =
+/** @class */
+function (_super) {
+  __extends(List, _super);
+
+  function List(editor) {
+    var _this = this;
+
+    var $elem = dom_core_1["default"]("<div class=\"w-e-menu\" data-title=\"\u5E8F\u5217\">\n                <i class=\"w-e-icon-list2\"></i>\n            </div>");
+    var dropListConf = {
+      width: 130,
+      title: '序列',
+      type: 'list',
+      list: [{
+        $elem: dom_core_1["default"]("\n                        <p>\n                            <i class=\"w-e-icon-list2 w-e-drop-list-item\"></i>\n                            " + editor.i18next.t('menus.dropListMenu.list.无序列表') + "\n                        <p>"),
+        value: ListType.UnorderedList
+      }, {
+        $elem: dom_core_1["default"]("<p>\n                            <i class=\"w-e-icon-list-numbered w-e-drop-list-item\"></i>\n                            " + editor.i18next.t('menus.dropListMenu.list.有序列表') + "\n                        <p>"),
+        value: ListType.OrderedList
+      }],
+      clickHandler: function clickHandler(value) {
+        // 注意 this 是指向当前的 List 对象
+        _this.command(value);
+      }
+    };
+    _this = _super.call(this, $elem, editor, dropListConf) || this;
+    return _this;
+  }
+
+  List.prototype.command = function (type) {
+    var editor = this.editor;
+    var $selectionElem = editor.selection.getSelectionContainerElem(); // 选区范围的 DOM 元素不存在，不执行命令
+
+    if ($selectionElem === undefined) return; // 获取选区范围内的顶级 DOM 元素
+
+    this.handleSelectionRangeNodes(type); // 是否激活
+
+    this.tryChangeActive();
+  };
+
+  List.prototype.validator = function ($startElem, $endElem, $textElem) {
+    if (!$startElem.length || !$endElem.length || $textElem.equal($startElem) || $textElem.equal($endElem)) {
+      return false;
+    }
+
+    return true;
+  };
+
+  List.prototype.handleSelectionRangeNodes = function (listType) {
+    var editor = this.editor;
+    var selection = editor.selection; // 获取 序列标签
+
+    var listTarget = listType.toLowerCase(); // 获取相对应的 元属节点
+
+    var $selectionElem = selection.getSelectionContainerElem();
+    var $startElem = selection.getSelectionStartElem().getNodeTop(editor);
+    var $endElem = selection.getSelectionEndElem().getNodeTop(editor); // 验证是否执行 处理逻辑
+
+    if (!this.validator($startElem, $endElem, editor.$textElem)) {
+      return;
+    } // 获取选区
+
+
+    var _range = selection.getRange();
+
+    var _collapsed = _range === null || _range === void 0 ? void 0 : _range.collapsed; // 防止光标的时候判断异常
+
+
+    if (!editor.$textElem.equal($selectionElem)) {
+      $selectionElem = $selectionElem.getNodeTop(editor);
+    }
+
+    var options = {
+      editor: editor,
+      listType: listType,
+      listTarget: listTarget,
+      $selectionElem: $selectionElem,
+      $startElem: $startElem,
+      $endElem: $endElem
+    };
+    var classType; // =====================================
+    // 当 selectionElem 属于序列元素的时候
+    // 代表着当前选区一定是在一个序列元素内的
+    // =====================================
+
+    if (this.isOrderElem($selectionElem)) {
+      classType = ListHandle_1.ClassType.Wrap;
+    } // =====================================
+    // 当 startElem 和 endElem 属于序列元素的时候
+    // 代表着当前选区一定是在再两个序列的中间(包括两个序列)
+    // =====================================
+    else if (this.isOrderElem($startElem) && this.isOrderElem($endElem)) {
+        classType = ListHandle_1.ClassType.Join;
+      } // =====================================
+      // 选区开始元素为 序列 的时候
+      // =====================================
+      else if (this.isOrderElem($startElem)) {
+          classType = ListHandle_1.ClassType.StartJoin;
+        } // =====================================
+        // 选区结束元素为 序列 的时候
+        // =====================================
+        else if (this.isOrderElem($endElem)) {
+            classType = ListHandle_1.ClassType.EndJoin;
+          } // =====================================
+          // 当选区不是序列内且开头和结尾不是序列的时候
+          // 直接获取所有顶级段落然后过滤
+          // 代表着 设置序列 的操作
+          // =====================================
+          else {
+              classType = ListHandle_1.ClassType.Other;
+            }
+
+    var listHandleCmd = new ListHandle_1["default"](ListHandle_1.createListHandle(classType, options, _range)); // 更新选区
+
+    utils_1.updateRange(editor, listHandleCmd.getSelectionRangeElem(), !!_collapsed);
+  };
+  /**
+   * 是否是序列元素节点 UL and OL
+   * @param $node
+   */
+
+
+  List.prototype.isOrderElem = function ($node) {
+    var nodeName = $node.getNodeName();
+
+    if (nodeName === ListType.OrderedList || nodeName === ListType.UnorderedList) {
+      return true;
+    }
+
+    return false;
+  };
+
+  List.prototype.tryChangeActive = function () {};
+
+  return List;
+}(DropListMenu_1["default"]);
+
+exports["default"] = List;
+
+/***/ }),
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5954,7 +7164,7 @@ var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 function isActive(editor) {
   var $selectionELem = editor.selection.getSelectionContainerElem();
 
-  if (!$selectionELem) {
+  if (!($selectionELem === null || $selectionELem === void 0 ? void 0 : $selectionELem.length)) {
     return false;
   }
 
@@ -5968,7 +7178,7 @@ function isActive(editor) {
 exports["default"] = isActive;
 
 /***/ }),
-/* 128 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5976,7 +7186,7 @@ exports["default"] = isActive;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _find = _interopRequireDefault(__webpack_require__(30));
+var _find = _interopRequireDefault(__webpack_require__(27));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -6056,7 +7266,7 @@ function createTodo($orginElem) {
 exports["default"] = createTodo;
 
 /***/ }),
-/* 129 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6070,7 +7280,7 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
 var __createBinding = void 0 && (void 0).__createBinding || (_create["default"] ? function (o, m, k, k2) {
   if (k2 === undefined) k2 = k;
@@ -6101,23 +7311,23 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-__webpack_require__(139);
+__webpack_require__(150);
 
-__webpack_require__(141);
+__webpack_require__(152);
 
-__webpack_require__(145);
+__webpack_require__(156);
 
-__webpack_require__(147);
+__webpack_require__(158);
 
-__webpack_require__(149);
+__webpack_require__(160);
 
-__webpack_require__(151);
+__webpack_require__(162);
 
-__webpack_require__(153);
+__webpack_require__(164);
 
-var index_1 = __importDefault(__webpack_require__(177));
+var index_1 = __importDefault(__webpack_require__(117));
 
-__exportStar(__webpack_require__(416), exports); // 检验是否浏览器环境
+__exportStar(__webpack_require__(442), exports); // 检验是否浏览器环境
 
 
 try {
@@ -6129,20 +7339,20 @@ try {
 exports["default"] = index_1["default"];
 
 /***/ }),
-/* 130 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(131);
+var parent = __webpack_require__(142);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 131 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(132);
-var path = __webpack_require__(10);
+__webpack_require__(143);
+var path = __webpack_require__(9);
 
 var Object = path.Object;
 
@@ -6154,10 +7364,10 @@ if (Object.defineProperty.sham) defineProperty.sham = true;
 
 
 /***/ }),
-/* 132 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = __webpack_require__(4);
+var $ = __webpack_require__(6);
 var DESCRIPTORS = __webpack_require__(14);
 var objectDefinePropertyModile = __webpack_require__(18);
 
@@ -6169,7 +7379,7 @@ $({ target: 'Object', stat: true, forced: !DESCRIPTORS, sham: !DESCRIPTORS }, {
 
 
 /***/ }),
-/* 133 */
+/* 144 */
 /***/ (function(module, exports) {
 
 var g;
@@ -6195,20 +7405,20 @@ module.exports = g;
 
 
 /***/ }),
-/* 134 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(135);
+var parent = __webpack_require__(146);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 135 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(136);
-var path = __webpack_require__(10);
+__webpack_require__(147);
+var path = __webpack_require__(9);
 
 var Object = path.Object;
 
@@ -6218,12 +7428,12 @@ module.exports = function create(P, D) {
 
 
 /***/ }),
-/* 136 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = __webpack_require__(4);
+var $ = __webpack_require__(6);
 var DESCRIPTORS = __webpack_require__(14);
-var create = __webpack_require__(48);
+var create = __webpack_require__(50);
 
 // `Object.create` method
 // https://tc39.es/ecma262/#sec-object.create
@@ -6233,13 +7443,13 @@ $({ target: 'Object', stat: true, sham: !DESCRIPTORS }, {
 
 
 /***/ }),
-/* 137 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DESCRIPTORS = __webpack_require__(14);
 var definePropertyModule = __webpack_require__(18);
-var anObject = __webpack_require__(24);
-var objectKeys = __webpack_require__(57);
+var anObject = __webpack_require__(25);
+var objectKeys = __webpack_require__(60);
 
 // `Object.defineProperties` method
 // https://tc39.es/ecma262/#sec-object.defineproperties
@@ -6255,7 +7465,7 @@ module.exports = DESCRIPTORS ? Object.defineProperties : function defineProperti
 
 
 /***/ }),
-/* 138 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(8);
@@ -6271,11 +7481,11 @@ module.exports = function (key, value) {
 
 
 /***/ }),
-/* 139 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(20);
-            var content = __webpack_require__(140);
+            var content = __webpack_require__(151);
 
             content = content.__esModule ? content.default : content;
 
@@ -6295,7 +7505,7 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 140 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -6308,11 +7518,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 141 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(20);
-            var content = __webpack_require__(142);
+            var content = __webpack_require__(153);
 
             content = content.__esModule ? content.default : content;
 
@@ -6332,13 +7542,13 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 142 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(21);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(143);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(144);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(154);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(155);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
@@ -6348,7 +7558,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 143 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6388,7 +7598,7 @@ module.exports = function (url, options) {
 };
 
 /***/ }),
-/* 144 */
+/* 155 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6396,11 +7606,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("data:font/woff;base64,d09GRgABAAAAABskAAsAAAAAGtgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABPUy8yAAABCAAAAGAAAABgDxIPFWNtYXAAAAFoAAABHAAAARz2mfAgZ2FzcAAAAoQAAAAIAAAACAAAABBnbHlmAAACjAAAFXwAABV8IH7+mGhlYWQAABgIAAAANgAAADYb6gumaGhlYQAAGEAAAAAkAAAAJAkjBWlobXR4AAAYZAAAAKQAAACkmYcEbmxvY2EAABkIAAAAVAAAAFReAmKYbWF4cAAAGVwAAAAgAAAAIAA0ALZuYW1lAAAZfAAAAYYAAAGGmUoJ+3Bvc3QAABsEAAAAIAAAACAAAwAAAAMD7wGQAAUAAAKZAswAAACPApkCzAAAAesAMwEJAAAAAAAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAQAAA8fwDwP/AAEADwABAAAAAAQAAAAAAAAAAAAAAIAAAAAAAAwAAAAMAAAAcAAEAAwAAABwAAwABAAAAHAAEAQAAAAA8ACAABAAcAAEAIOkB6QbpDekS6UfpZul36bnpu+m+6cbpy+nf6gvqDepS6lzqX+pl6nHqfPAN8BTxIPHc8fz//f//AAAAAAAg6QDpBukM6RLpR+ll6Xfpuem76b7pxunL6d/qC+oN6lLqXOpf6mLqcep38A3wFPEg8dzx/P/9//8AAf/jFwQXABb7FvcWwxamFpYWVRZUFlIWSxZHFjQWCRYIFcQVuxW5FbcVrBWnEBcQEQ8GDksOLAADAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAB//8ADwABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAAEAEEAAQO/A38ABQALABEAFwAAATMVIREzAxEhFSMVATUzESE1ETUhESM1Av/A/sJ+fgE+wP4Cfv7CAT5+Ar9+AT78ggE+fsACvsD+wn7+An7+wsAAAAAABABBAAEDvwN/AAUACwARABcAAAEhESM1IxM1MxEhNQERIRUjFREVMxUhEQKBAT5+wMB+/sL9wAE+wMD+wgN//sLA/X7A/sJ+AcIBPn7A/v7AfgE+AAAAAAIAAP/ABAADwAAEABMAAAE3AScBAy4BJxM3ASMBAyUBNQEHAYCAAcBA/kCfFzsyY4ABgMD+gMACgAGA/oBOAUBAAcBA/kD+nTI7FwERTgGA/oD9gMABgMD+gIAAAgAA/8AEAAOAACkALQAAAREjNTQmIyEiBh0BFBYzITI2PQEzESEVIyIGFREUFjsBMjY1ETQmKwE1ASE1IQQAwCYa/UAaJiYaAsAaJoD9wCANExMNgA0TEw0gAUD9QALAAYABgEAaJiYawBomJhpA/wCAEw3+wA0TEw0BQA0TQAGAQAAABAAAAAAEAAOAABAAIQAtADQAAAE4ATEROAExITgBMRE4ATEhNSEiBhURFBYzITI2NRE0JiMHFAYjIiY1NDYzMhYTITUTATM3A8D8gAOA/IAaJiYaA4AaJiYagDgoKDg4KCg4QP0A4AEAQOADQP0AAwBAJhr9ABomJhoDABom4Cg4OCgoODj9uIABgP7AwAAAAgAAAEAEAANAADgAPAAAASYnLgEnJiMiBw4BBwYHBgcOAQcGFRQXHgEXFhcWFx4BFxYzMjc+ATc2NzY3PgE3NjU0Jy4BJyYnARENAQPVNjg5djw9Pz89PHY5ODYLBwgLAwMDAwsIBws2ODl2PD0/Pz08djk4NgsHCAsDAwMDCwgHC/2rAUD+wAMgCAYGCAICAgIIBgYIKSoqWS0uLy8uLVkqKikIBgYIAgICAggGBggpKipZLS4vLy4tWSoqKf3gAYDAwAAAAAACAMD/wANAA8AAGwAnAAABIgcOAQcGFRQXHgEXFjEwNz4BNzY1NCcuAScmAyImNTQ2MzIWFRQGAgBCOzpXGRkyMngyMjIyeDIyGRlXOjtCUHBwUFBwcAPAGRlXOjtCeH19zEFBQUHMfX14Qjs6VxkZ/gBwUFBwcFBQcAAAAQAAAAAEAAOAACsAAAEiBw4BBwYHJxEhJz4BMzIXHgEXFhUUBw4BBwYHFzY3PgE3NjU0Jy4BJyYjAgA1MjJcKSkjlgGAkDWLUFBFRmkeHgkJIhgYHlUoICAtDAwoKIteXWoDgAoLJxscI5b+gJA0PB4eaUZFUCsoKUkgIRpgIysrYjY2OWpdXosoKAABAAAAAAQAA4AAKgAAExQXHgEXFhc3JicuAScmNTQ3PgE3NjMyFhcHIREHJicuAScmIyIHDgEHBgAMDC0gIChVHhgYIgkJHh5pRkVQUIs1kAGAliMpKVwyMjVqXV6LKCgBgDk2NmIrKyNgGiEgSSkoK1BFRmkeHjw0kAGAliMcGycLCigoi15dAAAAAAIAAABABAEDAAAmAE0AABMyFx4BFxYVFAcOAQcGIyInLgEnJjUnNDc+ATc2MxUiBgcOAQc+ASEyFx4BFxYVFAcOAQcGIyInLgEnJjUnNDc+ATc2MxUiBgcOAQc+AeEuKSk9ERISET0pKS4uKSk9ERIBIyN6UlFdQHUtCRAHCBICSS4pKT0REhIRPSkpLi4pKT0REgEjI3pSUV1AdS0JEAcIEgIAEhE9KSkuLikpPRESEhE9KSkuIF1RUnojI4AwLggTCgIBEhE9KSkuLikpPRESEhE9KSkuIF1RUnojI4AwLggTCgIBAAAGAED/wAQAA8AAAwAHAAsAEQAdACkAACUhFSERIRUhESEVIScRIzUjNRMVMxUjNTc1IzUzFRURIzUzNSM1MzUjNQGAAoD9gAKA/YACgP2AwEBAQIDAgIDAwICAgICAgAIAgAIAgMD/AMBA/fIyQJI8MkCS7v7AQEBAQEAABgAA/8AEAAPAAAMABwALABcAIwAvAAABIRUhESEVIREhFSEBNDYzMhYVFAYjIiYRNDYzMhYVFAYjIiYRNDYzMhYVFAYjIiYBgAKA/YACgP2AAoD9gP6ASzU1S0s1NUtLNTVLSzU1S0s1NUtLNTVLA4CA/wCA/wCAA0A1S0s1NUtL/rU1S0s1NUtL/rU1S0s1NUtLAAUAAABABWADAAADAAcACwAOABEAABMhFSEVIRUhFSEVIQEXNzUnBwADgPyAA4D8gAOA/IAD4MDAwMADAMBAwEDAAUDAwEDAwAAAAAADAAAAAAQAA6AAAwANABQAADchFSElFSE1EyEVITUhJQkBIxEjEQAEAPwABAD8AIABAAEAAQD9YAEgASDggEBAwEBAAQCAgMABIP7g/wABAAAAAAACAB7/zAPiA7QAMwBkAAABIiYnJicmNDc2PwE+ATMyFhcWFxYUBwYPAQYiJyY0PwE2NCcuASMiBg8BBhQXFhQHDgEjAyImJyYnJjQ3Nj8BNjIXFhQPAQYUFx4BMzI2PwE2NCcmNDc2MhcWFxYUBwYPAQ4BIwG4ChMIIxISEhIjwCNZMTFZIyMSEhISI1gPLA8PD1gpKRQzHBwzFMApKQ8PCBMKuDFZIyMSEhISI1gPLA8PD1gpKRQzHBwzFMApKQ8PDysQIxISEhIjwCNZMQFECAckLS1eLS0kwCIlJSIkLS1eLS0kVxAQDysPWCl0KRQVFRTAKXQpDysQBwj+iCUiJC0tXi0tJFcQEA8rD1gpdCkUFRUUwCl0KQ8rEA8PJC0tXi0tJMAiJQAAAAAFAAD/wAQAA8AAGwA3AFMAXwBrAAAFMjc+ATc2NTQnLgEnJiMiBw4BBwYVFBceARcWEzIXHgEXFhUUBw4BBwYjIicuAScmNTQ3PgE3NhMyNz4BNzY3BgcOAQcGIyInLgEnJicWFx4BFxYnNDYzMhYVFAYjIiYlNDYzMhYVFAYjIiYCAGpdXosoKCgoi15dampdXosoKCgoi15dalZMTHEgISEgcUxMVlZMTHEgISEgcUxMVisrKlEmJiMFHBtWODc/Pzc4VhscBSMmJlEqK9UlGxslJRsbJQGAJRsbJSUbGyVAKCiLXl1qal1eiygoKCiLXl1qal1eiygoA6AhIHFMTFZWTExxICEhIHFMTFZWTExxICH+CQYGFRAQFEM6OlYYGRkYVjo6QxQQEBUGBvcoODgoKDg4KCg4OCgoODgAAAEAAAFABAACQAAPAAATFRQWMyEyNj0BNCYjISIGABMNA8ANExMN/EANEwIgwA0TEw3ADRMTAAAAAwAA/8AEAAPAABsANwBDAAABIgcOAQcGFRQXHgEXFjMyNz4BNzY1NCcuAScmAyInLgEnJjU0Nz4BNzYzMhceARcWFRQHDgEHBhMHJwcXBxc3FzcnNwIAal1eiygoKCiLXl1qal1eiygoKCiLXl1qVkxMcSAhISBxTExWVkxMcSAhISBxTExKoKBgoKBgoKBgoKADwCgoi15dampdXosoKCgoi15dampdXosoKPxgISBxTExWVkxMcSAhISBxTExWVkxMcSAhAqCgoGCgoGCgoGCgoAACAAD/wAQAA8AADwAVAAABISIGFREUFjMhMjY1ETQmASc3FwEXA4D9ADVLSzUDADVLS/4L7VqTATNaA8BLNf0ANUtLNQMANUv85e5akgEyWgAAAAABAGX/wAObA8AAKQAAASImIyIHDgEHBhUUFjMuATU0NjcwBwYCBwYHFSETMzcjNx4BMzI2Nw4BAyBEaEZxU1RtGhtJSAYNZUoQEEs8PFkBPWzGLNc0LVUmLlAYHT0DsBAeHWE+P0FNOwsmN5lvA31+/sWPkCMZAgCA9gkPN2sJBwAAAAACAAAAAAQAA4AACQAXAAAlMwcnMxEjNxcjJREnIxEzFSE1MxEjBxEDgICgoICAoKCA/wBAwID+gIDAQMDAwAIAwMDA/wCA/UBAQALAgAEAAAMAwAAAA0ADgAAWAB8AKAAAAT4BNTQnLgEnJiMhESEyNz4BNzY1NCYBMzIWFRQGKwETIxEzMhYVFAYCxBwgFBRGLi81/sABgDUvLkYUFET+hGUqPDwpZp+fnyw+PgHbIlQvNS8uRhQU/IAUFEYuLzVGdAFGSzU1S/6AAQBLNTVLAAAAAAIAwAAAA0ADgAAfACMAAAEzERQHDgEHBiMiJy4BJyY1ETMRFBYXHgEzMjY3PgE1ASEVIQLAgBkZVzo7QkI7OlcZGYAbGBxJKChJHBgb/gACgP2AA4D+YDw0NU4WFxcWTjU0PAGg/mAeOBcYGxsYFzge/qCAAAAAAAEAgAAAA4ADgAALAAABFSMBMxUhNTMBIzUDgID+wID+QIABQIADgED9AEBAAwBAAAEAAAAABAADgAA9AAABFSMeARUUBgcOASMiJicuATUzFBYzMjY1NCYjITUhLgEnLgE1NDY3PgEzMhYXHgEVIzQmIyIGFRQWMzIWFwQA6xUWNTAscT4+cSwwNYByTk5yck7+AAEsAgQBMDU1MCxxPj5xLDA1gHJOTnJyTjtuKwHAQB1BIjViJCEkJCEkYjU0TEw0NExAAQMBJGI1NWIkISQkISRiNTRMTDQ0TCEfAAAACgAAAAAEAAOAAAMABwALAA8AEwAXABsAHwAjACcAABMRIREBNSEVHQEhNQEVITUjFSE1ESEVISUhFSERNSEVASEVISE1IRUABAD9gAEA/wABAP8AQP8AAQD/AAKAAQD/AAEA/IABAP8AAoABAAOA/IADgP3AwMBAwMACAMDAwMD/AMDAwAEAwMD+wMDAwAAABQAAAAAEAAOAAAMABwALAA8AEwAAEyEVIRUhFSERIRUhESEVIREhFSEABAD8AAKA/YACgP2ABAD8AAQA/AADgIBAgP8AgAFAgP8AgAAAAAAFAAAAAAQAA4AAAwAHAAsADwATAAATIRUhFyEVIREhFSEDIRUhESEVIQAEAPwAwAKA/YACgP2AwAQA/AAEAPwAA4CAQID/AIABQID/AIAAAAUAAAAABAADgAADAAcACwAPABMAABMhFSEFIRUhESEVIQEhFSERIRUhAAQA/AABgAKA/YACgP2A/oAEAPwABAD8AAOAgECA/wCAAUCA/wCAAAAAAAUAAAAABAADgAADAAcACwAPABMAABMhFSEVIRUhFSEVIRUhFSEVIRUhAAQA/AAEAPwABAD8AAQA/AAEAPwAA4CAQIBAgECAQIAAAAAGAAAAAAQAA4AAAwAHAAsADwATABYAABMhFSEFIRUhFSEVIRUhFSEFIRUhGQEFAAQA/AABgAKA/YACgP2AAoD9gP6ABAD8AAEAA4CAQIBAgECAQIABAAGAwAAAAAYAAAAABAADgAADAAcACwAPABMAFgAAEyEVIQUhFSEVIRUhFSEVIQUhFSEBESUABAD8AAGAAoD9gAKA/YACgP2A/oAEAPwAAQD/AAOAgECAQIBAgECAAoD+gMAAAQA/AD8C5gLmACwAACUUDwEGIyIvAQcGIyIvASY1ND8BJyY1ND8BNjMyHwE3NjMyHwEWFRQPARcWFQLmEE4QFxcQqKgQFxYQThAQqKgQEE4QFhcQqKgQFxcQThAQqKgQwxYQThAQqKgQEE4QFhcQqKgQFxcQThAQqKgQEE4QFxcQqKgQFwAAAAYAAAAAAyUDbgAUACgAPABNAFUAggAAAREUBwYrASInJjURNDc2OwEyFxYVMxEUBwYrASInJjURNDc2OwEyFxYXERQHBisBIicmNRE0NzY7ATIXFhMRIREUFxYXFjMhMjc2NzY1ASEnJicjBgcFFRQHBisBERQHBiMhIicmNREjIicmPQE0NzY7ATc2NzY7ATIXFh8BMzIXFhUBJQYFCCQIBQYGBQgkCAUGkgUFCCUIBQUFBQglCAUFkgUFCCUIBQUFBQglCAUFSf4ABAQFBAIB2wIEBAQE/oABABsEBrUGBAH3BgUINxobJv4lJhsbNwgFBQUFCLEoCBcWF7cXFhYJKLAIBQYCEv63CAUFBQUIAUkIBQYGBQj+twgFBQUFCAFJCAUGBgUI/rcIBQUFBQgBSQgFBgYF/lsCHf3jDQsKBQUFBQoLDQJmQwUCAgVVJAgGBf3jMCIjISIvAiAFBggkCAUFYBUPDw8PFWAFBQgAAgAHAEkDtwKvABoALgAACQEGIyIvASY1ND8BJyY1ND8BNjMyFwEWFRQHARUUBwYjISInJj0BNDc2MyEyFxYBTv72BgcIBR0GBuHhBgYdBQgHBgEKBgYCaQUFCP3bCAUFBQUIAiUIBQUBhf72BgYcBggHBuDhBgcHBh0FBf71BQgHBv77JQgFBQUFCCUIBQUFBQAAAAEAIwAAA90DbgCzAAAlIicmIyIHBiMiJyY1NDc2NzY3Njc2PQE0JyYjISIHBh0BFBcWFxYzFhcWFRQHBiMiJyYjIgcGIyInJjU0NzY3Njc2NzY9ARE0NTQ1NCc0JyYnJicmJyYnJiMiJyY1NDc2MzIXFjMyNzYzMhcWFRQHBiMGBwYHBh0BFBcWMyEyNzY9ATQnJicmJyY1NDc2MzIXFjMyNzYzMhcWFRQHBgciBwYHBhURFBcWFxYXMhcWFRQHBiMDwRkzMhoZMjMZDQgHCQoNDBEQChIBBxX+fhYHARUJEhMODgwLBwcOGzU1GhgxMRgNBwcJCQsMEA8JEgECAQIDBAQFCBIRDQ0KCwcHDho1NRoYMDEYDgcHCQoMDRAQCBQBBw8BkA4HARQKFxcPDgcHDhkzMhkZMTEZDgcHCgoNDRARCBQUCRERDg0KCwcHDgACAgICDAsPEQkJAQEDAwUMROAMBQMDBQzUUQ0GAQIBCAgSDwwNAgICAgwMDhEICQECAwMFDUUhAdACDQ0ICA4OCgoLCwcHAwYBAQgIEg8MDQICAgINDA8RCAgBAgEGDFC2DAcBAQcMtlAMBgEBBgcWDwwNAgICAg0MDxEICAEBAgYNT/3mRAwGAgIBCQgRDwwNAAACAAD/twP/A7cAEwA5AAABMhcWFRQHAgcGIyInJjU0NwE2MwEWFxYfARYHBiMiJyYnJicmNRYXFhcWFxYzMjc2NzY3Njc2NzY3A5soHh4avkw3RUg0NDUBbSEp/fgXJicvAQJMTHtHNjYhIRARBBMUEBASEQkXCA8SExUVHR0eHikDtxsaKCQz/plGNDU0SUkwAUsf/bErHx8NKHpNTBobLi86OkQDDw4LCwoKFiUbGhERCgsEBAIAAQAAAAAAAIWwaoFfDzz1AAsEAAAAAADbteOZAAAAANu145kAAP+3BWADwAAAAAgAAgAAAAAAAAABAAADwP/AAAAFgAAA//8FYAABAAAAAAAAAAAAAAAAAAAAKQQAAAAAAAAAAAAAAAIAAAAEAABBBAAAQQQAAAAEAAAABAAAAAQAAAAEAADABAAAAAQAAAAEAAAABAAAQAQAAAAFgAAABAAAAAQAAB4EAAAABAAAAAQAAAAEAAAABAAAZQQAAAAEAADABAAAwAQAAIAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAMlAD8DJQAAA74ABwQAACMD/wAAAAAAAAAKABQAHgBKAHYApADmAS4BkgHQAhYCXALQAw4DWAN+A6gEPgTeBPoFZAWOBdAF+AY6BnYGjgbmBy4HVgd+B6gHzgf8CCoIbgkmCXAKYgq+AAEAAAApALQACgAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAOAK4AAQAAAAAAAQAHAAAAAQAAAAAAAgAHAGAAAQAAAAAAAwAHADYAAQAAAAAABAAHAHUAAQAAAAAABQALABUAAQAAAAAABgAHAEsAAQAAAAAACgAaAIoAAwABBAkAAQAOAAcAAwABBAkAAgAOAGcAAwABBAkAAwAOAD0AAwABBAkABAAOAHwAAwABBAkABQAWACAAAwABBAkABgAOAFIAAwABBAkACgA0AKRpY29tb29uAGkAYwBvAG0AbwBvAG5WZXJzaW9uIDEuMABWAGUAcgBzAGkAbwBuACAAMQAuADBpY29tb29uAGkAYwBvAG0AbwBvAG5pY29tb29uAGkAYwBvAG0AbwBvAG5SZWd1bGFyAFIAZQBnAHUAbABhAHJpY29tb29uAGkAYwBvAG0AbwBvAG5Gb250IGdlbmVyYXRlZCBieSBJY29Nb29uLgBGAG8AbgB0ACAAZwBlAG4AZQByAGEAdABlAGQAIABiAHkAIABJAGMAbwBNAG8AbwBuAC4AAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 /***/ }),
-/* 145 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(20);
-            var content = __webpack_require__(146);
+            var content = __webpack_require__(157);
 
             content = content.__esModule ? content.default : content;
 
@@ -6420,7 +7630,7 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 146 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -6433,11 +7643,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 147 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(20);
-            var content = __webpack_require__(148);
+            var content = __webpack_require__(159);
 
             content = content.__esModule ? content.default : content;
 
@@ -6457,7 +7667,7 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 148 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -6470,11 +7680,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 149 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(20);
-            var content = __webpack_require__(150);
+            var content = __webpack_require__(161);
 
             content = content.__esModule ? content.default : content;
 
@@ -6494,24 +7704,24 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 150 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(21);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".w-e-menu .w-e-panel-container {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  border: 1px solid #ccc;\n  border-top: 0;\n  box-shadow: 1px 1px 2px #ccc;\n  color: #333;\n  background-color: #fff;\n  text-align: left;\n  /* 为 emotion panel 定制的样式 */\n  /* 上传图片的 panel 定制样式 */\n}\n.w-e-menu .w-e-panel-container .w-e-panel-close {\n  position: absolute;\n  right: 0;\n  top: 0;\n  padding: 5px;\n  margin: 2px 5px 0 0;\n  cursor: pointer;\n  color: #999;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-close:hover {\n  color: #333;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-title {\n  list-style: none;\n  display: flex;\n  font-size: 14px;\n  margin: 2px 10px 0 10px;\n  border-bottom: 1px solid #f1f1f1;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-title .w-e-item {\n  padding: 3px 5px;\n  color: #999;\n  cursor: pointer;\n  margin: 0 3px;\n  position: relative;\n  top: 1px;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-title .w-e-active {\n  color: #333;\n  border-bottom: 1px solid #333;\n  cursor: default;\n  font-weight: 700;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content {\n  padding: 10px 15px 10px 15px;\n  font-size: 16px;\n  /* 输入框的样式 */\n  /* 按钮的样式 */\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content input:focus,\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content textarea:focus,\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content button:focus {\n  outline: none;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content textarea {\n  width: 100%;\n  border: 1px solid #ccc;\n  padding: 5px;\n  margin-top: 10px;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content textarea:focus {\n  border-color: #1e88e5;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content input[type=text] {\n  border: none;\n  border-bottom: 1px solid #ccc;\n  font-size: 14px;\n  height: 20px;\n  color: #333;\n  text-align: left;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content input[type=text].small {\n  width: 30px;\n  text-align: center;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content input[type=text].block {\n  display: block;\n  width: 100%;\n  margin: 10px 0;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content input[type=text]:focus {\n  border-bottom: 2px solid #1e88e5;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button {\n  font-size: 14px;\n  color: #1e88e5;\n  border: none;\n  padding: 5px 10px;\n  background-color: #fff;\n  cursor: pointer;\n  border-radius: 3px;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.left {\n  float: left;\n  margin-right: 10px;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.right {\n  float: right;\n  margin-left: 10px;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.gray {\n  color: #999;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.red {\n  color: #c24f4a;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button:hover {\n  background-color: #f1f1f1;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.w-e-menu .w-e-panel-container .w-e-emoticon-container .w-e-item {\n  cursor: pointer;\n  font-size: 18px;\n  padding: 0 3px;\n  display: inline-block;\n}\n.w-e-menu .w-e-panel-container .w-e-up-img-container {\n  text-align: center;\n}\n.w-e-menu .w-e-panel-container .w-e-up-img-container .w-e-up-btn {\n  display: inline-block;\n  color: #999;\n  cursor: pointer;\n  font-size: 60px;\n  line-height: 1;\n}\n.w-e-menu .w-e-panel-container .w-e-up-img-container .w-e-up-btn:hover {\n  color: #333;\n}\n", ""]);
+exports.push([module.i, ".w-e-menu .w-e-panel-container {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  border: 1px solid #ccc;\n  border-top: 0;\n  box-shadow: 1px 1px 2px #ccc;\n  color: #333;\n  background-color: #fff;\n  text-align: left;\n  /* 为 emotion panel 定制的样式 */\n  /* 上传图片、上传视频的 panel 定制样式 */\n}\n.w-e-menu .w-e-panel-container .w-e-panel-close {\n  position: absolute;\n  right: 0;\n  top: 0;\n  padding: 5px;\n  margin: 2px 5px 0 0;\n  cursor: pointer;\n  color: #999;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-close:hover {\n  color: #333;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-title {\n  list-style: none;\n  display: flex;\n  font-size: 14px;\n  margin: 2px 10px 0 10px;\n  border-bottom: 1px solid #f1f1f1;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-title .w-e-item {\n  padding: 3px 5px;\n  color: #999;\n  cursor: pointer;\n  margin: 0 3px;\n  position: relative;\n  top: 1px;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-title .w-e-active {\n  color: #333;\n  border-bottom: 1px solid #333;\n  cursor: default;\n  font-weight: 700;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content {\n  padding: 10px 15px 10px 15px;\n  font-size: 16px;\n  /* 输入框的样式 */\n  /* 按钮的样式 */\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content input:focus,\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content textarea:focus,\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content button:focus {\n  outline: none;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content textarea {\n  width: 100%;\n  border: 1px solid #ccc;\n  padding: 5px;\n  margin-top: 10px;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content textarea:focus {\n  border-color: #1e88e5;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content input[type=text] {\n  border: none;\n  border-bottom: 1px solid #ccc;\n  font-size: 14px;\n  height: 20px;\n  color: #333;\n  text-align: left;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content input[type=text].small {\n  width: 30px;\n  text-align: center;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content input[type=text].block {\n  display: block;\n  width: 100%;\n  margin: 10px 0;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content input[type=text]:focus {\n  border-bottom: 2px solid #1e88e5;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button {\n  font-size: 14px;\n  color: #1e88e5;\n  border: none;\n  padding: 5px 10px;\n  background-color: #fff;\n  cursor: pointer;\n  border-radius: 3px;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.left {\n  float: left;\n  margin-right: 10px;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.right {\n  float: right;\n  margin-left: 10px;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.gray {\n  color: #999;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.red {\n  color: #c24f4a;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button:hover {\n  background-color: #f1f1f1;\n}\n.w-e-menu .w-e-panel-container .w-e-panel-tab-content .w-e-button-container:after {\n  content: \"\";\n  display: table;\n  clear: both;\n}\n.w-e-menu .w-e-panel-container .w-e-emoticon-container .w-e-item {\n  cursor: pointer;\n  font-size: 18px;\n  padding: 0 3px;\n  display: inline-block;\n}\n.w-e-menu .w-e-panel-container .w-e-up-img-container,\n.w-e-menu .w-e-panel-container .w-e-up-video-container {\n  text-align: center;\n}\n.w-e-menu .w-e-panel-container .w-e-up-img-container .w-e-up-btn,\n.w-e-menu .w-e-panel-container .w-e-up-video-container .w-e-up-btn {\n  display: inline-block;\n  color: #999;\n  cursor: pointer;\n  font-size: 60px;\n  line-height: 1;\n}\n.w-e-menu .w-e-panel-container .w-e-up-img-container .w-e-up-btn:hover,\n.w-e-menu .w-e-panel-container .w-e-up-video-container .w-e-up-btn:hover {\n  color: #333;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
 
 /***/ }),
-/* 151 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(20);
-            var content = __webpack_require__(152);
+            var content = __webpack_require__(163);
 
             content = content.__esModule ? content.default : content;
 
@@ -6531,7 +7741,7 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 152 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -6544,7 +7754,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 153 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6556,7 +7766,7 @@ module.exports = exports;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _promise = _interopRequireDefault(__webpack_require__(154));
+var _promise = _interopRequireDefault(__webpack_require__(106));
 
 if (!Element.prototype.matches) {
   Element.prototype.matches = function (s) {
@@ -6577,50 +7787,44 @@ if (!window.Promise) {
 }
 
 /***/ }),
-/* 154 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(155);
-
-/***/ }),
-/* 155 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var parent = __webpack_require__(156);
+var parent = __webpack_require__(166);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 156 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(157);
-__webpack_require__(62);
-__webpack_require__(163);
-__webpack_require__(170);
-__webpack_require__(171);
-__webpack_require__(172);
+__webpack_require__(167);
 __webpack_require__(65);
-__webpack_require__(51);
-var path = __webpack_require__(10);
+__webpack_require__(173);
+__webpack_require__(180);
+__webpack_require__(181);
+__webpack_require__(182);
+__webpack_require__(68);
+__webpack_require__(53);
+var path = __webpack_require__(9);
 
 module.exports = path.Promise;
 
 
 /***/ }),
-/* 157 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var getPrototypeOf = __webpack_require__(76);
-var setPrototypeOf = __webpack_require__(77);
-var create = __webpack_require__(48);
+var $ = __webpack_require__(6);
+var getPrototypeOf = __webpack_require__(81);
+var setPrototypeOf = __webpack_require__(82);
+var create = __webpack_require__(50);
 var createNonEnumerableProperty = __webpack_require__(17);
-var createPropertyDescriptor = __webpack_require__(35);
-var iterate = __webpack_require__(39);
+var createPropertyDescriptor = __webpack_require__(37);
+var iterate = __webpack_require__(41);
 
 var $AggregateError = function AggregateError(errors, message) {
   var that = this;
@@ -6650,10 +7854,10 @@ $({ global: true }, {
 
 
 /***/ }),
-/* 158 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var fails = __webpack_require__(12);
+var fails = __webpack_require__(11);
 
 module.exports = !fails(function () {
   function F() { /* empty */ }
@@ -6663,7 +7867,7 @@ module.exports = !fails(function () {
 
 
 /***/ }),
-/* 159 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(13);
@@ -6676,11 +7880,11 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 160 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var wellKnownSymbol = __webpack_require__(9);
-var Iterators = __webpack_require__(40);
+var wellKnownSymbol = __webpack_require__(10);
+var Iterators = __webpack_require__(42);
 
 var ITERATOR = wellKnownSymbol('iterator');
 var ArrayPrototype = Array.prototype;
@@ -6692,12 +7896,12 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 161 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var classof = __webpack_require__(61);
-var Iterators = __webpack_require__(40);
-var wellKnownSymbol = __webpack_require__(9);
+var classof = __webpack_require__(64);
+var Iterators = __webpack_require__(42);
+var wellKnownSymbol = __webpack_require__(10);
 
 var ITERATOR = wellKnownSymbol('iterator');
 
@@ -6709,10 +7913,10 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 162 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject = __webpack_require__(24);
+var anObject = __webpack_require__(25);
 
 module.exports = function (iterator) {
   var returnMethod = iterator['return'];
@@ -6723,38 +7927,38 @@ module.exports = function (iterator) {
 
 
 /***/ }),
-/* 163 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var IS_PURE = __webpack_require__(37);
+var $ = __webpack_require__(6);
+var IS_PURE = __webpack_require__(39);
 var global = __webpack_require__(8);
-var getBuiltIn = __webpack_require__(28);
-var NativePromise = __webpack_require__(105);
-var redefine = __webpack_require__(50);
-var redefineAll = __webpack_require__(106);
-var setToStringTag = __webpack_require__(41);
-var setSpecies = __webpack_require__(107);
+var getBuiltIn = __webpack_require__(29);
+var NativePromise = __webpack_require__(108);
+var redefine = __webpack_require__(52);
+var redefineAll = __webpack_require__(109);
+var setToStringTag = __webpack_require__(43);
+var setSpecies = __webpack_require__(110);
 var isObject = __webpack_require__(13);
-var aFunction = __webpack_require__(32);
-var anInstance = __webpack_require__(80);
-var inspectSource = __webpack_require__(108);
-var iterate = __webpack_require__(39);
-var checkCorrectnessOfIteration = __webpack_require__(165);
-var speciesConstructor = __webpack_require__(109);
-var task = __webpack_require__(110).set;
-var microtask = __webpack_require__(166);
-var promiseResolve = __webpack_require__(112);
-var hostReportErrors = __webpack_require__(168);
-var newPromiseCapabilityModule = __webpack_require__(64);
-var perform = __webpack_require__(82);
-var InternalStateModule = __webpack_require__(42);
-var isForced = __webpack_require__(101);
-var wellKnownSymbol = __webpack_require__(9);
-var IS_NODE = __webpack_require__(81);
-var V8_VERSION = __webpack_require__(83);
+var aFunction = __webpack_require__(34);
+var anInstance = __webpack_require__(85);
+var inspectSource = __webpack_require__(111);
+var iterate = __webpack_require__(41);
+var checkCorrectnessOfIteration = __webpack_require__(175);
+var speciesConstructor = __webpack_require__(112);
+var task = __webpack_require__(113).set;
+var microtask = __webpack_require__(176);
+var promiseResolve = __webpack_require__(115);
+var hostReportErrors = __webpack_require__(178);
+var newPromiseCapabilityModule = __webpack_require__(67);
+var perform = __webpack_require__(87);
+var InternalStateModule = __webpack_require__(44);
+var isForced = __webpack_require__(103);
+var wellKnownSymbol = __webpack_require__(10);
+var IS_NODE = __webpack_require__(86);
+var V8_VERSION = __webpack_require__(88);
 
 var SPECIES = wellKnownSymbol('species');
 var PROMISE = 'Promise';
@@ -7111,13 +8315,13 @@ $({ target: PROMISE, stat: true, forced: INCORRECT_ITERATION }, {
 
 
 /***/ }),
-/* 164 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var TO_STRING_TAG_SUPPORT = __webpack_require__(79);
-var classof = __webpack_require__(61);
+var TO_STRING_TAG_SUPPORT = __webpack_require__(84);
+var classof = __webpack_require__(64);
 
 // `Object.prototype.toString` method implementation
 // https://tc39.es/ecma262/#sec-object.prototype.tostring
@@ -7127,10 +8331,10 @@ module.exports = TO_STRING_TAG_SUPPORT ? {}.toString : function toString() {
 
 
 /***/ }),
-/* 165 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var wellKnownSymbol = __webpack_require__(9);
+var wellKnownSymbol = __webpack_require__(10);
 
 var ITERATOR = wellKnownSymbol('iterator');
 var SAFE_CLOSING = false;
@@ -7171,15 +8375,15 @@ module.exports = function (exec, SKIP_CLOSING) {
 
 
 /***/ }),
-/* 166 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(8);
-var getOwnPropertyDescriptor = __webpack_require__(68).f;
-var macrotask = __webpack_require__(110).set;
-var IS_IOS = __webpack_require__(111);
-var IS_WEBOS_WEBKIT = __webpack_require__(167);
-var IS_NODE = __webpack_require__(81);
+var getOwnPropertyDescriptor = __webpack_require__(73).f;
+var macrotask = __webpack_require__(113).set;
+var IS_IOS = __webpack_require__(114);
+var IS_WEBOS_WEBKIT = __webpack_require__(177);
+var IS_NODE = __webpack_require__(86);
 
 var MutationObserver = global.MutationObserver || global.WebKitMutationObserver;
 var document = global.document;
@@ -7257,16 +8461,16 @@ module.exports = queueMicrotask || function (fn) {
 
 
 /***/ }),
-/* 167 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var userAgent = __webpack_require__(63);
+var userAgent = __webpack_require__(66);
 
 module.exports = /web0s(?!.*chrome)/i.test(userAgent);
 
 
 /***/ }),
-/* 168 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(8);
@@ -7280,11 +8484,11 @@ module.exports = function (a, b) {
 
 
 /***/ }),
-/* 169 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(8);
-var inspectSource = __webpack_require__(108);
+var inspectSource = __webpack_require__(111);
 
 var WeakMap = global.WeakMap;
 
@@ -7292,16 +8496,16 @@ module.exports = typeof WeakMap === 'function' && /native code/.test(inspectSour
 
 
 /***/ }),
-/* 170 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var aFunction = __webpack_require__(32);
-var newPromiseCapabilityModule = __webpack_require__(64);
-var perform = __webpack_require__(82);
-var iterate = __webpack_require__(39);
+var $ = __webpack_require__(6);
+var aFunction = __webpack_require__(34);
+var newPromiseCapabilityModule = __webpack_require__(67);
+var perform = __webpack_require__(87);
+var iterate = __webpack_require__(41);
 
 // `Promise.allSettled` method
 // https://tc39.es/ecma262/#sec-promise.allsettled
@@ -7342,17 +8546,17 @@ $({ target: 'Promise', stat: true }, {
 
 
 /***/ }),
-/* 171 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var aFunction = __webpack_require__(32);
-var getBuiltIn = __webpack_require__(28);
-var newPromiseCapabilityModule = __webpack_require__(64);
-var perform = __webpack_require__(82);
-var iterate = __webpack_require__(39);
+var $ = __webpack_require__(6);
+var aFunction = __webpack_require__(34);
+var getBuiltIn = __webpack_require__(29);
+var newPromiseCapabilityModule = __webpack_require__(67);
+var perform = __webpack_require__(87);
+var iterate = __webpack_require__(41);
 
 var PROMISE_ANY_ERROR = 'No one promise resolved';
 
@@ -7395,19 +8599,19 @@ $({ target: 'Promise', stat: true }, {
 
 
 /***/ }),
-/* 172 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var IS_PURE = __webpack_require__(37);
-var NativePromise = __webpack_require__(105);
-var fails = __webpack_require__(12);
-var getBuiltIn = __webpack_require__(28);
-var speciesConstructor = __webpack_require__(109);
-var promiseResolve = __webpack_require__(112);
-var redefine = __webpack_require__(50);
+var $ = __webpack_require__(6);
+var IS_PURE = __webpack_require__(39);
+var NativePromise = __webpack_require__(108);
+var fails = __webpack_require__(11);
+var getBuiltIn = __webpack_require__(29);
+var speciesConstructor = __webpack_require__(112);
+var promiseResolve = __webpack_require__(115);
+var redefine = __webpack_require__(52);
 
 // Safari bug https://bugs.webkit.org/show_bug.cgi?id=200829
 var NON_GENERIC = !!NativePromise && fails(function () {
@@ -7438,11 +8642,11 @@ if (!IS_PURE && typeof NativePromise == 'function' && !NativePromise.prototype['
 
 
 /***/ }),
-/* 173 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(58);
-var requireObjectCoercible = __webpack_require__(46);
+var toInteger = __webpack_require__(61);
+var requireObjectCoercible = __webpack_require__(48);
 
 // `String.prototype.{ codePointAt, at }` methods implementation
 var createMethod = function (CONVERT_TO_STRING) {
@@ -7471,16 +8675,16 @@ module.exports = {
 
 
 /***/ }),
-/* 174 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var IteratorPrototype = __webpack_require__(113).IteratorPrototype;
-var create = __webpack_require__(48);
-var createPropertyDescriptor = __webpack_require__(35);
-var setToStringTag = __webpack_require__(41);
-var Iterators = __webpack_require__(40);
+var IteratorPrototype = __webpack_require__(116).IteratorPrototype;
+var create = __webpack_require__(50);
+var createPropertyDescriptor = __webpack_require__(37);
+var setToStringTag = __webpack_require__(43);
+var Iterators = __webpack_require__(42);
 
 var returnThis = function () { return this; };
 
@@ -7494,16 +8698,16 @@ module.exports = function (IteratorConstructor, NAME, next) {
 
 
 /***/ }),
-/* 175 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var toIndexedObject = __webpack_require__(27);
-var addToUnscopables = __webpack_require__(85);
-var Iterators = __webpack_require__(40);
-var InternalStateModule = __webpack_require__(42);
-var defineIterator = __webpack_require__(84);
+var toIndexedObject = __webpack_require__(28);
+var addToUnscopables = __webpack_require__(90);
+var Iterators = __webpack_require__(42);
+var InternalStateModule = __webpack_require__(44);
+var defineIterator = __webpack_require__(89);
 
 var ARRAY_ITERATOR = 'Array Iterator';
 var setInternalState = InternalStateModule.set;
@@ -7554,7 +8758,7 @@ addToUnscopables('entries');
 
 
 /***/ }),
-/* 176 */
+/* 186 */
 /***/ (function(module, exports) {
 
 // iterable DOM collections
@@ -7595,279 +8799,12 @@ module.exports = {
 
 
 /***/ }),
-/* 177 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-/**
- * @description 编辑器 class
- * @author wangfupeng
- */
-
-var _interopRequireDefault = __webpack_require__(0);
-
-var _forEach = _interopRequireDefault(__webpack_require__(5));
-
-var _defineProperty = _interopRequireDefault(__webpack_require__(1));
-
-var _create = _interopRequireDefault(__webpack_require__(3));
-
-var __createBinding = void 0 && (void 0).__createBinding || (_create["default"] ? function (o, m, k, k2) {
-  if (k2 === undefined) k2 = k;
-  (0, _defineProperty["default"])(o, k2, {
-    enumerable: true,
-    get: function get() {
-      return m[k];
-    }
-  });
-} : function (o, m, k, k2) {
-  if (k2 === undefined) k2 = k;
-  o[k2] = m[k];
-});
-
-var __setModuleDefault = void 0 && (void 0).__setModuleDefault || (_create["default"] ? function (o, v) {
-  (0, _defineProperty["default"])(o, "default", {
-    enumerable: true,
-    value: v
-  });
-} : function (o, v) {
-  o["default"] = v;
-});
-
-var __importStar = void 0 && (void 0).__importStar || function (mod) {
-  if (mod && mod.__esModule) return mod;
-  var result = {};
-  if (mod != null) for (var k in mod) {
-    if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-  }
-
-  __setModuleDefault(result, mod);
-
-  return result;
-};
-
-var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-(0, _defineProperty["default"])(exports, "__esModule", {
-  value: true
-});
-
-var dom_core_1 = __importDefault(__webpack_require__(2));
-
-var util_1 = __webpack_require__(7);
-
-var config_1 = __importDefault(__webpack_require__(266));
-
-var selection_1 = __importDefault(__webpack_require__(281));
-
-var command_1 = __importDefault(__webpack_require__(283));
-
-var index_1 = __importDefault(__webpack_require__(284));
-
-var index_2 = __importDefault(__webpack_require__(303));
-
-var init_dom_1 = __importDefault(__webpack_require__(387));
-
-var init_selection_1 = __importDefault(__webpack_require__(388));
-
-var bind_event_1 = __importDefault(__webpack_require__(389));
-
-var i18next_init_1 = __importDefault(__webpack_require__(390));
-
-var set_full_screen_1 = __importStar(__webpack_require__(391));
-
-var scroll_to_head_1 = __importDefault(__webpack_require__(394));
-
-var z_index_1 = __importDefault(__webpack_require__(395));
-
-var index_3 = __importDefault(__webpack_require__(396));
-
-var index_4 = __importDefault(__webpack_require__(398));
-
-var disable_1 = __importDefault(__webpack_require__(413)); // 创建菜单的 class
-
-
-var BtnMenu_1 = __importDefault(__webpack_require__(22));
-
-var DropList_1 = __importDefault(__webpack_require__(125));
-
-var DropListMenu_1 = __importDefault(__webpack_require__(23));
-
-var Panel_1 = __importDefault(__webpack_require__(31));
-
-var PanelMenu_1 = __importDefault(__webpack_require__(34));
-
-var Tooltip_1 = __importDefault(__webpack_require__(44));
-
-var EDITOR_ID = 1;
-
-var Editor =
-/** @class */
-function () {
-  /**
-   * 构造函数
-   * @param toolbarSelector 工具栏 DOM selector
-   * @param textSelector 文本区域 DOM selector
-   */
-  function Editor(toolbarSelector, textSelector) {
-    // 实例销毁前需要执行的钩子集合
-    this.beforeDestroyHooks = []; // id，用以区分单个页面不同的编辑器对象
-
-    this.id = "wangEditor-" + EDITOR_ID++;
-    this.toolbarSelector = toolbarSelector;
-    this.textSelector = textSelector;
-
-    if (toolbarSelector == null) {
-      throw new Error('错误：初始化编辑器时候未传入任何参数，请查阅文档');
-    } // 属性的默认值，后面可能会再修改
-    // 默认配置 - 当一个页面有多个编辑器的时候，因为 JS 的特性(引用类型)会导致多个编辑器的 config 引用是同一个，所以需要 深度克隆 断掉引用
-
-
-    this.config = util_1.deepClone(config_1["default"]);
-    this.$toolbarElem = dom_core_1["default"]('<div></div>');
-    this.$textContainerElem = dom_core_1["default"]('<div></div>');
-    this.$textElem = dom_core_1["default"]('<div></div>');
-    this.toolbarElemId = '';
-    this.textElemId = '';
-    this.isFocus = false;
-    this.isComposing = false;
-    this.isCompatibleMode = false;
-    this.selection = new selection_1["default"](this);
-    this.cmd = new command_1["default"](this);
-    this.txt = new index_1["default"](this);
-    this.menus = new index_2["default"](this);
-    this.zIndex = new z_index_1["default"]();
-    this.change = new index_3["default"](this);
-    this.history = new index_4["default"](this);
-
-    var _a = disable_1["default"](this),
-        disable = _a.disable,
-        enable = _a.enable;
-
-    this.disable = disable;
-    this.enable = enable;
-  }
-  /**
-   * 初始化选区
-   * @param newLine 新建一行
-   */
-
-
-  Editor.prototype.initSelection = function (newLine) {
-    init_selection_1["default"](this, newLine);
-  };
-  /**
-   * 创建编辑器实例
-   */
-
-
-  Editor.prototype.create = function () {
-    // 初始化 ZIndex
-    this.zIndex.init(this); // 确定当前的历史记录模式
-
-    this.isCompatibleMode = this.config.compatibleMode(); // 标准模式下，重置延迟时间
-
-    if (!this.isCompatibleMode) {
-      this.config.onchangeTimeout = 30;
-    } // 国际化 因为要在创建菜单前使用 所以要最先 初始化
-
-
-    i18next_init_1["default"](this); // 初始化 DOM
-
-    init_dom_1["default"](this); // 初始化 text
-
-    this.txt.init(); // 初始化菜单
-
-    this.menus.init(); // 初始化全屏功能
-
-    set_full_screen_1["default"](this); // 初始化选区，将光标定位到内容尾部
-
-    this.initSelection(true); // 绑定事件
-
-    bind_event_1["default"](this); // 绑定监听的目标节点
-
-    this.change.observe();
-    this.history.observe();
-  };
-  /**
-   * 提供给用户添加销毁前的钩子函数
-   * @param fn 钩子函数
-   */
-
-
-  Editor.prototype.beforeDestroy = function (fn) {
-    this.beforeDestroyHooks.push(fn);
-    return this;
-  };
-  /**
-   * 销毁当前编辑器实例
-   */
-
-
-  Editor.prototype.destroy = function () {
-    var _context;
-
-    var _this = this; // 调用钩子函数
-
-
-    (0, _forEach["default"])(_context = this.beforeDestroyHooks).call(_context, function (fn) {
-      return fn.call(_this);
-    }); // 销毁 DOM 节点
-
-    this.$toolbarElem.remove();
-    this.$textContainerElem.remove();
-  };
-  /**
-   * 将编辑器设置为全屏
-   */
-
-
-  Editor.prototype.fullScreen = function () {
-    set_full_screen_1.setFullScreen(this);
-  };
-  /**
-   * 将编辑器退出全屏
-   */
-
-
-  Editor.prototype.unFullScreen = function () {
-    set_full_screen_1.setUnFullScreen(this);
-  };
-  /**
-   * 滚动到指定标题锚点
-   * @param id 标题锚点id
-   */
-
-
-  Editor.prototype.scrollToHead = function (id) {
-    scroll_to_head_1["default"](this, id);
-  }; // 暴露 $
-
-
-  Editor.$ = dom_core_1["default"];
-  Editor.BtnMenu = BtnMenu_1["default"];
-  Editor.DropList = DropList_1["default"];
-  Editor.DropListMenu = DropListMenu_1["default"];
-  Editor.Panel = Panel_1["default"];
-  Editor.PanelMenu = PanelMenu_1["default"];
-  Editor.Tooltip = Tooltip_1["default"];
-  return Editor;
-}();
-
-exports["default"] = Editor;
-
-/***/ }),
-/* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(51);
-var forEach = __webpack_require__(179);
-var classof = __webpack_require__(61);
+__webpack_require__(53);
+var forEach = __webpack_require__(188);
+var classof = __webpack_require__(64);
 var ArrayPrototype = Array.prototype;
 
 var DOMIterables = {
@@ -7884,32 +8821,32 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 179 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(180);
+var parent = __webpack_require__(189);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 180 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(181);
-var entryVirtual = __webpack_require__(16);
+__webpack_require__(190);
+var entryVirtual = __webpack_require__(15);
 
 module.exports = entryVirtual('Array').forEach;
 
 
 /***/ }),
-/* 181 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var forEach = __webpack_require__(182);
+var $ = __webpack_require__(6);
+var forEach = __webpack_require__(191);
 
 // `Array.prototype.forEach` method
 // https://tc39.es/ecma262/#sec-array.prototype.foreach
@@ -7919,14 +8856,14 @@ $({ target: 'Array', proto: true, forced: [].forEach != forEach }, {
 
 
 /***/ }),
-/* 182 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $forEach = __webpack_require__(33).forEach;
-var arrayMethodIsStrict = __webpack_require__(87);
-var arrayMethodUsesToLength = __webpack_require__(25);
+var $forEach = __webpack_require__(30).forEach;
+var arrayMethodIsStrict = __webpack_require__(69);
+var arrayMethodUsesToLength = __webpack_require__(22);
 
 var STRICT_METHOD = arrayMethodIsStrict('forEach');
 var USES_TO_LENGTH = arrayMethodUsesToLength('forEach');
@@ -7939,19 +8876,19 @@ module.exports = (!STRICT_METHOD || !USES_TO_LENGTH) ? function forEach(callback
 
 
 /***/ }),
-/* 183 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(184);
+var parent = __webpack_require__(193);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 184 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var bind = __webpack_require__(185);
+var bind = __webpack_require__(194);
 
 var FunctionPrototype = Function.prototype;
 
@@ -7962,21 +8899,21 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 185 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(186);
-var entryVirtual = __webpack_require__(16);
+__webpack_require__(195);
+var entryVirtual = __webpack_require__(15);
 
 module.exports = entryVirtual('Function').bind;
 
 
 /***/ }),
-/* 186 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = __webpack_require__(4);
-var bind = __webpack_require__(187);
+var $ = __webpack_require__(6);
+var bind = __webpack_require__(196);
 
 // `Function.prototype.bind` method
 // https://tc39.es/ecma262/#sec-function.prototype.bind
@@ -7986,12 +8923,12 @@ $({ target: 'Function', proto: true }, {
 
 
 /***/ }),
-/* 187 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var aFunction = __webpack_require__(32);
+var aFunction = __webpack_require__(34);
 var isObject = __webpack_require__(13);
 
 var slice = [].slice;
@@ -8020,20 +8957,20 @@ module.exports = Function.bind || function bind(that /* , ...args */) {
 
 
 /***/ }),
-/* 188 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(189);
+var parent = __webpack_require__(198);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 189 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayIncludes = __webpack_require__(190);
-var stringIncludes = __webpack_require__(192);
+var arrayIncludes = __webpack_require__(199);
+var stringIncludes = __webpack_require__(201);
 
 var ArrayPrototype = Array.prototype;
 var StringPrototype = String.prototype;
@@ -8048,25 +8985,25 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 190 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(191);
-var entryVirtual = __webpack_require__(16);
+__webpack_require__(200);
+var entryVirtual = __webpack_require__(15);
 
 module.exports = entryVirtual('Array').includes;
 
 
 /***/ }),
-/* 191 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var $includes = __webpack_require__(71).includes;
-var addToUnscopables = __webpack_require__(85);
-var arrayMethodUsesToLength = __webpack_require__(25);
+var $ = __webpack_require__(6);
+var $includes = __webpack_require__(76).includes;
+var addToUnscopables = __webpack_require__(90);
+var arrayMethodUsesToLength = __webpack_require__(22);
 
 var USES_TO_LENGTH = arrayMethodUsesToLength('indexOf', { ACCESSORS: true, 1: 0 });
 
@@ -8083,25 +9020,25 @@ addToUnscopables('includes');
 
 
 /***/ }),
-/* 192 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(193);
-var entryVirtual = __webpack_require__(16);
+__webpack_require__(202);
+var entryVirtual = __webpack_require__(15);
 
 module.exports = entryVirtual('String').includes;
 
 
 /***/ }),
-/* 193 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var notARegExp = __webpack_require__(194);
-var requireObjectCoercible = __webpack_require__(46);
-var correctIsRegExpLogic = __webpack_require__(196);
+var $ = __webpack_require__(6);
+var notARegExp = __webpack_require__(203);
+var requireObjectCoercible = __webpack_require__(48);
+var correctIsRegExpLogic = __webpack_require__(205);
 
 // `String.prototype.includes` method
 // https://tc39.es/ecma262/#sec-string.prototype.includes
@@ -8114,10 +9051,10 @@ $({ target: 'String', proto: true, forced: !correctIsRegExpLogic('includes') }, 
 
 
 /***/ }),
-/* 194 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isRegExp = __webpack_require__(195);
+var isRegExp = __webpack_require__(204);
 
 module.exports = function (it) {
   if (isRegExp(it)) {
@@ -8127,12 +9064,12 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 195 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(13);
-var classof = __webpack_require__(45);
-var wellKnownSymbol = __webpack_require__(9);
+var classof = __webpack_require__(47);
+var wellKnownSymbol = __webpack_require__(10);
 
 var MATCH = wellKnownSymbol('match');
 
@@ -8145,10 +9082,10 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 196 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var wellKnownSymbol = __webpack_require__(9);
+var wellKnownSymbol = __webpack_require__(10);
 
 var MATCH = wellKnownSymbol('match');
 
@@ -8166,19 +9103,19 @@ module.exports = function (METHOD_NAME) {
 
 
 /***/ }),
-/* 197 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(198);
+var parent = __webpack_require__(207);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 198 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var filter = __webpack_require__(199);
+var filter = __webpack_require__(208);
 
 var ArrayPrototype = Array.prototype;
 
@@ -8189,25 +9126,25 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 199 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(200);
-var entryVirtual = __webpack_require__(16);
+__webpack_require__(209);
+var entryVirtual = __webpack_require__(15);
 
 module.exports = entryVirtual('Array').filter;
 
 
 /***/ }),
-/* 200 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var $filter = __webpack_require__(33).filter;
-var arrayMethodHasSpeciesSupport = __webpack_require__(53);
-var arrayMethodUsesToLength = __webpack_require__(25);
+var $ = __webpack_require__(6);
+var $filter = __webpack_require__(30).filter;
+var arrayMethodHasSpeciesSupport = __webpack_require__(56);
+var arrayMethodUsesToLength = __webpack_require__(22);
 
 var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('filter');
 // Edge 14- issue
@@ -8224,19 +9161,19 @@ $({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGT
 
 
 /***/ }),
-/* 201 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(202);
+var parent = __webpack_require__(211);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 202 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var splice = __webpack_require__(203);
+var splice = __webpack_require__(212);
 
 var ArrayPrototype = Array.prototype;
 
@@ -8247,30 +9184,30 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 203 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(204);
-var entryVirtual = __webpack_require__(16);
+__webpack_require__(213);
+var entryVirtual = __webpack_require__(15);
 
 module.exports = entryVirtual('Array').splice;
 
 
 /***/ }),
-/* 204 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var toAbsoluteIndex = __webpack_require__(72);
-var toInteger = __webpack_require__(58);
-var toLength = __webpack_require__(36);
-var toObject = __webpack_require__(38);
-var arraySpeciesCreate = __webpack_require__(86);
-var createProperty = __webpack_require__(91);
-var arrayMethodHasSpeciesSupport = __webpack_require__(53);
-var arrayMethodUsesToLength = __webpack_require__(25);
+var $ = __webpack_require__(6);
+var toAbsoluteIndex = __webpack_require__(77);
+var toInteger = __webpack_require__(61);
+var toLength = __webpack_require__(38);
+var toObject = __webpack_require__(40);
+var arraySpeciesCreate = __webpack_require__(91);
+var createProperty = __webpack_require__(93);
+var arrayMethodHasSpeciesSupport = __webpack_require__(56);
+var arrayMethodUsesToLength = __webpack_require__(22);
 
 var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('splice');
 var USES_TO_LENGTH = arrayMethodUsesToLength('splice', { ACCESSORS: true, 0: 0, 1: 2 });
@@ -8334,19 +9271,19 @@ $({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGT
 
 
 /***/ }),
-/* 205 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(206);
+var parent = __webpack_require__(215);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 206 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var indexOf = __webpack_require__(207);
+var indexOf = __webpack_require__(216);
 
 var ArrayPrototype = Array.prototype;
 
@@ -8357,25 +9294,25 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 207 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(208);
-var entryVirtual = __webpack_require__(16);
+__webpack_require__(217);
+var entryVirtual = __webpack_require__(15);
 
 module.exports = entryVirtual('Array').indexOf;
 
 
 /***/ }),
-/* 208 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var $indexOf = __webpack_require__(71).indexOf;
-var arrayMethodIsStrict = __webpack_require__(87);
-var arrayMethodUsesToLength = __webpack_require__(25);
+var $ = __webpack_require__(6);
+var $indexOf = __webpack_require__(76).indexOf;
+var arrayMethodIsStrict = __webpack_require__(69);
+var arrayMethodUsesToLength = __webpack_require__(22);
 
 var nativeIndexOf = [].indexOf;
 
@@ -8396,126 +9333,6 @@ $({ target: 'Array', proto: true, forced: NEGATIVE_ZERO || !STRICT_METHOD || !US
 
 
 /***/ }),
-/* 209 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var parent = __webpack_require__(210);
-
-module.exports = parent;
-
-
-/***/ }),
-/* 210 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(211);
-__webpack_require__(62);
-__webpack_require__(65);
-__webpack_require__(51);
-var path = __webpack_require__(10);
-
-module.exports = path.Map;
-
-
-/***/ }),
-/* 211 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var collection = __webpack_require__(115);
-var collectionStrong = __webpack_require__(117);
-
-// `Map` constructor
-// https://tc39.es/ecma262/#sec-map-objects
-module.exports = collection('Map', function (init) {
-  return function Map() { return init(this, arguments.length ? arguments[0] : undefined); };
-}, collectionStrong);
-
-
-/***/ }),
-/* 212 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var fails = __webpack_require__(12);
-
-module.exports = !fails(function () {
-  return Object.isExtensible(Object.preventExtensions({}));
-});
-
-
-/***/ }),
-/* 213 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var parent = __webpack_require__(214);
-
-module.exports = parent;
-
-
-/***/ }),
-/* 214 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var trim = __webpack_require__(215);
-
-var StringPrototype = String.prototype;
-
-module.exports = function (it) {
-  var own = it.trim;
-  return typeof it === 'string' || it === StringPrototype
-    || (it instanceof String && own === StringPrototype.trim) ? trim : own;
-};
-
-
-/***/ }),
-/* 215 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(216);
-var entryVirtual = __webpack_require__(16);
-
-module.exports = entryVirtual('String').trim;
-
-
-/***/ }),
-/* 216 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $ = __webpack_require__(4);
-var $trim = __webpack_require__(92).trim;
-var forcedStringTrimMethod = __webpack_require__(217);
-
-// `String.prototype.trim` method
-// https://tc39.es/ecma262/#sec-string.prototype.trim
-$({ target: 'String', proto: true, forced: forcedStringTrimMethod('trim') }, {
-  trim: function trim() {
-    return $trim(this);
-  }
-});
-
-
-/***/ }),
-/* 217 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var fails = __webpack_require__(12);
-var whitespaces = __webpack_require__(67);
-
-var non = '\u200B\u0085\u180E';
-
-// check that a method works with the correct list
-// of whitespaces and has a correct name
-module.exports = function (METHOD_NAME) {
-  return fails(function () {
-    return !!whitespaces[METHOD_NAME]() || non[METHOD_NAME]() != non || whitespaces[METHOD_NAME].name !== METHOD_NAME;
-  });
-};
-
-
-/***/ }),
 /* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8528,48 +9345,39 @@ module.exports = parent;
 /* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var map = __webpack_require__(220);
+__webpack_require__(220);
+__webpack_require__(65);
+__webpack_require__(68);
+__webpack_require__(53);
+var path = __webpack_require__(9);
 
-var ArrayPrototype = Array.prototype;
-
-module.exports = function (it) {
-  var own = it.map;
-  return it === ArrayPrototype || (it instanceof Array && own === ArrayPrototype.map) ? map : own;
-};
+module.exports = path.Map;
 
 
 /***/ }),
 /* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(221);
-var entryVirtual = __webpack_require__(16);
+"use strict";
 
-module.exports = entryVirtual('Array').map;
+var collection = __webpack_require__(119);
+var collectionStrong = __webpack_require__(121);
+
+// `Map` constructor
+// https://tc39.es/ecma262/#sec-map-objects
+module.exports = collection('Map', function (init) {
+  return function Map() { return init(this, arguments.length ? arguments[0] : undefined); };
+}, collectionStrong);
 
 
 /***/ }),
 /* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+var fails = __webpack_require__(11);
 
-var $ = __webpack_require__(4);
-var $map = __webpack_require__(33).map;
-var arrayMethodHasSpeciesSupport = __webpack_require__(53);
-var arrayMethodUsesToLength = __webpack_require__(25);
-
-var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('map');
-// FF49- issue
-var USES_TO_LENGTH = arrayMethodUsesToLength('map');
-
-// `Array.prototype.map` method
-// https://tc39.es/ecma262/#sec-array.prototype.map
-// with adding support of @@species
-$({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH }, {
-  map: function map(callbackfn /* , thisArg */) {
-    return $map(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-  }
+module.exports = !fails(function () {
+  return Object.isExtensible(Object.preventExtensions({}));
 });
 
 
@@ -8586,18 +9394,147 @@ module.exports = parent;
 /* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(224);
-var path = __webpack_require__(10);
+var trim = __webpack_require__(224);
 
-module.exports = path.Array.isArray;
+var StringPrototype = String.prototype;
+
+module.exports = function (it) {
+  var own = it.trim;
+  return typeof it === 'string' || it === StringPrototype
+    || (it instanceof String && own === StringPrototype.trim) ? trim : own;
+};
 
 
 /***/ }),
 /* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = __webpack_require__(4);
-var isArray = __webpack_require__(52);
+__webpack_require__(225);
+var entryVirtual = __webpack_require__(15);
+
+module.exports = entryVirtual('String').trim;
+
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__(6);
+var $trim = __webpack_require__(94).trim;
+var forcedStringTrimMethod = __webpack_require__(226);
+
+// `String.prototype.trim` method
+// https://tc39.es/ecma262/#sec-string.prototype.trim
+$({ target: 'String', proto: true, forced: forcedStringTrimMethod('trim') }, {
+  trim: function trim() {
+    return $trim(this);
+  }
+});
+
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var fails = __webpack_require__(11);
+var whitespaces = __webpack_require__(72);
+
+var non = '\u200B\u0085\u180E';
+
+// check that a method works with the correct list
+// of whitespaces and has a correct name
+module.exports = function (METHOD_NAME) {
+  return fails(function () {
+    return !!whitespaces[METHOD_NAME]() || non[METHOD_NAME]() != non || whitespaces[METHOD_NAME].name !== METHOD_NAME;
+  });
+};
+
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var parent = __webpack_require__(228);
+
+module.exports = parent;
+
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = __webpack_require__(229);
+
+var ArrayPrototype = Array.prototype;
+
+module.exports = function (it) {
+  var own = it.map;
+  return it === ArrayPrototype || (it instanceof Array && own === ArrayPrototype.map) ? map : own;
+};
+
+
+/***/ }),
+/* 229 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(230);
+var entryVirtual = __webpack_require__(15);
+
+module.exports = entryVirtual('Array').map;
+
+
+/***/ }),
+/* 230 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__(6);
+var $map = __webpack_require__(30).map;
+var arrayMethodHasSpeciesSupport = __webpack_require__(56);
+var arrayMethodUsesToLength = __webpack_require__(22);
+
+var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('map');
+// FF49- issue
+var USES_TO_LENGTH = arrayMethodUsesToLength('map');
+
+// `Array.prototype.map` method
+// https://tc39.es/ecma262/#sec-array.prototype.map
+// with adding support of @@species
+$({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH }, {
+  map: function map(callbackfn /* , thisArg */) {
+    return $map(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var parent = __webpack_require__(232);
+
+module.exports = parent;
+
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(233);
+var path = __webpack_require__(9);
+
+module.exports = path.Array.isArray;
+
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__(6);
+var isArray = __webpack_require__(54);
 
 // `Array.isArray` method
 // https://tc39.es/ecma262/#sec-array.isarray
@@ -8607,99 +9544,58 @@ $({ target: 'Array', stat: true }, {
 
 
 /***/ }),
-/* 225 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(226);
+module.exports = __webpack_require__(235);
 
 /***/ }),
-/* 226 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(227);
+var parent = __webpack_require__(122);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 227 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(118);
-__webpack_require__(65);
-__webpack_require__(51);
-var WrappedWellKnownSymbolModule = __webpack_require__(95);
-
-module.exports = WrappedWellKnownSymbolModule.f('iterator');
-
+module.exports = __webpack_require__(237);
 
 /***/ }),
-/* 228 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(229);
-
-/***/ }),
-/* 229 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var parent = __webpack_require__(230);
-__webpack_require__(250);
-__webpack_require__(251);
-__webpack_require__(252);
-__webpack_require__(253);
+var parent = __webpack_require__(124);
+__webpack_require__(257);
+__webpack_require__(258);
+__webpack_require__(259);
+__webpack_require__(260);
 // TODO: Remove from `core-js@4`
-__webpack_require__(254);
+__webpack_require__(261);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 230 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(231);
-__webpack_require__(62);
-__webpack_require__(232);
-__webpack_require__(234);
-__webpack_require__(235);
-__webpack_require__(236);
-__webpack_require__(237);
-__webpack_require__(118);
-__webpack_require__(238);
-__webpack_require__(239);
-__webpack_require__(240);
-__webpack_require__(241);
-__webpack_require__(242);
-__webpack_require__(243);
-__webpack_require__(244);
-__webpack_require__(245);
-__webpack_require__(246);
-__webpack_require__(247);
-__webpack_require__(248);
-__webpack_require__(249);
-var path = __webpack_require__(10);
-
-module.exports = path.Symbol;
-
-
-/***/ }),
-/* 231 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var fails = __webpack_require__(12);
-var isArray = __webpack_require__(52);
+var $ = __webpack_require__(6);
+var fails = __webpack_require__(11);
+var isArray = __webpack_require__(54);
 var isObject = __webpack_require__(13);
-var toObject = __webpack_require__(38);
-var toLength = __webpack_require__(36);
-var createProperty = __webpack_require__(91);
-var arraySpeciesCreate = __webpack_require__(86);
-var arrayMethodHasSpeciesSupport = __webpack_require__(53);
-var wellKnownSymbol = __webpack_require__(9);
-var V8_VERSION = __webpack_require__(83);
+var toObject = __webpack_require__(40);
+var toLength = __webpack_require__(38);
+var createProperty = __webpack_require__(93);
+var arraySpeciesCreate = __webpack_require__(91);
+var arrayMethodHasSpeciesSupport = __webpack_require__(56);
+var wellKnownSymbol = __webpack_require__(10);
+var V8_VERSION = __webpack_require__(88);
 
 var IS_CONCAT_SPREADABLE = wellKnownSymbol('isConcatSpreadable');
 var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF;
@@ -8751,47 +9647,47 @@ $({ target: 'Array', proto: true, forced: FORCED }, {
 
 
 /***/ }),
-/* 232 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
+var $ = __webpack_require__(6);
 var global = __webpack_require__(8);
-var getBuiltIn = __webpack_require__(28);
-var IS_PURE = __webpack_require__(37);
+var getBuiltIn = __webpack_require__(29);
+var IS_PURE = __webpack_require__(39);
 var DESCRIPTORS = __webpack_require__(14);
-var NATIVE_SYMBOL = __webpack_require__(78);
-var USE_SYMBOL_AS_UID = __webpack_require__(104);
-var fails = __webpack_require__(12);
-var has = __webpack_require__(15);
-var isArray = __webpack_require__(52);
+var NATIVE_SYMBOL = __webpack_require__(83);
+var USE_SYMBOL_AS_UID = __webpack_require__(107);
+var fails = __webpack_require__(11);
+var has = __webpack_require__(16);
+var isArray = __webpack_require__(54);
 var isObject = __webpack_require__(13);
-var anObject = __webpack_require__(24);
-var toObject = __webpack_require__(38);
-var toIndexedObject = __webpack_require__(27);
-var toPrimitive = __webpack_require__(56);
-var createPropertyDescriptor = __webpack_require__(35);
-var nativeObjectCreate = __webpack_require__(48);
-var objectKeys = __webpack_require__(57);
-var getOwnPropertyNamesModule = __webpack_require__(119);
-var getOwnPropertyNamesExternal = __webpack_require__(233);
-var getOwnPropertySymbolsModule = __webpack_require__(120);
-var getOwnPropertyDescriptorModule = __webpack_require__(68);
+var anObject = __webpack_require__(25);
+var toObject = __webpack_require__(40);
+var toIndexedObject = __webpack_require__(28);
+var toPrimitive = __webpack_require__(59);
+var createPropertyDescriptor = __webpack_require__(37);
+var nativeObjectCreate = __webpack_require__(50);
+var objectKeys = __webpack_require__(60);
+var getOwnPropertyNamesModule = __webpack_require__(125);
+var getOwnPropertyNamesExternal = __webpack_require__(240);
+var getOwnPropertySymbolsModule = __webpack_require__(126);
+var getOwnPropertyDescriptorModule = __webpack_require__(73);
 var definePropertyModule = __webpack_require__(18);
-var propertyIsEnumerableModule = __webpack_require__(55);
+var propertyIsEnumerableModule = __webpack_require__(58);
 var createNonEnumerableProperty = __webpack_require__(17);
-var redefine = __webpack_require__(50);
-var shared = __webpack_require__(74);
-var sharedKey = __webpack_require__(59);
-var hiddenKeys = __webpack_require__(49);
-var uid = __webpack_require__(60);
-var wellKnownSymbol = __webpack_require__(9);
-var wrappedWellKnownSymbolModule = __webpack_require__(95);
-var defineWellKnownSymbol = __webpack_require__(11);
-var setToStringTag = __webpack_require__(41);
-var InternalStateModule = __webpack_require__(42);
-var $forEach = __webpack_require__(33).forEach;
+var redefine = __webpack_require__(52);
+var shared = __webpack_require__(79);
+var sharedKey = __webpack_require__(62);
+var hiddenKeys = __webpack_require__(51);
+var uid = __webpack_require__(63);
+var wellKnownSymbol = __webpack_require__(10);
+var wrappedWellKnownSymbolModule = __webpack_require__(97);
+var defineWellKnownSymbol = __webpack_require__(12);
+var setToStringTag = __webpack_require__(43);
+var InternalStateModule = __webpack_require__(44);
+var $forEach = __webpack_require__(30).forEach;
 
 var HIDDEN = sharedKey('hidden');
 var SYMBOL = 'Symbol';
@@ -9069,11 +9965,11 @@ hiddenKeys[HIDDEN] = true;
 
 
 /***/ }),
-/* 233 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toIndexedObject = __webpack_require__(27);
-var nativeGetOwnPropertyNames = __webpack_require__(119).f;
+var toIndexedObject = __webpack_require__(28);
+var nativeGetOwnPropertyNames = __webpack_require__(125).f;
 
 var toString = {}.toString;
 
@@ -9097,10 +9993,10 @@ module.exports.f = function getOwnPropertyNames(it) {
 
 
 /***/ }),
-/* 234 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.asyncIterator` well-known symbol
 // https://tc39.es/ecma262/#sec-symbol.asynciterator
@@ -9108,17 +10004,17 @@ defineWellKnownSymbol('asyncIterator');
 
 
 /***/ }),
-/* 235 */
+/* 242 */
 /***/ (function(module, exports) {
 
 // empty
 
 
 /***/ }),
-/* 236 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.hasInstance` well-known symbol
 // https://tc39.es/ecma262/#sec-symbol.hasinstance
@@ -9126,10 +10022,10 @@ defineWellKnownSymbol('hasInstance');
 
 
 /***/ }),
-/* 237 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.isConcatSpreadable` well-known symbol
 // https://tc39.es/ecma262/#sec-symbol.isconcatspreadable
@@ -9137,10 +10033,10 @@ defineWellKnownSymbol('isConcatSpreadable');
 
 
 /***/ }),
-/* 238 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.match` well-known symbol
 // https://tc39.es/ecma262/#sec-symbol.match
@@ -9148,10 +10044,10 @@ defineWellKnownSymbol('match');
 
 
 /***/ }),
-/* 239 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.matchAll` well-known symbol
 // https://tc39.es/ecma262/#sec-symbol.matchall
@@ -9159,10 +10055,10 @@ defineWellKnownSymbol('matchAll');
 
 
 /***/ }),
-/* 240 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.replace` well-known symbol
 // https://tc39.es/ecma262/#sec-symbol.replace
@@ -9170,10 +10066,10 @@ defineWellKnownSymbol('replace');
 
 
 /***/ }),
-/* 241 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.search` well-known symbol
 // https://tc39.es/ecma262/#sec-symbol.search
@@ -9181,10 +10077,10 @@ defineWellKnownSymbol('search');
 
 
 /***/ }),
-/* 242 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.species` well-known symbol
 // https://tc39.es/ecma262/#sec-symbol.species
@@ -9192,10 +10088,10 @@ defineWellKnownSymbol('species');
 
 
 /***/ }),
-/* 243 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.split` well-known symbol
 // https://tc39.es/ecma262/#sec-symbol.split
@@ -9203,10 +10099,10 @@ defineWellKnownSymbol('split');
 
 
 /***/ }),
-/* 244 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.toPrimitive` well-known symbol
 // https://tc39.es/ecma262/#sec-symbol.toprimitive
@@ -9214,10 +10110,10 @@ defineWellKnownSymbol('toPrimitive');
 
 
 /***/ }),
-/* 245 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.toStringTag` well-known symbol
 // https://tc39.es/ecma262/#sec-symbol.tostringtag
@@ -9225,10 +10121,10 @@ defineWellKnownSymbol('toStringTag');
 
 
 /***/ }),
-/* 246 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.unscopables` well-known symbol
 // https://tc39.es/ecma262/#sec-symbol.unscopables
@@ -9236,11 +10132,11 @@ defineWellKnownSymbol('unscopables');
 
 
 /***/ }),
-/* 247 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(8);
-var setToStringTag = __webpack_require__(41);
+var setToStringTag = __webpack_require__(43);
 
 // JSON[@@toStringTag] property
 // https://tc39.es/ecma262/#sec-json-@@tostringtag
@@ -9248,24 +10144,24 @@ setToStringTag(global.JSON, 'JSON', true);
 
 
 /***/ }),
-/* 248 */
+/* 255 */
 /***/ (function(module, exports) {
 
 // empty
 
 
 /***/ }),
-/* 249 */
+/* 256 */
 /***/ (function(module, exports) {
 
 // empty
 
 
 /***/ }),
-/* 250 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.asyncDispose` well-known symbol
 // https://github.com/tc39/proposal-using-statement
@@ -9273,10 +10169,10 @@ defineWellKnownSymbol('asyncDispose');
 
 
 /***/ }),
-/* 251 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.dispose` well-known symbol
 // https://github.com/tc39/proposal-using-statement
@@ -9284,10 +10180,10 @@ defineWellKnownSymbol('dispose');
 
 
 /***/ }),
-/* 252 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.observable` well-known symbol
 // https://github.com/tc39/proposal-observable
@@ -9295,10 +10191,10 @@ defineWellKnownSymbol('observable');
 
 
 /***/ }),
-/* 253 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 // `Symbol.patternMatch` well-known symbol
 // https://github.com/tc39/proposal-pattern-matching
@@ -9306,32 +10202,32 @@ defineWellKnownSymbol('patternMatch');
 
 
 /***/ }),
-/* 254 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // TODO: remove from `core-js@4`
-var defineWellKnownSymbol = __webpack_require__(11);
+var defineWellKnownSymbol = __webpack_require__(12);
 
 defineWellKnownSymbol('replaceAll');
 
 
 /***/ }),
-/* 255 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(256);
-var path = __webpack_require__(10);
+__webpack_require__(263);
+var path = __webpack_require__(9);
 
 module.exports = path.setTimeout;
 
 
 /***/ }),
-/* 256 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = __webpack_require__(4);
+var $ = __webpack_require__(6);
 var global = __webpack_require__(8);
-var userAgent = __webpack_require__(63);
+var userAgent = __webpack_require__(66);
 
 var slice = [].slice;
 var MSIE = /MSIE .\./.test(userAgent); // <- dirty ie9- check
@@ -9360,19 +10256,19 @@ $({ global: true, bind: true, forced: MSIE }, {
 
 
 /***/ }),
-/* 257 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(258);
+var parent = __webpack_require__(265);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 258 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var slice = __webpack_require__(259);
+var slice = __webpack_require__(266);
 
 var ArrayPrototype = Array.prototype;
 
@@ -9383,31 +10279,31 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 259 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(260);
-var entryVirtual = __webpack_require__(16);
+__webpack_require__(267);
+var entryVirtual = __webpack_require__(15);
 
 module.exports = entryVirtual('Array').slice;
 
 
 /***/ }),
-/* 260 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
+var $ = __webpack_require__(6);
 var isObject = __webpack_require__(13);
-var isArray = __webpack_require__(52);
-var toAbsoluteIndex = __webpack_require__(72);
-var toLength = __webpack_require__(36);
-var toIndexedObject = __webpack_require__(27);
-var createProperty = __webpack_require__(91);
-var wellKnownSymbol = __webpack_require__(9);
-var arrayMethodHasSpeciesSupport = __webpack_require__(53);
-var arrayMethodUsesToLength = __webpack_require__(25);
+var isArray = __webpack_require__(54);
+var toAbsoluteIndex = __webpack_require__(77);
+var toLength = __webpack_require__(38);
+var toIndexedObject = __webpack_require__(28);
+var createProperty = __webpack_require__(93);
+var wellKnownSymbol = __webpack_require__(10);
+var arrayMethodHasSpeciesSupport = __webpack_require__(56);
+var arrayMethodUsesToLength = __webpack_require__(22);
 
 var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('slice');
 var USES_TO_LENGTH = arrayMethodUsesToLength('slice', { ACCESSORS: true, 0: 0, 1: 2 });
@@ -9449,36 +10345,36 @@ $({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGT
 
 
 /***/ }),
-/* 261 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(262);
+module.exports = __webpack_require__(269);
 
 /***/ }),
-/* 262 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(263);
+var parent = __webpack_require__(270);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 263 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(264);
-var path = __webpack_require__(10);
+__webpack_require__(271);
+var path = __webpack_require__(9);
 
 module.exports = path.parseInt;
 
 
 /***/ }),
-/* 264 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = __webpack_require__(4);
-var parseIntImplementation = __webpack_require__(265);
+var $ = __webpack_require__(6);
+var parseIntImplementation = __webpack_require__(272);
 
 // `parseInt` method
 // https://tc39.es/ecma262/#sec-parseint-string-radix
@@ -9488,12 +10384,12 @@ $({ global: true, forced: parseInt != parseIntImplementation }, {
 
 
 /***/ }),
-/* 265 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(8);
-var trim = __webpack_require__(92).trim;
-var whitespaces = __webpack_require__(67);
+var trim = __webpack_require__(94).trim;
+var whitespaces = __webpack_require__(72);
 
 var $parseInt = global.parseInt;
 var hex = /^[+-]?0[Xx]/;
@@ -9508,7 +10404,7 @@ module.exports = FORCED ? function parseInt(string, radix) {
 
 
 /***/ }),
-/* 266 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9520,7 +10416,7 @@ module.exports = FORCED ? function parseInt(string, radix) {
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _assign = _interopRequireDefault(__webpack_require__(267));
+var _assign = _interopRequireDefault(__webpack_require__(274));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -9534,25 +10430,25 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var menus_1 = __importDefault(__webpack_require__(272));
+var menus_1 = __importDefault(__webpack_require__(279));
 
-var events_1 = __importDefault(__webpack_require__(273));
+var events_1 = __importDefault(__webpack_require__(280));
 
-var style_1 = __importDefault(__webpack_require__(122));
+var style_1 = __importDefault(__webpack_require__(128));
 
-var paste_1 = __importDefault(__webpack_require__(274));
+var paste_1 = __importDefault(__webpack_require__(281));
 
-var cmd_1 = __importDefault(__webpack_require__(275));
+var cmd_1 = __importDefault(__webpack_require__(282));
 
-var image_1 = __importDefault(__webpack_require__(276));
+var image_1 = __importDefault(__webpack_require__(283));
 
-var text_1 = __importDefault(__webpack_require__(277));
+var text_1 = __importDefault(__webpack_require__(284));
 
-var lang_1 = __importDefault(__webpack_require__(278));
+var lang_1 = __importDefault(__webpack_require__(285));
 
-var history_1 = __importDefault(__webpack_require__(279));
+var history_1 = __importDefault(__webpack_require__(286));
 
-var video_1 = __importDefault(__webpack_require__(280)); // 合并所有的配置信息
+var video_1 = __importDefault(__webpack_require__(287)); // 合并所有的配置信息
 
 
 var defaultConfig = (0, _assign["default"])({}, menus_1["default"], events_1["default"], style_1["default"], cmd_1["default"], paste_1["default"], image_1["default"], text_1["default"], lang_1["default"], history_1["default"], video_1["default"], //链接校验的配置函数
@@ -9560,45 +10456,40 @@ var defaultConfig = (0, _assign["default"])({}, menus_1["default"], events_1["de
   linkCheck: function linkCheck(text, link) {
     return true;
   }
-}, //网络图片校验的配置函数
-{
-  linkImgCheck: function linkImgCheck(src) {
-    return true;
-  }
 });
 exports["default"] = defaultConfig;
 
 /***/ }),
-/* 267 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(268);
+module.exports = __webpack_require__(275);
 
 /***/ }),
-/* 268 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(269);
+var parent = __webpack_require__(276);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 269 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(270);
-var path = __webpack_require__(10);
+__webpack_require__(277);
+var path = __webpack_require__(9);
 
 module.exports = path.Object.assign;
 
 
 /***/ }),
-/* 270 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = __webpack_require__(4);
-var assign = __webpack_require__(271);
+var $ = __webpack_require__(6);
+var assign = __webpack_require__(278);
 
 // `Object.assign` method
 // https://tc39.es/ecma262/#sec-object.assign
@@ -9608,18 +10499,18 @@ $({ target: 'Object', stat: true, forced: Object.assign !== assign }, {
 
 
 /***/ }),
-/* 271 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var DESCRIPTORS = __webpack_require__(14);
-var fails = __webpack_require__(12);
-var objectKeys = __webpack_require__(57);
-var getOwnPropertySymbolsModule = __webpack_require__(120);
-var propertyIsEnumerableModule = __webpack_require__(55);
-var toObject = __webpack_require__(38);
-var IndexedObject = __webpack_require__(69);
+var fails = __webpack_require__(11);
+var objectKeys = __webpack_require__(60);
+var getOwnPropertySymbolsModule = __webpack_require__(126);
+var propertyIsEnumerableModule = __webpack_require__(58);
+var toObject = __webpack_require__(40);
+var IndexedObject = __webpack_require__(74);
 
 var nativeAssign = Object.assign;
 var defineProperty = Object.defineProperty;
@@ -9667,7 +10558,7 @@ module.exports = !nativeAssign || fails(function () {
 
 
 /***/ }),
-/* 272 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9791,11 +10682,12 @@ exports["default"] = {
   }],
   lineHeights: ['1', '1.15', '1.6', '2', '2.5', '3'],
   undoLimit: 20,
-  indentation: '2em'
+  indentation: '2em',
+  showMenuTooltips: true
 };
 
 /***/ }),
-/* 273 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9813,7 +10705,7 @@ var _defineProperty = _interopRequireDefault(__webpack_require__(1));
   value: true
 });
 
-var const_1 = __webpack_require__(26);
+var const_1 = __webpack_require__(32);
 /**
  * 提示信息
  * @param alertInfo alert info
@@ -9840,7 +10732,7 @@ exports["default"] = {
 };
 
 /***/ }),
-/* 274 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9871,7 +10763,7 @@ exports["default"] = {
 };
 
 /***/ }),
-/* 275 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9893,7 +10785,7 @@ exports["default"] = {
 };
 
 /***/ }),
-/* 276 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9911,11 +10803,19 @@ var _defineProperty = _interopRequireDefault(__webpack_require__(1));
   value: true
 });
 
-var const_1 = __webpack_require__(26);
+var const_1 = __webpack_require__(32);
 
 exports["default"] = {
+  // 网络图片校验的配置函数
+  linkImgCheck: function linkImgCheck(src, alt, href) {
+    return true;
+  },
   // 显示“插入网络图片”
   showLinkImg: true,
+  // 显示“插入图片alt”
+  showLinkImgAlt: true,
+  // 显示“插入图片href”
+  showLinkImgHref: true,
   // 插入图片成功之后的回调函数
   linkImgCallback: const_1.EMPTY_FN,
   // accept
@@ -9947,7 +10847,7 @@ exports["default"] = {
 };
 
 /***/ }),
-/* 277 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9973,7 +10873,7 @@ exports["default"] = {
 };
 
 /***/ }),
-/* 278 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10024,7 +10924,7 @@ exports["default"] = {
             恢复: '恢复',
             撤销: '撤销',
             全屏: '全屏',
-            代办事项: '代办事项'
+            待办事项: '待办事项'
           },
           dropListMenu: {
             设置标题: '设置标题',
@@ -10062,9 +10962,11 @@ exports["default"] = {
               手势: '手势'
             },
             image: {
-              图片链接: '图片链接',
               上传图片: '上传图片',
-              网络图片: '网络图片'
+              网络图片: '网络图片',
+              图片地址: '图片地址',
+              图片文字说明: '图片文字说明',
+              跳转链接: '跳转链接'
             },
             link: {
               链接: '链接',
@@ -10073,7 +10975,8 @@ exports["default"] = {
               查看链接: '查看链接'
             },
             video: {
-              插入视频: '插入视频'
+              插入视频: '插入视频',
+              上传视频: '上传视频'
             },
             table: {
               行: '行',
@@ -10113,7 +11016,16 @@ exports["default"] = {
           上传图片返回结果错误: '上传图片返回结果错误',
           请替换为支持的图片类型: '请替换为支持的图片类型',
           您插入的网络图片无法识别: '您插入的网络图片无法识别',
-          您刚才插入的图片链接未通过编辑器校验: '您刚才插入的图片链接未通过编辑器校验'
+          您刚才插入的图片链接未通过编辑器校验: '您刚才插入的图片链接未通过编辑器校验',
+          插入视频错误: '插入视频错误',
+          视频链接: '视频链接',
+          不是视频: '不是视频',
+          视频验证未通过: '视频验证未通过',
+          个视频: '个视频',
+          上传视频超时: '上传视频超时',
+          上传视频错误: '上传视频错误',
+          上传视频失败: '上传视频失败',
+          上传视频返回结果错误: '上传视频返回结果错误'
         }
       }
     },
@@ -10152,7 +11064,7 @@ exports["default"] = {
             恢复: 'undo',
             撤销: 'redo',
             全屏: 'fullscreen',
-            代办事项: 'todo'
+            待办事项: 'todo'
           },
           dropListMenu: {
             设置标题: 'title',
@@ -10190,9 +11102,11 @@ exports["default"] = {
               手势: 'gesture'
             },
             image: {
-              图片链接: 'image link',
               上传图片: 'upload image',
-              网络图片: 'network image'
+              网络图片: 'network image',
+              图片地址: 'image link',
+              图片文字说明: 'image alt',
+              跳转链接: 'hyperlink'
             },
             link: {
               链接: 'link',
@@ -10201,7 +11115,8 @@ exports["default"] = {
               查看链接: 'view links'
             },
             video: {
-              插入视频: 'insert video'
+              插入视频: 'insert video',
+              上传视频: 'upload local video'
             },
             table: {
               行: 'rows',
@@ -10241,7 +11156,16 @@ exports["default"] = {
           上传图片返回结果错误: 'upload image return results error',
           请替换为支持的图片类型: 'please replace with a supported image type',
           您插入的网络图片无法识别: 'the network picture you inserted is not recognized',
-          您刚才插入的图片链接未通过编辑器校验: 'the image link you just inserted did not pass the editor verification'
+          您刚才插入的图片链接未通过编辑器校验: 'the image link you just inserted did not pass the editor verification',
+          插入视频错误: 'insert video error',
+          视频链接: 'video link',
+          不是视频: 'is not video',
+          视频验证未通过: 'video validate failed',
+          个视频: 'videos',
+          上传视频超时: 'upload video timeout',
+          上传视频错误: 'upload video error',
+          上传视频失败: 'upload video failed',
+          上传视频返回结果错误: 'upload video return results error'
         }
       }
     }
@@ -10249,7 +11173,7 @@ exports["default"] = {
 };
 
 /***/ }),
-/* 279 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10287,7 +11211,7 @@ exports["default"] = {
 };
 
 /***/ }),
-/* 280 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10305,7 +11229,7 @@ var _defineProperty = _interopRequireDefault(__webpack_require__(1));
   value: true
 });
 
-var const_1 = __webpack_require__(26);
+var const_1 = __webpack_require__(32);
 
 exports["default"] = {
   // 插入网络视频前的回调函数
@@ -10313,11 +11237,39 @@ exports["default"] = {
     return true;
   },
   // 插入网络视频成功之后的回调函数
-  onlineVideoCallback: const_1.EMPTY_FN
+  onlineVideoCallback: const_1.EMPTY_FN,
+  // 显示“插入视频”
+  showLinkVideo: true,
+  // accept
+  uploadVideoAccept: ['mp4'],
+  // 服务端地址
+  uploadVideoServer: '',
+  // 上传视频的最大体积，默认 1024M
+  uploadVideoMaxSize: 1 * 1024 * 1024 * 1024,
+  // 一次最多上传多少个视频
+  // uploadVideoMaxLength: 2,
+  // 自定义上传视频的名称
+  uploadVideoName: '',
+  // 上传视频自定义参数
+  uploadVideoParams: {},
+  // 自定义参数拼接到 url 中
+  uploadVideoParamsWithUrl: false,
+  // 上传视频自定义 header
+  uploadVideoHeaders: {},
+  // 钩子函数
+  uploadVideoHooks: {},
+  // 上传视频超时时间 ms 默认2个小时
+  uploadVideoTimeout: 1000 * 60 * 60 * 2,
+  // 跨域带 cookie
+  withVideoCredentials: false,
+  // 自定义上传
+  customUploadVideo: null,
+  // 自定义插入视频
+  customInsertVideo: null
 };
 
 /***/ }),
-/* 281 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10346,8 +11298,6 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
 var util_1 = __webpack_require__(7);
-
-var index_1 = __importDefault(__webpack_require__(282));
 
 var SelectionAndRange =
 /** @class */
@@ -10388,7 +11338,7 @@ function () {
 
     var $containerElem = this.getSelectionContainerElem(range);
 
-    if (!$containerElem) {
+    if (!($containerElem === null || $containerElem === void 0 ? void 0 : $containerElem.length)) {
       // 当 选区范围内没有 DOM元素 则抛出
       return;
     }
@@ -10567,6 +11517,26 @@ function () {
     }
   };
   /**
+   * 重新设置选区
+   * @param startDom 选区开始的元素
+   * @param endDom 选区结束的元素
+   */
+
+
+  SelectionAndRange.prototype.createRangeByElems = function (startDom, endDom) {
+    var selection = window.getSelection ? window.getSelection() : document.getSelection(); //清除所有的选区
+
+    selection === null || selection === void 0 ? void 0 : selection.removeAllRanges();
+    var range = document.createRange();
+    range.setStart(startDom, 0); // 设置多行标签之后，第二个参数会被h标签内的b、font标签等影响range范围的选取
+
+    range.setEnd(endDom, endDom.childNodes.length || 1); // 保存设置好的选区
+
+    this.saveRange(range); //恢复选区
+
+    this.restoreSelection();
+  };
+  /**
    * 根据 DOM 元素设置选区
    * @param $elem DOM 元素
    * @param toStart true 开始位置，false 结束位置
@@ -10592,6 +11562,11 @@ function () {
     if (toStart != null) {
       // 传入了 toStart 参数，折叠选区。如果没传入 toStart 参数，则忽略这一步
       range.collapse(toStart);
+
+      if (!toStart) {
+        this.saveRange(range);
+        this.editor.selection.moveCursor(elem);
+      }
     } // 存储 range
 
 
@@ -10603,10 +11578,15 @@ function () {
    */
 
 
-  SelectionAndRange.prototype.getSelectionRangeTopNodes = function (editor) {
-    var item = new index_1["default"](editor);
-    item.init();
-    return item.getSelectionNodes();
+  SelectionAndRange.prototype.getSelectionRangeTopNodes = function () {
+    var _a, _b; // 清空，防止叠加元素
+
+
+    var $nodeList;
+    var $startElem = (_a = this.getSelectionStartElem()) === null || _a === void 0 ? void 0 : _a.getNodeTop(this.editor);
+    var $endElem = (_b = this.getSelectionEndElem()) === null || _b === void 0 ? void 0 : _b.getNodeTop(this.editor);
+    $nodeList = this.recordSelectionNodes(dom_core_1["default"]($startElem), dom_core_1["default"]($endElem));
+    return $nodeList;
   };
   /**
    * 移动光标位置,默认情况下在尾部
@@ -10652,90 +11632,17 @@ function () {
     var selection = window.getSelection();
     return selection === null || selection === void 0 ? void 0 : selection.anchorOffset;
   };
-
-  return SelectionAndRange;
-}();
-
-exports["default"] = SelectionAndRange;
-
-/***/ }),
-/* 282 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * @description 选取范围所有顶级(段落)节点
- * @author tonghan
- */
-
-var _interopRequireDefault = __webpack_require__(0);
-
-var _defineProperty = _interopRequireDefault(__webpack_require__(1));
-
-var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-(0, _defineProperty["default"])(exports, "__esModule", {
-  value: true
-});
-
-var dom_core_1 = __importDefault(__webpack_require__(2)); // 构造函数
-
-
-var SelectionRangeTopNodes =
-/** @class */
-function () {
   /**
-   * 构造函数
-   * @param editor
-   */
-  function SelectionRangeTopNodes(editor) {
-    // 初始化属性
-    this.editor = editor;
-    this.$nodeList = [];
-    this.$startElem = dom_core_1["default"](editor.selection.getSelectionStartElem()).getNodeTop(this.editor);
-    this.$endElem = dom_core_1["default"](editor.selection.getSelectionEndElem()).getNodeTop(this.editor);
-  }
-  /**
-   * 初始化
+   * 清除当前选区的Range,notice:不影响已保存的Range
    */
 
 
-  SelectionRangeTopNodes.prototype.init = function () {
-    this.recordSelectionNodes(dom_core_1["default"](this.$startElem));
-  };
-  /**
-   * 添加 节点 到nodeList
-   * @param $node 节点
-   */
+  SelectionAndRange.prototype.clearWindowSelectionRange = function () {
+    var selection = window.getSelection();
 
-
-  SelectionRangeTopNodes.prototype.addNodeList = function ($node) {
-    this.$nodeList.push(dom_core_1["default"]($node));
-  };
-  /**
-   * 是否是 选区结束 节点
-   * @param $node 节点
-   */
-
-
-  SelectionRangeTopNodes.prototype.isEndElem = function ($node) {
-    var _a;
-
-    return (_a = this.$endElem) === null || _a === void 0 ? void 0 : _a.equal($node);
-  };
-  /**
-   * 获取当前节点的下一个兄弟节点
-   * @param $node 节点
-   */
-
-
-  SelectionRangeTopNodes.prototype.getNextSibling = function ($node) {
-    return dom_core_1["default"]($node.elems[0].nextSibling);
+    if (selection) {
+      selection.removeAllRanges();
+    }
   };
   /**
    * 记录节点 - 从选区开始节点开始 一直到匹配到选区结束节点为止
@@ -10743,37 +11650,36 @@ function () {
    */
 
 
-  SelectionRangeTopNodes.prototype.recordSelectionNodes = function ($node) {
-    var $elem = $node.getNodeTop(this.editor);
+  SelectionAndRange.prototype.recordSelectionNodes = function ($node, $endElem) {
+    var $list = [];
+    var $NODE = $node;
+    var isEnd = true;
 
-    if ($elem.length > 0) {
-      this.addNodeList($elem);
+    while (isEnd) {
+      var $elem = $NODE.getNodeTop(this.editor);
+      if ($elem.getNodeName() === 'BODY') isEnd = false; // 兜底
 
-      if (!this.isEndElem($elem)) {
-        this.recordSelectionNodes(this.getNextSibling($elem));
+      if ($elem.length > 0) {
+        $list.push(dom_core_1["default"]($NODE));
+
+        if ($endElem === null || $endElem === void 0 ? void 0 : $endElem.equal($elem)) {
+          isEnd = false;
+        } else {
+          $NODE = $elem.getNextSibling();
+        }
       }
     }
-  };
-  /**
-   * 获取 选中节点列表
-   */
 
-
-  SelectionRangeTopNodes.prototype.getSelectionNodes = function () {
-    return this.$nodeList;
+    return $list;
   };
 
-  return SelectionRangeTopNodes;
+  return SelectionAndRange;
 }();
-/**
- * 导出
- */
 
-
-exports["default"] = SelectionRangeTopNodes;
+exports["default"] = SelectionAndRange;
 
 /***/ }),
-/* 283 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10866,7 +11772,15 @@ function () {
     } else if (range.insertNode) {
       // IE
       range.deleteContents();
-      range.insertNode(dom_core_1["default"](html).elems[0]);
+
+      if (dom_core_1["default"](html).elems.length > 0) {
+        range.insertNode(dom_core_1["default"](html).elems[0]);
+      } else {
+        var newNode = document.createElement('p');
+        newNode.appendChild(document.createTextNode(html));
+        range.insertNode(newNode);
+      }
+
       editor.selection.collapseRange();
     } // else if (range.pasteHTML) {
     //     // IE <= 10
@@ -10934,7 +11848,7 @@ function () {
 exports["default"] = Command;
 
 /***/ }),
-/* 284 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10946,13 +11860,13 @@ exports["default"] = Command;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
-var _indexOf = _interopRequireDefault(__webpack_require__(54));
+var _indexOf = _interopRequireDefault(__webpack_require__(31));
 
 var _trim = _interopRequireDefault(__webpack_require__(19));
 
-var _find = _interopRequireDefault(__webpack_require__(30));
+var _find = _interopRequireDefault(__webpack_require__(27));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -10968,13 +11882,13 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var index_1 = __importDefault(__webpack_require__(289));
+var index_1 = __importDefault(__webpack_require__(295));
 
 var util_1 = __webpack_require__(7);
 
-var getChildrenJSON_1 = __importDefault(__webpack_require__(301));
+var getChildrenJSON_1 = __importDefault(__webpack_require__(307));
 
-var getHtmlByNodeList_1 = __importDefault(__webpack_require__(302));
+var getHtmlByNodeList_1 = __importDefault(__webpack_require__(308));
 
 var Text =
 /** @class */
@@ -10982,9 +11896,11 @@ function () {
   function Text(editor) {
     this.editor = editor;
     this.eventHooks = {
+      onBlurEvents: [],
       changeEvents: [],
       dropEvents: [],
       clickEvents: [],
+      keydownEvents: [],
       keyupEvents: [],
       tabUpEvents: [],
       tabDownEvents: [],
@@ -11002,7 +11918,8 @@ function () {
       tableClickEvents: [],
       menuClickEvents: [],
       dropListMenuHoverEvents: [],
-      splitLineEvents: []
+      splitLineEvents: [],
+      videoClickEvents: []
     };
   }
   /**
@@ -11144,15 +12061,25 @@ function () {
 
 
   Text.prototype.append = function (html) {
+    var _context2;
+
     var editor = this.editor;
     var $textElem = editor.$textElem;
+    var blankLineReg = /(<p><br><\/p>)+$/g;
 
     if ((0, _indexOf["default"])(html).call(html, '<') !== 0) {
       // 普通字符串，用 <p> 包裹
       html = "<p>" + html + "</p>";
     }
 
-    $textElem.append(dom_core_1["default"](html)); // 初始化选区，将光标定位到内容尾部
+    if (blankLineReg.test((0, _trim["default"])(_context2 = $textElem.html()).call(_context2))) {
+      // 如果有多个空行替换最后一个 <p><br></p>
+      var insertHtml = $textElem.html().replace(/(.*)<p><br><\/p>/, '$1' + html);
+      this.html(insertHtml);
+    } else {
+      $textElem.append(dom_core_1["default"](html));
+    } // 初始化选区，将光标定位到内容尾部
+
 
     editor.initSelection();
   };
@@ -11230,6 +12157,13 @@ function () {
     $textElem.on('keyup', function (e) {
       var keyupEvents = eventHooks.keyupEvents;
       (0, _forEach["default"])(keyupEvents).call(keyupEvents, function (fn) {
+        return fn(e);
+      });
+    }); // 键盘 down 时的 hooks
+
+    $textElem.on('keydown', function (e) {
+      var keydownEvents = eventHooks.keydownEvents;
+      (0, _forEach["default"])(keydownEvents).call(keydownEvents, function (fn) {
         return fn(e);
       });
     }); // delete 键 up 时 hooks
@@ -11352,9 +12286,9 @@ function () {
       // 存储图片元素
       var $img = null;
       var target = e.target;
-      var $target = dom_core_1["default"](target); //处理图片点击 判断是否是表情 根据 不存在class或者className!==eleImg、没有alt属性
+      var $target = dom_core_1["default"](target); //处理图片点击 去除掉emoji图片的情况
 
-      if ($target.getNodeName() === 'IMG' && (!$target.elems[0].getAttribute('class') || $target.elems[0].getAttribute('class') !== 'eleImg') && !$target.elems[0].getAttribute('alt')) {
+      if ($target.getNodeName() === 'IMG' && !$target.elems[0].getAttribute('data-emoji')) {
         // 当前点击的就是img
         e.stopPropagation();
         $img = $target;
@@ -11457,6 +12391,26 @@ function () {
       (0, _forEach["default"])(enterDownEvents).call(enterDownEvents, function (fn) {
         return fn(e);
       });
+    }); // 视频 click
+
+    $textElem.on('click', function (e) {
+      // 存储视频
+      var $video = null;
+      var target = e.target;
+      var $target = dom_core_1["default"](target); //处理视频点击 简单的video 标签
+
+      if ($target.getNodeName() === 'VIDEO') {
+        // 当前点击的就是视频
+        e.stopPropagation();
+        $video = $target;
+      }
+
+      if (!$video) return; // 没有点击视频，则返回
+
+      var videoClickEvents = eventHooks.videoClickEvents;
+      (0, _forEach["default"])(videoClickEvents).call(videoClickEvents, function (fn) {
+        return fn($video);
+      });
     });
   };
 
@@ -11466,19 +12420,19 @@ function () {
 exports["default"] = Text;
 
 /***/ }),
-/* 285 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(286);
+var parent = __webpack_require__(292);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 286 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var find = __webpack_require__(287);
+var find = __webpack_require__(293);
 
 var ArrayPrototype = Array.prototype;
 
@@ -11489,25 +12443,25 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 287 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(288);
-var entryVirtual = __webpack_require__(16);
+__webpack_require__(294);
+var entryVirtual = __webpack_require__(15);
 
 module.exports = entryVirtual('Array').find;
 
 
 /***/ }),
-/* 288 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var $find = __webpack_require__(33).find;
-var addToUnscopables = __webpack_require__(85);
-var arrayMethodUsesToLength = __webpack_require__(25);
+var $ = __webpack_require__(6);
+var $find = __webpack_require__(30).find;
+var addToUnscopables = __webpack_require__(90);
+var arrayMethodUsesToLength = __webpack_require__(22);
 
 var FIND = 'find';
 var SKIPS_HOLES = true;
@@ -11530,7 +12484,7 @@ addToUnscopables(FIND);
 
 
 /***/ }),
-/* 289 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11554,15 +12508,15 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var enter_to_create_p_1 = __importDefault(__webpack_require__(290));
+var enter_to_create_p_1 = __importDefault(__webpack_require__(296));
 
-var del_to_keep_p_1 = __importDefault(__webpack_require__(291));
+var del_to_keep_p_1 = __importDefault(__webpack_require__(297));
 
-var tab_to_space_1 = __importDefault(__webpack_require__(292));
+var tab_to_space_1 = __importDefault(__webpack_require__(298));
 
-var paste_text_html_1 = __importDefault(__webpack_require__(293));
+var paste_text_html_1 = __importDefault(__webpack_require__(299));
 
-var img_click_active_1 = __importDefault(__webpack_require__(300));
+var img_click_active_1 = __importDefault(__webpack_require__(306));
 /**
  * 初始化 text 事件钩子函数
  * @param text text 实例
@@ -11587,7 +12541,7 @@ function initTextHooks(text) {
 exports["default"] = initTextHooks;
 
 /***/ }),
-/* 290 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11686,7 +12640,7 @@ function enterToCreateP(editor, enterUpEvents, enterDownEvents) {
 exports["default"] = enterToCreateP;
 
 /***/ }),
-/* 291 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11763,7 +12717,7 @@ function deleteToKeepP(editor, deleteUpEvents, deleteDownEvents) {
 exports["default"] = deleteToKeepP;
 
 /***/ }),
-/* 292 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11820,7 +12774,7 @@ function tabHandler(editor, tabDownEvents) {
 exports["default"] = tabHandler;
 
 /***/ }),
-/* 293 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11836,15 +12790,23 @@ var _trim = _interopRequireDefault(__webpack_require__(19));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
 (0, _defineProperty["default"])(exports, "__esModule", {
   value: true
 });
 
-var paste_event_1 = __webpack_require__(123);
+var paste_event_1 = __webpack_require__(129);
 
 var util_1 = __webpack_require__(7);
 
-var const_1 = __webpack_require__(26);
+var const_1 = __webpack_require__(32);
+
+var dom_core_1 = __importDefault(__webpack_require__(2));
 /**
  * 格式化html
  * @param val 粘贴的html
@@ -11871,6 +12833,33 @@ function formatHtml(val) {
 function formatCode(val) {
   var pasteText = val.replace(/<br>|<br\/>/gm, '\n').replace(/<[^>]+>/gm, '');
   return pasteText;
+}
+/**
+ * 判断html是否使用P标签包裹
+ * @param html 粘贴的html
+ * @author luochao
+ */
+
+
+function isParagraphHtml(html) {
+  var _a;
+
+  if (html === '') return false;
+  var container = document.createElement('div');
+  container.innerHTML = html;
+  return ((_a = container.firstChild) === null || _a === void 0 ? void 0 : _a.nodeName) === 'P';
+}
+/**
+ * 判断当前选区是否是空段落
+ * @param topElem 选区顶层元素
+ * @author luochao
+ */
+
+
+function isEmptyParagraph(topElem) {
+  if (!(topElem === null || topElem === void 0 ? void 0 : topElem.length)) return false;
+  var dom = topElem.elems[0];
+  return dom.nodeName === 'P' && dom.innerHTML === '<br>';
 }
 /**
  * 粘贴文本和 html
@@ -11940,10 +12929,35 @@ function pasteTextHtml(editor, pasteEvents) {
       var isCssStyle = /[\.\#\@]?\w+[^{]+\{[^}]*\}/.test(pasteHtml); // eslint-disable-line
       // 经过处理后还是包含暴露的css样式则直接插入它的text
 
-      if (isCssStyle) {
+      if (isCssStyle && pasteFilterStyle) {
         editor.cmd["do"]('insertHTML', "" + formatHtml(pasteText)); // text
       } else {
-        editor.cmd["do"]('insertHTML', "" + formatHtml(pasteHtml)); // html
+        var html = formatHtml(pasteHtml); // 如果是段落，为了兼容 firefox 和 chrome差异，自定义插入
+
+        if (isParagraphHtml(html)) {
+          var $textEl = editor.$textElem; // 全选的情况下覆盖原有内容
+
+          if ($textEl.equal($selectionElem)) {
+            editor.cmd["do"]('insertHTML', "" + formatHtml(pasteHtml)); // 更新选区
+
+            editor.selection.createEmptyRange();
+            return;
+          } else {
+            $textEl.append(dom_core_1["default"](html));
+          } // 如果选区是空段落，移除空段落
+
+
+          if (isEmptyParagraph($topElem)) {
+            $topElem.remove();
+          } // 移动光标到编辑器最后的位置
+
+
+          var lastEl = $textEl.last();
+          if (!(lastEl === null || lastEl === void 0 ? void 0 : lastEl.length)) return;
+          editor.selection.moveCursor(lastEl.elems[0]);
+        } else {
+          editor.cmd["do"]('insertHTML', "" + formatHtml(pasteHtml)); // html
+        }
       }
     } catch (ex) {
       // 此时使用 pasteText 来兼容一下
@@ -11962,7 +12976,7 @@ function pasteTextHtml(editor, pasteEvents) {
 exports["default"] = pasteTextHtml;
 
 /***/ }),
-/* 294 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11974,9 +12988,9 @@ exports["default"] = pasteTextHtml;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _includes = _interopRequireDefault(__webpack_require__(89));
+var _includes = _interopRequireDefault(__webpack_require__(70));
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _trim = _interopRequireDefault(__webpack_require__(19));
 
@@ -11992,9 +13006,9 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var tags_1 = __webpack_require__(295);
+var tags_1 = __webpack_require__(301);
 
-var simplehtmlparser_js_1 = __importDefault(__webpack_require__(299));
+var simplehtmlparser_js_1 = __importDefault(__webpack_require__(305));
 /**
  * 过滤掉空 span
  * @param html html
@@ -12184,7 +13198,7 @@ function parseHtml(html, filterStyle, ignoreImg) {
 exports["default"] = parseHtml;
 
 /***/ }),
-/* 295 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12196,9 +13210,9 @@ exports["default"] = parseHtml;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _map = _interopRequireDefault(__webpack_require__(114));
+var _map = _interopRequireDefault(__webpack_require__(118));
 
-var _set = _interopRequireDefault(__webpack_require__(124));
+var _set = _interopRequireDefault(__webpack_require__(130));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -12216,35 +13230,35 @@ exports.EMPTY_TAGS = new _set["default"](['area', 'base', 'basefont', 'br', 'col
 exports.TOP_LEVEL_TAGS = new _set["default"](['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'ul', 'ol', 'table', 'blockquote', 'pre', 'hr', 'form']);
 
 /***/ }),
-/* 296 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(297);
+var parent = __webpack_require__(303);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 297 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(298);
-__webpack_require__(62);
+__webpack_require__(304);
 __webpack_require__(65);
-__webpack_require__(51);
-var path = __webpack_require__(10);
+__webpack_require__(68);
+__webpack_require__(53);
+var path = __webpack_require__(9);
 
 module.exports = path.Set;
 
 
 /***/ }),
-/* 298 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var collection = __webpack_require__(115);
-var collectionStrong = __webpack_require__(117);
+var collection = __webpack_require__(119);
+var collectionStrong = __webpack_require__(121);
 
 // `Set` constructor
 // https://tc39.es/ecma262/#sec-set-objects
@@ -12254,7 +13268,7 @@ module.exports = collection('Set', function (init) {
 
 
 /***/ }),
-/* 299 */
+/* 305 */
 /***/ (function(module, exports) {
 
 // Copyright 2004 Erik Arvidsson. All Rights Reserved.
@@ -12406,8 +13420,8 @@ SimpleHtmlParser.prototype = {
     parseAttributes: function (sTagName, s) {
         var oThis = this
         var attrs = []
-        s.replace(this.attrRe, function (a0, a1, a2, a3, a4, a5, a6) {
-            attrs.push(oThis.parseAttribute(sTagName, a0, a1, a2, a3, a4, a5, a6))
+        s.replace(this.attrRe, function (a0, a1, a2, a3, a4, a5, a6, a7) {
+            attrs.push(oThis.parseAttribute(sTagName, a0, a1, a2, a3, a4, a5, a6, a7))
         })
         return attrs
     },
@@ -12428,7 +13442,7 @@ module.exports = SimpleHtmlParser
 
 
 /***/ }),
-/* 300 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12463,7 +13477,7 @@ function imgClickActive(editor, imgClickEvents) {
 exports["default"] = imgClickActive;
 
 /***/ }),
-/* 301 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12475,7 +13489,7 @@ exports["default"] = imgClickActive;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -12546,7 +13560,7 @@ function getChildrenJSON($elem) {
 exports["default"] = getChildrenJSON;
 
 /***/ }),
-/* 302 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12558,9 +13572,9 @@ exports["default"] = getChildrenJSON;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(94));
+var _typeof2 = _interopRequireDefault(__webpack_require__(96));
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -12613,7 +13627,7 @@ function getHtmlByNodeList(nodeList, parent) {
 exports["default"] = getHtmlByNodeList;
 
 /***/ }),
-/* 303 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12625,17 +13639,21 @@ exports["default"] = getHtmlByNodeList;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _bind = _interopRequireDefault(__webpack_require__(88));
+var _bind = _interopRequireDefault(__webpack_require__(55));
 
-var _setTimeout2 = _interopRequireDefault(__webpack_require__(121));
+var _setTimeout2 = _interopRequireDefault(__webpack_require__(127));
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _some = _interopRequireDefault(__webpack_require__(131));
 
-var _includes = _interopRequireDefault(__webpack_require__(89));
+var _entries = _interopRequireDefault(__webpack_require__(132));
 
-var _filter = _interopRequireDefault(__webpack_require__(66));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
-var _isArray = _interopRequireDefault(__webpack_require__(93));
+var _includes = _interopRequireDefault(__webpack_require__(70));
+
+var _filter = _interopRequireDefault(__webpack_require__(71));
+
+var _isArray = _interopRequireDefault(__webpack_require__(95));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -12649,7 +13667,9 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var menu_list_1 = __importDefault(__webpack_require__(304));
+var index_1 = __importDefault(__webpack_require__(117));
+
+var menu_list_1 = __importDefault(__webpack_require__(318));
 
 var dom_core_1 = __importDefault(__webpack_require__(2)); // import { MenuActive } from './menu-constructors/Menu'
 
@@ -12691,22 +13711,50 @@ function () {
     (0, _forEach["default"])(_context2 = config.menus).call(_context2, function (menuKey) {
       var MenuConstructor = _this.constructorList[menuKey]; // 暂用 any ，后面再替换
 
-      if (MenuConstructor == null || typeof MenuConstructor !== 'function') {
-        // 必须是 class
-        return;
-      } // 创建 menu 实例，并放到 menuList 中
+      _this._initMenuList(menuKey, MenuConstructor);
+    }); // 全局注册
+
+    for (var _i = 0, _a = (0, _entries["default"])(index_1["default"].globalCustomMenuConstructorList); _i < _a.length; _i++) {
+      var _b = _a[_i],
+          menuKey = _b[0],
+          menuFun = _b[1];
+      var MenuConstructor = menuFun; // 暂用 any ，后面再替换
+
+      this._initMenuList(menuKey, MenuConstructor);
+    } // 渲染 DOM
 
 
-      var m = new MenuConstructor(_this.editor);
+    this._addToToolbar();
+
+    if (config.showMenuTooltips) {
+      // 添加菜单栏tooltips
+      this._bindMenuTooltips();
+    }
+  };
+  /**
+   * 创建 menu 实例，并放到 menuList 中
+   * @param menuKey 菜单 key ，和 editor.config.menus 对应
+   * @param MenuConstructor 菜单构造函数
+   */
+
+
+  Menus.prototype._initMenuList = function (menuKey, MenuConstructor) {
+    var _context3;
+
+    if (MenuConstructor == null || typeof MenuConstructor !== 'function') {
+      // 必须是 class
+      return;
+    }
+
+    if ((0, _some["default"])(_context3 = this.menuList).call(_context3, function (menu) {
+      return menu.key === menuKey;
+    })) {
+      console.warn('菜单名称重复:' + menuKey);
+    } else {
+      var m = new MenuConstructor(this.editor);
       m.key = menuKey;
-
-      _this.menuList.push(m);
-    }); // 渲染 DOM
-
-    this._addToToolbar(); // 添加菜单栏tooltips
-
-
-    this._bindMenuTooltips();
+      this.menuList.push(m);
+    }
   }; // 绑定菜单栏tooltips
 
 
@@ -12783,12 +13831,12 @@ function () {
 
 
   Menus.prototype._addToToolbar = function () {
-    var _context3;
+    var _context4;
 
     var editor = this.editor;
     var $toolbarElem = editor.$toolbarElem; // 遍历添加到 DOM
 
-    (0, _forEach["default"])(_context3 = this.menuList).call(_context3, function (menu) {
+    (0, _forEach["default"])(_context4 = this.menuList).call(_context4, function (menu) {
       var $elem = menu.$elem;
 
       if ($elem) {
@@ -12818,12 +13866,12 @@ function () {
 
 
   Menus.prototype.changeActive = function () {
-    var _context4;
+    var _context5;
 
-    (0, _forEach["default"])(_context4 = this.menuList).call(_context4, function (menu) {
-      var _context5;
+    (0, _forEach["default"])(_context5 = this.menuList).call(_context5, function (menu) {
+      var _context6;
 
-      (0, _setTimeout2["default"])((0, _bind["default"])(_context5 = menu.tryChangeActive).call(_context5, menu), 100); // 暂用 any ，后面再替换
+      (0, _setTimeout2["default"])((0, _bind["default"])(_context6 = menu.tryChangeActive).call(_context6, menu), 100); // 暂用 any ，后面再替换
     });
   };
 
@@ -12833,7 +13881,136 @@ function () {
 exports["default"] = Menus;
 
 /***/ }),
-/* 304 */
+/* 310 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var parent = __webpack_require__(311);
+
+module.exports = parent;
+
+
+/***/ }),
+/* 311 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var some = __webpack_require__(312);
+
+var ArrayPrototype = Array.prototype;
+
+module.exports = function (it) {
+  var own = it.some;
+  return it === ArrayPrototype || (it instanceof Array && own === ArrayPrototype.some) ? some : own;
+};
+
+
+/***/ }),
+/* 312 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(313);
+var entryVirtual = __webpack_require__(15);
+
+module.exports = entryVirtual('Array').some;
+
+
+/***/ }),
+/* 313 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__(6);
+var $some = __webpack_require__(30).some;
+var arrayMethodIsStrict = __webpack_require__(69);
+var arrayMethodUsesToLength = __webpack_require__(22);
+
+var STRICT_METHOD = arrayMethodIsStrict('some');
+var USES_TO_LENGTH = arrayMethodUsesToLength('some');
+
+// `Array.prototype.some` method
+// https://tc39.es/ecma262/#sec-array.prototype.some
+$({ target: 'Array', proto: true, forced: !STRICT_METHOD || !USES_TO_LENGTH }, {
+  some: function some(callbackfn /* , thisArg */) {
+    return $some(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+
+/***/ }),
+/* 314 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var parent = __webpack_require__(315);
+
+module.exports = parent;
+
+
+/***/ }),
+/* 315 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(316);
+var path = __webpack_require__(9);
+
+module.exports = path.Object.entries;
+
+
+/***/ }),
+/* 316 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__(6);
+var $entries = __webpack_require__(317).entries;
+
+// `Object.entries` method
+// https://tc39.es/ecma262/#sec-object.entries
+$({ target: 'Object', stat: true }, {
+  entries: function entries(O) {
+    return $entries(O);
+  }
+});
+
+
+/***/ }),
+/* 317 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var DESCRIPTORS = __webpack_require__(14);
+var objectKeys = __webpack_require__(60);
+var toIndexedObject = __webpack_require__(28);
+var propertyIsEnumerable = __webpack_require__(58).f;
+
+// `Object.{ entries, values }` methods implementation
+var createMethod = function (TO_ENTRIES) {
+  return function (it) {
+    var O = toIndexedObject(it);
+    var keys = objectKeys(O);
+    var length = keys.length;
+    var i = 0;
+    var result = [];
+    var key;
+    while (length > i) {
+      key = keys[i++];
+      if (!DESCRIPTORS || propertyIsEnumerable.call(O, key)) {
+        result.push(TO_ENTRIES ? [key, O[key]] : O[key]);
+      }
+    }
+    return result;
+  };
+};
+
+module.exports = {
+  // `Object.entries` method
+  // https://tc39.es/ecma262/#sec-object.entries
+  entries: createMethod(true),
+  // `Object.values` method
+  // https://tc39.es/ecma262/#sec-object.values
+  values: createMethod(false)
+};
+
+
+/***/ }),
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12857,53 +14034,53 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var index_1 = __importDefault(__webpack_require__(305));
+var index_1 = __importDefault(__webpack_require__(319));
 
-var index_2 = __importDefault(__webpack_require__(309));
+var index_2 = __importDefault(__webpack_require__(327));
 
-var index_3 = __importDefault(__webpack_require__(314));
+var index_3 = __importDefault(__webpack_require__(332));
 
-var index_4 = __importDefault(__webpack_require__(318));
+var index_4 = __importDefault(__webpack_require__(336));
 
-var index_5 = __importDefault(__webpack_require__(319));
+var index_5 = __importDefault(__webpack_require__(337));
 
-var index_6 = __importDefault(__webpack_require__(320));
+var index_6 = __importDefault(__webpack_require__(338));
 
-var index_7 = __importDefault(__webpack_require__(321));
+var index_7 = __importDefault(__webpack_require__(339));
 
-var font_size_1 = __importDefault(__webpack_require__(323));
+var font_size_1 = __importDefault(__webpack_require__(341));
 
-var index_8 = __importDefault(__webpack_require__(325));
+var index_8 = __importDefault(__webpack_require__(343));
 
-var index_9 = __importDefault(__webpack_require__(326));
+var index_9 = __importDefault(__webpack_require__(344));
 
-var index_10 = __importDefault(__webpack_require__(329));
+var index_10 = __importDefault(__webpack_require__(347));
 
-var index_11 = __importDefault(__webpack_require__(330));
+var index_11 = __importDefault(__webpack_require__(348));
 
-var index_12 = __importDefault(__webpack_require__(331));
+var index_12 = __importDefault(__webpack_require__(349));
 
-var index_13 = __importDefault(__webpack_require__(333));
+var index_13 = __importDefault(__webpack_require__(358));
 
-var index_14 = __importDefault(__webpack_require__(353));
+var index_14 = __importDefault(__webpack_require__(372));
 
-var index_15 = __importDefault(__webpack_require__(357));
+var index_15 = __importDefault(__webpack_require__(376));
 
-var index_16 = __importDefault(__webpack_require__(359));
+var index_16 = __importDefault(__webpack_require__(137));
 
-var index_17 = __importDefault(__webpack_require__(360));
+var index_17 = __importDefault(__webpack_require__(385));
 
-var index_18 = __importDefault(__webpack_require__(362));
+var index_18 = __importDefault(__webpack_require__(387));
 
-var index_19 = __importDefault(__webpack_require__(363));
+var index_19 = __importDefault(__webpack_require__(388));
 
-var index_20 = __importDefault(__webpack_require__(364));
+var index_20 = __importDefault(__webpack_require__(389));
 
-var code_1 = __importDefault(__webpack_require__(373));
+var code_1 = __importDefault(__webpack_require__(403));
 
-var index_21 = __importDefault(__webpack_require__(377));
+var index_21 = __importDefault(__webpack_require__(408));
 
-var todo_1 = __importDefault(__webpack_require__(380));
+var todo_1 = __importDefault(__webpack_require__(411));
 
 exports["default"] = {
   bold: index_1["default"],
@@ -12933,7 +14110,7 @@ exports["default"] = {
 };
 
 /***/ }),
-/* 305 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12947,9 +14124,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -12987,7 +14164,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var BtnMenu_1 = __importDefault(__webpack_require__(22));
+var BtnMenu_1 = __importDefault(__webpack_require__(23));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
@@ -13047,30 +14224,30 @@ function (_super) {
 exports["default"] = Bold;
 
 /***/ }),
-/* 306 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(307);
+var parent = __webpack_require__(321);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 307 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(308);
-var path = __webpack_require__(10);
+__webpack_require__(322);
+var path = __webpack_require__(9);
 
 module.exports = path.Object.setPrototypeOf;
 
 
 /***/ }),
-/* 308 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = __webpack_require__(4);
-var setPrototypeOf = __webpack_require__(77);
+var $ = __webpack_require__(6);
+var setPrototypeOf = __webpack_require__(82);
 
 // `Object.setPrototypeOf` method
 // https://tc39.es/ecma262/#sec-object.setprototypeof
@@ -13080,7 +14257,37 @@ $({ target: 'Object', stat: true }, {
 
 
 /***/ }),
-/* 309 */
+/* 323 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(324);
+
+/***/ }),
+/* 324 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var parent = __webpack_require__(122);
+
+module.exports = parent;
+
+
+/***/ }),
+/* 325 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(326);
+
+/***/ }),
+/* 326 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var parent = __webpack_require__(124);
+
+module.exports = parent;
+
+
+/***/ }),
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13092,17 +14299,21 @@ $({ target: 'Object', stat: true }, {
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _stringify = _interopRequireDefault(__webpack_require__(310));
+var _includes = _interopRequireDefault(__webpack_require__(70));
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _stringify = _interopRequireDefault(__webpack_require__(328));
 
-var _find = _interopRequireDefault(__webpack_require__(30));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
+
+var _find = _interopRequireDefault(__webpack_require__(27));
+
+var _indexOf = _interopRequireDefault(__webpack_require__(31));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -13140,7 +14351,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var DropListMenu_1 = __importDefault(__webpack_require__(23));
+var DropListMenu_1 = __importDefault(__webpack_require__(24));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
@@ -13211,10 +14422,18 @@ function (_super) {
     if ($selectionElem && editor.$textElem.equal($selectionElem)) {
       // 不能选中多行来设置标题，否则会出现问题
       // 例如选中的是 <p>xxx</p><p>yyy</p> 来设置标题，设置之后会成为 <h1>xxx<br>yyy</h1> 不符合预期
-      return;
-    }
+      this.setMultilineHead(value);
+    } else {
+      var _context;
 
-    editor.cmd["do"]('formatBlock', value); // 标题设置成功且不是<p>正文标签就配置大纲id
+      // 选中内容包含序列，code，表格，分割线时不处理
+      if ((0, _indexOf["default"])(_context = ['OL', 'UL', 'LI', 'TABLE', 'TH', 'TR', 'CODE', 'HR']).call(_context, dom_core_1["default"]($selectionElem).getNodeName()) > -1) {
+        return;
+      }
+
+      editor.cmd["do"]('formatBlock', value);
+    } // 标题设置成功且不是<p>正文标签就配置大纲id
+
 
     value !== '<p>' && this.addUidForSelectionElem();
   };
@@ -13280,6 +14499,98 @@ function (_super) {
     }
   };
   /**
+   * 设置选中的多行标题
+   * @param value  需要执行的命令值
+   */
+
+
+  Head.prototype.setMultilineHead = function (value) {
+    var _this = this;
+
+    var _a, _b;
+
+    var editor = this.editor;
+    var $selection = editor.selection; // 初始选区的父节点
+
+    var containerElem = (_a = $selection.getSelectionContainerElem()) === null || _a === void 0 ? void 0 : _a.elems[0]; // 白名单：用户选区里如果有该元素则不进行转换
+
+    var _WHITE_LIST = ['IMG', 'VIDEO', 'TABLE', 'TH', 'TR', 'UL', 'OL', 'PRE', 'HR', 'BLOCKQUOTE']; // 获取选中的首、尾元素
+
+    var startElem = dom_core_1["default"]($selection.getSelectionStartElem());
+    var endElem = dom_core_1["default"]($selection.getSelectionEndElem()); // 判断用户选中元素是否为最后一个空元素，如果是将endElem指向上一个元素
+
+    if (endElem.elems[0].outerHTML === dom_core_1["default"]('<p><br></p>').elems[0].outerHTML && !endElem.elems[0].nextSibling) {
+      endElem = endElem.prev();
+    } // 存放选中的所有元素
+
+
+    var cacheDomList = [];
+    cacheDomList.push(startElem.getNodeTop(editor)); // 选中首尾元素在父级下的坐标
+
+    var indexList = []; // 选区共同祖先元素的所有子节点
+
+    var childList = (_b = $selection.getRange()) === null || _b === void 0 ? void 0 : _b.commonAncestorContainer.childNodes; // 找到选区的首尾元素的下标，方便最后恢复选区
+
+    childList === null || childList === void 0 ? void 0 : (0, _forEach["default"])(childList).call(childList, function (item, index) {
+      if (item === cacheDomList[0].getNode()) {
+        indexList.push(index);
+      }
+
+      if (item === endElem.getNodeTop(editor).getNode()) {
+        indexList.push(index);
+      }
+    }); // 找到首尾元素中间所包含的所有dom
+
+    var i = 0; // 数组中的当前元素不等于选区最后一个节点时循环寻找中间节点
+
+    while (cacheDomList[i].getNode() !== endElem.getNodeTop(editor).getNode()) {
+      // 严谨性判断，是否元素为空
+      if (!cacheDomList[i].elems[0]) return;
+      var d = dom_core_1["default"](cacheDomList[i].next().getNode());
+      cacheDomList.push(d);
+      i++;
+    } // 将选区内的所有子节点进行遍历生成对应的标签
+
+
+    cacheDomList === null || cacheDomList === void 0 ? void 0 : (0, _forEach["default"])(cacheDomList).call(cacheDomList, function (_node, index) {
+      // 判断元素是否含有白名单内的标签元素
+      if (!_this.hasTag(_node, _WHITE_LIST)) {
+        var $h = dom_core_1["default"](value);
+
+        var $parentNode = _node.parent().getNode(); // 设置标签内容
+
+
+        $h.html("" + _node.html()); // 插入生成的新标签
+
+        $parentNode.insertBefore($h.getNode(), _node.getNode()); // 移除原有的标签
+
+        _node.remove();
+      }
+    }); // 重新设置选区起始位置，保留拖蓝区域
+
+    $selection.createRangeByElems(containerElem.children[indexList[0]], containerElem.children[indexList[1]]);
+  };
+  /**
+   * 是否含有某元素
+   * @param elem 需要检查的元素
+   * @param whiteList 白名单
+   */
+
+
+  Head.prototype.hasTag = function (elem, whiteList) {
+    var _this = this;
+
+    var _a;
+
+    if (!elem) return false;
+    if ((0, _includes["default"])(whiteList).call(whiteList, elem === null || elem === void 0 ? void 0 : elem.getNodeName())) return true;
+    var _flag = false;
+    (_a = elem.children()) === null || _a === void 0 ? void 0 : (0, _forEach["default"])(_a).call(_a, function (child) {
+      _flag = _this.hasTag(dom_core_1["default"](child), whiteList);
+    });
+    return _flag;
+  };
+  /**
    * 尝试改变菜单激活（高亮）状态
    */
 
@@ -13302,26 +14613,26 @@ function (_super) {
 exports["default"] = Head;
 
 /***/ }),
-/* 310 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(311);
+module.exports = __webpack_require__(329);
 
 /***/ }),
-/* 311 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(312);
+var parent = __webpack_require__(330);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 312 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(313);
-var core = __webpack_require__(10);
+__webpack_require__(331);
+var core = __webpack_require__(9);
 
 if (!core.JSON) core.JSON = { stringify: JSON.stringify };
 
@@ -13332,12 +14643,12 @@ module.exports = function stringify(it, replacer, space) {
 
 
 /***/ }),
-/* 313 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = __webpack_require__(4);
-var getBuiltIn = __webpack_require__(28);
-var fails = __webpack_require__(12);
+var $ = __webpack_require__(6);
+var getBuiltIn = __webpack_require__(29);
+var fails = __webpack_require__(11);
 
 var $stringify = getBuiltIn('JSON', 'stringify');
 var re = /[\uD800-\uDFFF]/g;
@@ -13372,7 +14683,7 @@ if ($stringify) {
 
 
 /***/ }),
-/* 314 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13386,9 +14697,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -13426,17 +14737,17 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var PanelMenu_1 = __importDefault(__webpack_require__(34));
+var PanelMenu_1 = __importDefault(__webpack_require__(35));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var create_panel_conf_1 = __importDefault(__webpack_require__(315));
+var create_panel_conf_1 = __importDefault(__webpack_require__(333));
 
-var is_active_1 = __importDefault(__webpack_require__(126));
+var is_active_1 = __importDefault(__webpack_require__(134));
 
-var Panel_1 = __importDefault(__webpack_require__(31));
+var Panel_1 = __importDefault(__webpack_require__(33));
 
-var index_1 = __importDefault(__webpack_require__(316));
+var index_1 = __importDefault(__webpack_require__(334));
 
 var Link =
 /** @class */
@@ -13515,7 +14826,7 @@ function (_super) {
 exports["default"] = Link;
 
 /***/ }),
-/* 315 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13545,7 +14856,7 @@ var util_1 = __webpack_require__(7);
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var is_active_1 = __importDefault(__webpack_require__(126));
+var is_active_1 = __importDefault(__webpack_require__(134));
 
 function default_1(editor, text, link) {
   // panel 中需要用到的id
@@ -13674,7 +14985,7 @@ function default_1(editor, text, link) {
 exports["default"] = default_1;
 
 /***/ }),
-/* 316 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13698,7 +15009,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var tooltip_event_1 = __importDefault(__webpack_require__(317));
+var tooltip_event_1 = __importDefault(__webpack_require__(335));
 /**
  * 绑定事件
  * @param editor 编辑器实例
@@ -13713,7 +15024,7 @@ function bindEvent(editor) {
 exports["default"] = bindEvent;
 
 /***/ }),
-/* 317 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13739,7 +15050,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var Tooltip_1 = __importDefault(__webpack_require__(44));
+var Tooltip_1 = __importDefault(__webpack_require__(36));
 /**
  * 生成 Tooltip 的显示隐藏函数
  */
@@ -13820,7 +15131,7 @@ function bindTooltipEvent(editor) {
 exports["default"] = bindTooltipEvent;
 
 /***/ }),
-/* 318 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13834,9 +15145,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -13874,7 +15185,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var BtnMenu_1 = __importDefault(__webpack_require__(22));
+var BtnMenu_1 = __importDefault(__webpack_require__(23));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
@@ -13934,7 +15245,7 @@ function (_super) {
 exports["default"] = Italic;
 
 /***/ }),
-/* 319 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13949,9 +15260,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -13989,7 +15300,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var BtnMenu_1 = __importDefault(__webpack_require__(22));
+var BtnMenu_1 = __importDefault(__webpack_require__(23));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
@@ -14049,7 +15360,7 @@ function (_super) {
 exports["default"] = Underline;
 
 /***/ }),
-/* 320 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14063,9 +15374,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -14103,7 +15414,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var BtnMenu_1 = __importDefault(__webpack_require__(22));
+var BtnMenu_1 = __importDefault(__webpack_require__(23));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
@@ -14163,7 +15474,7 @@ function (_super) {
 exports["default"] = StrikeThrough;
 
 /***/ }),
-/* 321 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14178,9 +15489,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -14218,11 +15529,11 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var DropListMenu_1 = __importDefault(__webpack_require__(23));
+var DropListMenu_1 = __importDefault(__webpack_require__(24));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var FontStyleList_1 = __importDefault(__webpack_require__(322));
+var FontStyleList_1 = __importDefault(__webpack_require__(340));
 
 var FontStyle =
 /** @class */
@@ -14259,12 +15570,13 @@ function (_super) {
     var editor = this.editor;
     var isEmptySelection = editor.selection.isSelectionEmpty();
     var $selectionElem = (_a = editor.selection.getSelectionContainerElem()) === null || _a === void 0 ? void 0 : _a.elems[0];
+    if ($selectionElem == null) return;
     var isFont = ($selectionElem === null || $selectionElem === void 0 ? void 0 : $selectionElem.nodeName.toLowerCase()) !== 'p';
     var isSameValue = ($selectionElem === null || $selectionElem === void 0 ? void 0 : $selectionElem.getAttribute('face')) === value;
 
     if (isEmptySelection) {
       if (isFont && !isSameValue) {
-        var $elems = editor.selection.getSelectionRangeTopNodes(editor);
+        var $elems = editor.selection.getSelectionRangeTopNodes();
         editor.selection.createRangeByElem($elems[0]);
         editor.selection.moveCursor($elems[0].elems[0]);
       } // 插入空白选区
@@ -14302,7 +15614,7 @@ function (_super) {
 exports["default"] = FontStyle;
 
 /***/ }),
-/* 322 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14310,7 +15622,7 @@ exports["default"] = FontStyle;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -14362,7 +15674,7 @@ function () {
 exports["default"] = FontStyleList;
 
 /***/ }),
-/* 323 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14377,9 +15689,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -14417,11 +15729,11 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var DropListMenu_1 = __importDefault(__webpack_require__(23));
+var DropListMenu_1 = __importDefault(__webpack_require__(24));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var FontSizeList_1 = __importDefault(__webpack_require__(324));
+var FontSizeList_1 = __importDefault(__webpack_require__(342));
 
 var FontSize =
 /** @class */
@@ -14458,12 +15770,13 @@ function (_super) {
     var editor = this.editor;
     var isEmptySelection = editor.selection.isSelectionEmpty();
     var $selectionElem = (_a = editor.selection.getSelectionContainerElem()) === null || _a === void 0 ? void 0 : _a.elems[0];
+    if ($selectionElem == null) return;
     var isFont = ($selectionElem === null || $selectionElem === void 0 ? void 0 : $selectionElem.nodeName.toLowerCase()) !== 'p';
     var isSameSize = ($selectionElem === null || $selectionElem === void 0 ? void 0 : $selectionElem.getAttribute('size')) === value;
 
     if (isEmptySelection) {
       if (isFont && !isSameSize) {
-        var $elems = editor.selection.getSelectionRangeTopNodes(editor);
+        var $elems = editor.selection.getSelectionRangeTopNodes();
         editor.selection.createRangeByElem($elems[0]);
         editor.selection.moveCursor($elems[0].elems[0]);
       } // 插入空白选区
@@ -14494,7 +15807,7 @@ function (_super) {
 exports["default"] = FontSize;
 
 /***/ }),
-/* 324 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14549,7 +15862,7 @@ function () {
 exports["default"] = FontSizeList;
 
 /***/ }),
-/* 325 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14561,13 +15874,15 @@ exports["default"] = FontSizeList;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _indexOf = _interopRequireDefault(__webpack_require__(31));
+
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -14605,9 +15920,12 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var DropListMenu_1 = __importDefault(__webpack_require__(23));
+var DropListMenu_1 = __importDefault(__webpack_require__(24));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
+
+var SPECIAL_NODE_LIST = ['LI'];
+var SPECIAL_TOP_NODE_LIST = ['UL', 'BLOCKQUOTE'];
 
 var Justify =
 /** @class */
@@ -14624,16 +15942,16 @@ function (_super) {
       type: 'list',
       list: [{
         $elem: dom_core_1["default"]("<p>\n                            <i class=\"w-e-icon-paragraph-left w-e-drop-list-item\"></i>\n                            " + editor.i18next.t('menus.dropListMenu.justify.靠左') + "\n                        </p>"),
-        value: 'justifyLeft'
+        value: 'left'
       }, {
         $elem: dom_core_1["default"]("<p>\n                            <i class=\"w-e-icon-paragraph-center w-e-drop-list-item\"></i>\n                            " + editor.i18next.t('menus.dropListMenu.justify.居中') + "\n                        </p>"),
-        value: 'justifyCenter'
+        value: 'center'
       }, {
         $elem: dom_core_1["default"]("<p>\n                            <i class=\"w-e-icon-paragraph-right w-e-drop-list-item\"></i>\n                            " + editor.i18next.t('menus.dropListMenu.justify.靠右') + "\n                        </p>"),
-        value: 'justifyRight'
+        value: 'right'
       }, {
         $elem: dom_core_1["default"]("<p>\n                            <i class=\"w-e-icon-paragraph-justify w-e-drop-list-item\"></i>\n                            " + editor.i18next.t('menus.dropListMenu.justify.两端') + "\n                        </p>"),
-        value: 'justifyFull'
+        value: 'justify'
       }],
       clickHandler: function clickHandler(value) {
         // 执行对应的value操作
@@ -14654,27 +15972,76 @@ function (_super) {
     var selection = editor.selection;
     var $selectionElem = selection.getSelectionContainerElem(); // 保存选区
 
-    selection.saveRange(); // 数据项
+    selection.saveRange(); // 获取顶级元素
 
-    var justifyClass = {
-      justifyLeft: 'left',
-      justifyCenter: 'center',
-      justifyRight: 'right',
-      justifyFull: 'justify'
-    }; // 获取顶级元素
+    var $elems = editor.selection.getSelectionRangeTopNodes();
 
-    var $elems = editor.selection.getSelectionRangeTopNodes(editor);
-
-    if ($selectionElem) {
-      // 获取在css中对应style的值
-      var justifyValue_1 = justifyClass[value];
-      (0, _forEach["default"])($elems).call($elems, function (el) {
-        el.css('text-align', justifyValue_1);
-      });
+    if ($selectionElem === null || $selectionElem === void 0 ? void 0 : $selectionElem.length) {
+      // list 在chrome下默认多包裹一个 p，导致不能通过顶层元素判断，所以单独加个判断
+      if (this.isSpecialNode($selectionElem, $elems[0]) || this.isSpecialTopNode($elems[0])) {
+        var el = this.getSpecialNodeUntilTop($selectionElem, $elems[0]);
+        if (el == null) return;
+        dom_core_1["default"](el).css('text-align', value);
+      } else {
+        (0, _forEach["default"])($elems).call($elems, function (el) {
+          el.css('text-align', value);
+        });
+      }
     } //恢复选区
 
 
     selection.restoreSelection();
+  };
+  /**
+   * 获取选区中的特殊元素，如果不存在，则直接返回顶层元素子元素
+   * @param el DomElement
+   * @param topEl DomElement
+   */
+
+
+  Justify.prototype.getSpecialNodeUntilTop = function (el, topEl) {
+    var parentNode = el.elems[0];
+    var topNode = topEl.elems[0]; // 可能出现嵌套的情况，所以一级一级向上找，是否是特殊元素
+
+    while (parentNode != null) {
+      if ((0, _indexOf["default"])(SPECIAL_NODE_LIST).call(SPECIAL_NODE_LIST, parentNode === null || parentNode === void 0 ? void 0 : parentNode.nodeName) !== -1) {
+        return parentNode;
+      } // 如果再到 top 元素之前还没找到特殊元素，直接返回元素
+
+
+      if (parentNode.parentNode === topNode) {
+        return parentNode;
+      }
+
+      parentNode = parentNode.parentNode;
+    }
+
+    return parentNode;
+  };
+  /**
+   * 当选区元素或者顶层元素是某些特殊元素时，只需要修改子元素的对齐样式的元素
+   * @param el DomElement
+   * @param topEl DomElement
+   */
+
+
+  Justify.prototype.isSpecialNode = function (el, topEl) {
+    // 如果以后有类似的元素要这样处理，直接修改这个数组即可
+    var parentNode = this.getSpecialNodeUntilTop(el, topEl);
+    if (parentNode == null) return false;
+    return (0, _indexOf["default"])(SPECIAL_NODE_LIST).call(SPECIAL_NODE_LIST, parentNode.nodeName) !== -1;
+  };
+  /**
+   * 当选区 top 元素为某些特殊元素时，只需要修改子元素的对齐样式的元素
+   * @param el DomElement
+   */
+
+
+  Justify.prototype.isSpecialTopNode = function (topEl) {
+    var _a;
+
+    if (topEl == null) return false;
+    return (0, _indexOf["default"])(SPECIAL_TOP_NODE_LIST).call(SPECIAL_TOP_NODE_LIST, (_a = topEl.elems[0]) === null || _a === void 0 ? void 0 : _a.nodeName) !== -1;
   };
   /**
    * 尝试改变菜单激活（高亮）状态
@@ -14683,14 +16050,7 @@ function (_super) {
    */
 
 
-  Justify.prototype.tryChangeActive = function () {// const editor = this.editor
-    // let isjustify = ['justifyCenter', 'justifyRight'].some(e => editor.cmd.queryCommandState(e))
-    // if (isjustify) {
-    //     this.active()
-    // } else {
-    //     this.unActive()
-    // }
-  };
+  Justify.prototype.tryChangeActive = function () {};
 
   return Justify;
 }(DropListMenu_1["default"]);
@@ -14698,7 +16058,7 @@ function (_super) {
 exports["default"] = Justify;
 
 /***/ }),
-/* 326 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14710,13 +16070,13 @@ exports["default"] = Justify;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -14756,11 +16116,11 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var BtnMenu_1 = __importDefault(__webpack_require__(22));
+var BtnMenu_1 = __importDefault(__webpack_require__(23));
 
-var bind_event_1 = __importDefault(__webpack_require__(327));
+var bind_event_1 = __importDefault(__webpack_require__(345));
 
-var create_quote_node_1 = __importDefault(__webpack_require__(328));
+var create_quote_node_1 = __importDefault(__webpack_require__(346));
 
 var Quote =
 /** @class */
@@ -14785,7 +16145,7 @@ function (_super) {
 
     var editor = this.editor;
     var isSelectEmpty = editor.selection.isSelectionEmpty();
-    var topNodeElem = editor.selection.getSelectionRangeTopNodes(editor);
+    var topNodeElem = editor.selection.getSelectionRangeTopNodes();
     var $topNodeElem = topNodeElem[topNodeElem.length - 1];
     var nodeName = this.getTopNodeName(); // IE 中不支持 formatBlock <BLOCKQUOTE> ，要用其他方式兼容
     // 兼容firefox无法取消blockquote的问题
@@ -14809,7 +16169,8 @@ function (_super) {
       var $quote = create_quote_node_1["default"](topNodeElem);
       $quote.insertAfter($topNodeElem);
       this.delSelectNode(topNodeElem);
-      var moveNode = (_a = $quote.childNodes()) === null || _a === void 0 ? void 0 : _a.last().getNode(); // 兼容firefox（firefox下空行情况下选区会在br后，造成自动换行的问题）
+      var moveNode = (_a = $quote.childNodes()) === null || _a === void 0 ? void 0 : _a.last().getNode();
+      if (moveNode == null) return; // 兼容firefox（firefox下空行情况下选区会在br后，造成自动换行的问题）
 
       moveNode.textContent ? editor.selection.moveCursor(moveNode) : editor.selection.moveCursor(moveNode, 0); // 即时更新btn状态
 
@@ -14834,7 +16195,7 @@ function (_super) {
     var _a;
 
     var editor = this.editor;
-    var cmdValue = (_a = editor.selection.getSelectionRangeTopNodes(editor)[0]) === null || _a === void 0 ? void 0 : _a.getNodeName();
+    var cmdValue = (_a = editor.selection.getSelectionRangeTopNodes()[0]) === null || _a === void 0 ? void 0 : _a.getNodeName();
 
     if (cmdValue === 'BLOCKQUOTE') {
       this.active();
@@ -14851,7 +16212,7 @@ function (_super) {
 
   Quote.prototype.getTopNodeName = function () {
     var editor = this.editor;
-    var $topNodeElem = editor.selection.getSelectionRangeTopNodes(editor)[0];
+    var $topNodeElem = editor.selection.getSelectionRangeTopNodes()[0];
     var nodeName = $topNodeElem === null || $topNodeElem === void 0 ? void 0 : $topNodeElem.getNodeName();
     return nodeName;
   };
@@ -14873,7 +16234,7 @@ function (_super) {
 exports["default"] = Quote;
 
 /***/ }),
-/* 327 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14900,7 +16261,7 @@ function bindEvent(editor) {
     var _a;
 
     var $selectElem = editor.selection.getSelectionContainerElem();
-    var $topSelectElem = editor.selection.getSelectionRangeTopNodes(editor)[0]; // 对quote的enter进行特殊处理
+    var $topSelectElem = editor.selection.getSelectionRangeTopNodes()[0]; // 对quote的enter进行特殊处理
     //最后一行为<p><br></p>时再按会出跳出blockquote
 
     if (($topSelectElem === null || $topSelectElem === void 0 ? void 0 : $topSelectElem.getNodeName()) === 'BLOCKQUOTE') {
@@ -14932,7 +16293,7 @@ function bindEvent(editor) {
 exports["default"] = bindEvent;
 
 /***/ }),
-/* 328 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14940,7 +16301,7 @@ exports["default"] = bindEvent;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -14972,7 +16333,7 @@ function createQuote($childElem) {
 exports["default"] = createQuote;
 
 /***/ }),
-/* 329 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14985,13 +16346,13 @@ exports["default"] = createQuote;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _map = _interopRequireDefault(__webpack_require__(29));
+var _map = _interopRequireDefault(__webpack_require__(26));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -15029,7 +16390,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var DropListMenu_1 = __importDefault(__webpack_require__(23));
+var DropListMenu_1 = __importDefault(__webpack_require__(24));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
@@ -15077,13 +16438,14 @@ function (_super) {
     var editor = this.editor;
     var isEmptySelection = editor.selection.isSelectionEmpty();
     var $selectionElem = (_a = editor.selection.getSelectionContainerElem()) === null || _a === void 0 ? void 0 : _a.elems[0];
+    if ($selectionElem == null) return;
     var isSpan = ($selectionElem === null || $selectionElem === void 0 ? void 0 : $selectionElem.nodeName.toLowerCase()) !== 'p';
     var bgColor = $selectionElem === null || $selectionElem === void 0 ? void 0 : $selectionElem.style.backgroundColor;
     var isSameColor = util_1.hexToRgb(value) === bgColor;
 
     if (isEmptySelection) {
       if (isSpan && !isSameColor) {
-        var $elems = editor.selection.getSelectionRangeTopNodes(editor);
+        var $elems = editor.selection.getSelectionRangeTopNodes();
         editor.selection.createRangeByElem($elems[0]);
         editor.selection.moveCursor($elems[0].elems[0]);
       } // 插入空白选区
@@ -15113,7 +16475,7 @@ function (_super) {
 exports["default"] = BackColor;
 
 /***/ }),
-/* 330 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15126,13 +16488,13 @@ exports["default"] = BackColor;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _map = _interopRequireDefault(__webpack_require__(29));
+var _map = _interopRequireDefault(__webpack_require__(26));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -15170,7 +16532,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var DropListMenu_1 = __importDefault(__webpack_require__(23));
+var DropListMenu_1 = __importDefault(__webpack_require__(24));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
@@ -15216,18 +16578,31 @@ function (_super) {
     var editor = this.editor;
     var isEmptySelection = editor.selection.isSelectionEmpty();
     var $selectionElem = (_a = editor.selection.getSelectionContainerElem()) === null || _a === void 0 ? void 0 : _a.elems[0];
+    if ($selectionElem == null) return;
     var isFont = ($selectionElem === null || $selectionElem === void 0 ? void 0 : $selectionElem.nodeName.toLowerCase()) !== 'p';
     var isSameColor = ($selectionElem === null || $selectionElem === void 0 ? void 0 : $selectionElem.getAttribute('color')) === value;
 
     if (isEmptySelection) {
       if (isFont && !isSameColor) {
-        var $elems = editor.selection.getSelectionRangeTopNodes(editor);
+        var $elems = editor.selection.getSelectionRangeTopNodes();
         editor.selection.createRangeByElem($elems[0]);
         editor.selection.moveCursor($elems[0].elems[0]);
       } // 插入空白选区
 
 
       editor.selection.createEmptyRange();
+    } // 获取选区范围的文字
+
+
+    var $selectionText = editor.selection.getSelectionText(); // 如果设置的是 a 标签就特殊处理一下，避免回车换行设置颜色无效的情况
+    // 只处理选中a标签内全部文字的情况，因为选中部分文字不存在换行颜色失效的情况
+
+    if ($selectionElem.nodeName === 'A' && $selectionElem.textContent === $selectionText) {
+      // 创建一个相当于占位的元素
+      var _payloadElem = dom_core_1["default"]('<span>&#8203;</span>').getNode(); // 添加到a标签之后
+
+
+      $selectionElem.appendChild(_payloadElem);
     }
 
     editor.cmd["do"]('foreColor', value);
@@ -15251,7 +16626,7 @@ function (_super) {
 exports["default"] = FontColor;
 
 /***/ }),
-/* 331 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15265,9 +16640,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -15307,11 +16682,13 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var Panel_1 = __importDefault(__webpack_require__(31));
+var Panel_1 = __importDefault(__webpack_require__(33));
 
-var PanelMenu_1 = __importDefault(__webpack_require__(34));
+var PanelMenu_1 = __importDefault(__webpack_require__(35));
 
-var create_panel_conf_1 = __importDefault(__webpack_require__(332));
+var create_panel_conf_1 = __importDefault(__webpack_require__(350));
+
+var index_1 = __importDefault(__webpack_require__(356));
 
 var Video =
 /** @class */
@@ -15322,7 +16699,9 @@ function (_super) {
     var _this = this;
 
     var $elem = dom_core_1["default"]("<div class=\"w-e-menu\" data-title=\"\u89C6\u9891\">\n                <i class=\"w-e-icon-play\"></i>\n            </div>");
-    _this = _super.call(this, $elem, editor) || this;
+    _this = _super.call(this, $elem, editor) || this; // 绑定事件 tootip
+
+    index_1["default"](editor);
     return _this;
   }
   /**
@@ -15358,7 +16737,7 @@ function (_super) {
 exports["default"] = Video;
 
 /***/ }),
-/* 332 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15388,26 +16767,20 @@ var util_1 = __webpack_require__(7);
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var const_1 = __webpack_require__(26);
+var upload_video_1 = __importDefault(__webpack_require__(351));
 
 function default_1(editor, video) {
-  // panel 中需要用到的id
+  var config = editor.config;
+  var uploadVideo = new upload_video_1["default"](editor); // panel 中需要用到的id
+
   var inputIFrameId = util_1.getRandom('input-iframe');
   var btnOkId = util_1.getRandom('btn-ok');
-  var i18nPrefix = 'menus.panelMenus.video.';
-
-  var t = function t(text, prefix) {
-    if (prefix === void 0) {
-      prefix = i18nPrefix;
-    }
-
-    return editor.i18next.t(prefix + text);
-  };
+  var inputUploadId = util_1.getRandom('input-upload');
+  var btnStartId = util_1.getRandom('btn-local-ok');
   /**
    * 插入链接
    * @param iframe html标签
    */
-
 
   function insertVideo(video) {
     editor.cmd["do"]('insertHTML', video + '<p><br></p>'); // video添加后的回调
@@ -15421,71 +16794,635 @@ function default_1(editor, video) {
 
 
   function checkOnlineVideo(video) {
-    // 编辑器进行正常校验，video 合规则使指针为true，不合规为false
-    var flag = true;
-
-    if (!const_1.videoRegex.test(video)) {
-      flag = false;
-    } // 查看开发者自定义配置的返回值
-
-
+    // 查看开发者自定义配置的返回值
     var check = editor.config.onlineVideoCheck(video);
 
-    if (check === undefined) {
-      if (flag === false) console.log(t('您刚才插入的视频链接未通过编辑器校验', 'validate.'));
-    } else if (check === true) {
-      // 用户通过了开发者的校验
-      if (flag === false) {
-        editor.config.customAlert(t('您插入的网络视频无法识别', 'validate.') + "\uFF0C" + t('请替换为正确的网络视频格式', 'validate.') + "\uFF1A\u5982<iframe src=...></iframe>", 'warning');
-      } else {
-        return true;
-      }
-    } else {
+    if (check === true) {
+      return true;
+    }
+
+    if (typeof check === 'string') {
       //用户未能通过开发者的校验，开发者希望我们提示这一字符串
       editor.config.customAlert(check, 'error');
     }
 
     return false;
-  }
+  } // tabs配置
+  // const fileMultipleAttr = config.uploadVideoMaxLength === 1 ? '' : 'multiple="multiple"'
 
+
+  var tabsConf = [{
+    // tab 的标题
+    title: editor.i18next.t('menus.panelMenus.video.上传视频'),
+    tpl: "<div class=\"w-e-up-video-container\">\n                    <div id=\"" + btnStartId + "\" class=\"w-e-up-btn\">\n                        <i class=\"w-e-icon-upload2\"></i>\n                    </div>\n                    <div style=\"display:none;\">\n                        <input id=\"" + inputUploadId + "\" type=\"file\" accept=\"video/*\"/>\n                    </div>\n                 </div>",
+    events: [// 触发选择视频
+    {
+      selector: '#' + btnStartId,
+      type: 'click',
+      fn: function fn() {
+        var $file = dom_core_1["default"]('#' + inputUploadId);
+        var fileElem = $file.elems[0];
+
+        if (fileElem) {
+          fileElem.click();
+        } else {
+          // 返回 true 可关闭 panel
+          return true;
+        }
+      }
+    }, // 选择视频完毕
+    {
+      selector: '#' + inputUploadId,
+      type: 'change',
+      fn: function fn() {
+        var $file = dom_core_1["default"]('#' + inputUploadId);
+        var fileElem = $file.elems[0];
+
+        if (!fileElem) {
+          // 返回 true 可关闭 panel
+          return true;
+        } // 获取选中的 file 对象列表
+
+
+        var fileList = fileElem.files;
+
+        if (fileList.length) {
+          uploadVideo.uploadVideo(fileList);
+        } // 返回 true 可关闭 panel
+
+
+        return true;
+      }
+    }]
+  }, {
+    // tab 的标题
+    title: editor.i18next.t('menus.panelMenus.video.插入视频'),
+    // 模板
+    tpl: "<div>\n                    <input \n                        id=\"" + inputIFrameId + "\" \n                        type=\"text\" \n                        class=\"block\" \n                        placeholder=\"" + editor.i18next.t('如') + "\uFF1A<iframe src=... ></iframe>\"/>\n                    </td>\n                    <div class=\"w-e-button-container\">\n                        <button type=\"button\" id=\"" + btnOkId + "\" class=\"right\">\n                            " + editor.i18next.t('插入') + "\n                        </button>\n                    </div>\n                </div>",
+    // 事件绑定
+    events: [// 插入视频
+    {
+      selector: '#' + btnOkId,
+      type: 'click',
+      fn: function fn() {
+        var _context;
+
+        // 执行插入视频
+        var $video = dom_core_1["default"]('#' + inputIFrameId);
+        var video = (0, _trim["default"])(_context = $video.val()).call(_context); // 视频为空，则不插入
+
+        if (!video) return; // 对当前用户插入的内容进行判断，插入为空，或者返回false，都停止插入
+
+        if (!checkOnlineVideo(video)) return;
+        insertVideo(video); // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
+
+        return true;
+      }
+    }]
+  }];
   var conf = {
     width: 300,
     height: 0,
     // panel 中可包含多个 tab
-    tabs: [{
-      // tab 的标题
-      title: editor.i18next.t('menus.panelMenus.video.插入视频'),
-      // 模板
-      tpl: "<div>\n                        <input \n                            id=\"" + inputIFrameId + "\" \n                            type=\"text\" \n                            class=\"block\" \n                            placeholder=\"" + editor.i18next.t('如') + "\uFF1A<iframe src=... ></iframe>\"/>\n                        </td>\n                        <div class=\"w-e-button-container\">\n                            <button type=\"button\" id=\"" + btnOkId + "\" class=\"right\">\n                                " + editor.i18next.t('插入') + "\n                            </button>\n                        </div>\n                    </div>",
-      // 事件绑定
-      events: [// 插入视频
-      {
-        selector: '#' + btnOkId,
-        type: 'click',
-        fn: function fn() {
-          var _context;
+    tabs: []
+  }; // 显示“上传视频”
 
-          // 执行插入视频
-          var $video = dom_core_1["default"]('#' + inputIFrameId);
-          var video = (0, _trim["default"])(_context = $video.val()).call(_context); // 视频为空，则不插入
+  if (window.FileReader && (config.uploadVideoServer || config.customUploadVideo)) {
+    conf.tabs.push(tabsConf[0]);
+  } // 显示“插入视频”
 
-          if (!video) return; // 对当前用户插入的内容进行判断，插入为空，或者返回false，都停止插入
 
-          if (!checkOnlineVideo(video)) return;
-          insertVideo(video); // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
+  if (config.showLinkVideo) {
+    conf.tabs.push(tabsConf[1]);
+  }
 
-          return true;
-        }
-      }]
-    }]
-  };
   return conf;
 }
 
 exports["default"] = default_1;
 
 /***/ }),
-/* 333 */
+/* 351 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * @description 上传视频
+ * @author lichunlin
+ */
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _indexOf = _interopRequireDefault(__webpack_require__(31));
+
+var _forEach = _interopRequireDefault(__webpack_require__(3));
+
+var _bind = _interopRequireDefault(__webpack_require__(55));
+
+var _some = _interopRequireDefault(__webpack_require__(131));
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+
+var util_1 = __webpack_require__(7);
+
+var upload_core_1 = __importDefault(__webpack_require__(135));
+
+var progress_1 = __importDefault(__webpack_require__(136));
+
+var UploadVideo =
+/** @class */
+function () {
+  function UploadVideo(editor) {
+    this.editor = editor;
+  }
+  /**
+   * 上传视频
+   * @param files 文件列表
+   */
+
+
+  UploadVideo.prototype.uploadVideo = function (files) {
+    var _this = this;
+
+    if (!files.length) {
+      return;
+    }
+
+    var editor = this.editor;
+    var config = editor.config; // ------------------------------ i18next ------------------------------
+
+    var i18nPrefix = 'validate.';
+
+    var t = function t(text) {
+      return editor.i18next.t(i18nPrefix + text);
+    }; // ------------------------------ 获取配置信息 ------------------------------
+    // 服务端地址
+
+
+    var uploadVideoServer = config.uploadVideoServer; // 上传视频的最大体积，默认 1024M
+
+    var maxSize = config.uploadVideoMaxSize;
+    var uploadVideoMaxSize = maxSize / 1024 / 1024; // 一次最多上传多少个视频
+    // const uploadVideoMaxLength = config.uploadVideoMaxLength
+    // 自定义上传视频的名称
+
+    var uploadVideoName = config.uploadVideoName; // 上传视频自定义参数
+
+    var uploadVideoParams = config.uploadVideoParams; // 自定义参数拼接到 url 中
+
+    var uploadVideoParamsWithUrl = config.uploadVideoParamsWithUrl; // 上传视频自定义 header
+
+    var uploadVideoHeaders = config.uploadVideoHeaders; // 钩子函数
+
+    var uploadVideoHooks = config.uploadVideoHooks; // 上传视频超时时间 ms 默认2个小时
+
+    var uploadVideoTimeout = config.uploadVideoTimeout; // 跨域带 cookie
+
+    var withVideoCredentials = config.withVideoCredentials; // 自定义上传
+
+    var customUploadVideo = config.customUploadVideo; // 格式校验
+
+    var uploadVideoAccept = config.uploadVideoAccept; // ------------------------------ 验证文件信息 ------------------------------
+
+    var resultFiles = [];
+    var errInfos = [];
+    util_1.arrForEach(files, function (file) {
+      var name = file.name;
+      var size = file.size / 1024 / 1024; // chrome 低版本 name === undefined
+
+      if (!name || !size) {
+        return;
+      }
+
+      if (!(uploadVideoAccept instanceof Array)) {
+        // 格式不是数组
+        errInfos.push("\u3010" + uploadVideoAccept + "\u3011" + t('uploadVideoAccept 不是Array'));
+        return;
+      }
+
+      if (!(0, _some["default"])(uploadVideoAccept).call(uploadVideoAccept, function (item) {
+        return item === name.split('.')[name.split('.').length - 1];
+      })) {
+        // 后缀名不合法，不是视频
+        errInfos.push("\u3010" + name + "\u3011" + t('不是视频'));
+        return;
+      }
+
+      if (uploadVideoMaxSize < size) {
+        // 上传视频过大
+        errInfos.push("\u3010" + name + "\u3011" + t('大于') + " " + uploadVideoMaxSize + "M");
+        return;
+      } //验证通过的加入结果列表
+
+
+      resultFiles.push(file);
+    }); // 抛出验证信息
+
+    if (errInfos.length) {
+      config.customAlert(t('视频验证未通过') + ": \n" + errInfos.join('\n'), 'warning');
+      return;
+    } // 如果过滤后文件列表为空直接返回
+
+
+    if (resultFiles.length === 0) {
+      config.customAlert(t('传入的文件不合法'), 'warning');
+      return;
+    } // ------------------------------ 自定义上传 ------------------------------
+
+
+    if (customUploadVideo && typeof customUploadVideo === 'function') {
+      var _context;
+
+      customUploadVideo(resultFiles, (0, _bind["default"])(_context = this.insertVideo).call(_context, this));
+      return;
+    } // 添加视频数据
+
+
+    var formData = new FormData();
+    (0, _forEach["default"])(resultFiles).call(resultFiles, function (file, index) {
+      var name = uploadVideoName || file.name;
+
+      if (resultFiles.length > 1) {
+        // 多个文件时，filename 不能重复
+        name = name + (index + 1);
+      }
+
+      formData.append(name, file);
+    }); // ------------------------------ 上传视频 ------------------------------
+    //添加自定义参数  基于有服务端地址的情况下
+
+    if (uploadVideoServer) {
+      // 添加自定义参数
+      var uploadVideoServerArr = uploadVideoServer.split('#');
+      uploadVideoServer = uploadVideoServerArr[0];
+      var uploadVideoServerHash = uploadVideoServerArr[1] || '';
+      (0, _forEach["default"])(util_1).call(util_1, uploadVideoParams, function (key, val) {
+        // 因使用者反应，自定义参数不能默认 encode ，由 v3.1.1 版本开始注释掉
+        // val = encodeURIComponent(val)
+        // 第一，将参数拼接到 url 中
+        if (uploadVideoParamsWithUrl) {
+          if ((0, _indexOf["default"])(uploadVideoServer).call(uploadVideoServer, '?') > 0) {
+            uploadVideoServer += '&';
+          } else {
+            uploadVideoServer += '?';
+          }
+
+          uploadVideoServer = uploadVideoServer + key + '=' + val;
+        } // 第二，将参数添加到 formData 中
+
+
+        formData.append(key, val);
+      });
+
+      if (uploadVideoServerHash) {
+        uploadVideoServer += '#' + uploadVideoServerHash;
+      } // 开始上传
+
+
+      var xhr = upload_core_1["default"](uploadVideoServer, {
+        timeout: uploadVideoTimeout,
+        formData: formData,
+        headers: uploadVideoHeaders,
+        withCredentials: !!withVideoCredentials,
+        beforeSend: function beforeSend(xhr) {
+          if (uploadVideoHooks.before) return uploadVideoHooks.before(xhr, editor, resultFiles);
+        },
+        onTimeout: function onTimeout(xhr) {
+          config.customAlert(t('上传视频超时'), 'error');
+          if (uploadVideoHooks.timeout) uploadVideoHooks.timeout(xhr, editor);
+        },
+        onProgress: function onProgress(percent, e) {
+          var progressBar = new progress_1["default"](editor);
+
+          if (e.lengthComputable) {
+            percent = e.loaded / e.total;
+            progressBar.show(percent);
+          }
+        },
+        onError: function onError(xhr) {
+          config.customAlert(t('上传视频错误'), 'error', t('上传视频错误') + "\uFF0C" + t('服务器返回状态') + ": " + xhr.status);
+          if (uploadVideoHooks.error) uploadVideoHooks.error(xhr, editor);
+        },
+        onFail: function onFail(xhr, resultStr) {
+          config.customAlert(t('上传视频失败'), 'error', t('上传视频返回结果错误') + ("\uFF0C" + t('返回结果') + ": ") + resultStr);
+          if (uploadVideoHooks.fail) uploadVideoHooks.fail(xhr, editor, resultStr);
+        },
+        onSuccess: function onSuccess(xhr, result) {
+          if (uploadVideoHooks.customInsert) {
+            var _context2;
+
+            // 自定义插入视频
+            uploadVideoHooks.customInsert((0, _bind["default"])(_context2 = _this.insertVideo).call(_context2, _this), result, editor);
+            return;
+          }
+
+          if (result.errno != '0') {
+            // 返回格式不对，应该为 { errno: 0, data: [...] }
+            config.customAlert(t('上传视频失败'), 'error', t('上传视频返回结果错误') + "\uFF0C" + t('返回结果') + " errno=" + result.errno);
+            if (uploadVideoHooks.fail) uploadVideoHooks.fail(xhr, editor, result);
+            return;
+          } // 成功，插入视频
+
+
+          var data = result.data;
+
+          _this.insertVideo(data.url); // 钩子函数
+
+
+          if (uploadVideoHooks.success) uploadVideoHooks.success(xhr, editor, result);
+        }
+      });
+
+      if (typeof xhr === 'string') {
+        // 上传被阻止
+        config.customAlert(xhr, 'error');
+      }
+    }
+  };
+  /**
+   * 往编辑器区域插入视频
+   * @param url 视频访问地址
+   */
+
+
+  UploadVideo.prototype.insertVideo = function (url) {
+    var editor = this.editor;
+    var config = editor.config;
+    var i18nPrefix = 'validate.';
+
+    var t = function t(text, prefix) {
+      if (prefix === void 0) {
+        prefix = i18nPrefix;
+      }
+
+      return editor.i18next.t(prefix + text);
+    }; // 判断用户是否自定义插入视频
+
+
+    if (!config.customInsertVideo) {
+      editor.cmd["do"]('insertHTML', "<p><video src=\"" + url + "\" controls=\"controls\" style=\"max-width:100%\"></video></p><p><br></p>");
+    } else {
+      config.customInsertVideo(url);
+      return;
+    } // 加载视频
+
+
+    var video = document.createElement('video');
+
+    video.onload = function () {
+      video = null;
+    };
+
+    video.onerror = function () {
+      config.customAlert(t('插入视频错误'), 'error', "wangEditor: " + t('插入视频错误') + "\uFF0C" + t('视频链接') + " \"" + url + "\"\uFF0C" + t('下载链接失败'));
+      video = null;
+    };
+
+    video.onabort = function () {
+      return video = null;
+    };
+
+    video.src = url;
+  };
+
+  return UploadVideo;
+}();
+
+exports["default"] = UploadVideo;
+
+/***/ }),
+/* 352 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(353);
+
+/***/ }),
+/* 353 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var parent = __webpack_require__(354);
+
+module.exports = parent;
+
+
+/***/ }),
+/* 354 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(355);
+var path = __webpack_require__(9);
+
+module.exports = path.Date.now;
+
+
+/***/ }),
+/* 355 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__(6);
+
+// `Date.now` method
+// https://tc39.es/ecma262/#sec-date.now
+$({ target: 'Date', stat: true }, {
+  now: function now() {
+    return new Date().getTime();
+  }
+});
+
+
+/***/ }),
+/* 356 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * @description 绑定视频的事件
+ * @author lichunlin
+ */
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+
+var tooltip_event_1 = __importDefault(__webpack_require__(357));
+/**
+ * 绑定事件
+ * @param editor 编辑器实例
+ */
+
+
+function bindEvent(editor) {
+  //Tooltip
+  tooltip_event_1["default"](editor);
+}
+
+exports["default"] = bindEvent;
+
+/***/ }),
+/* 357 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * @description tooltip 事件
+ * @author lichunlin
+ */
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+exports.createShowHideFn = void 0;
+
+var dom_core_1 = __importDefault(__webpack_require__(2));
+
+var Tooltip_1 = __importDefault(__webpack_require__(36));
+/**
+ * 生成 Tooltip 的显示隐藏函数
+ */
+
+
+function createShowHideFn(editor) {
+  var tooltip;
+
+  var t = function t(text, prefix) {
+    if (prefix === void 0) {
+      prefix = '';
+    }
+
+    return editor.i18next.t(prefix + text);
+  };
+  /**
+   * 显示 tooltip
+   * @param $node 链接元素
+   */
+
+
+  function showVideoTooltip($node) {
+    var conf = [{
+      $elem: dom_core_1["default"]("<span class='w-e-icon-trash-o'></span>"),
+      onClick: function onClick(editor, $node) {
+        // 选中video元素
+        editor.selection.createRangeByElem($node);
+        editor.selection.restoreSelection();
+        editor.cmd["do"]('delete'); // 返回 true，表示执行完之后，隐藏 tooltip。否则不隐藏。
+
+        return true;
+      }
+    }, {
+      $elem: dom_core_1["default"]('<span>100%</span>'),
+      onClick: function onClick(editor, $node) {
+        $node.attr('width', '100%');
+        $node.removeAttr('height'); // 返回 true，表示执行完之后，隐藏 tooltip。否则不隐藏。
+
+        return true;
+      }
+    }, {
+      $elem: dom_core_1["default"]('<span>50%</span>'),
+      onClick: function onClick(editor, $node) {
+        $node.attr('width', '50%');
+        $node.removeAttr('height'); // 返回 true，表示执行完之后，隐藏 tooltip。否则不隐藏。
+
+        return true;
+      }
+    }, {
+      $elem: dom_core_1["default"]('<span>30%</span>'),
+      onClick: function onClick(editor, $node) {
+        $node.attr('width', '30%');
+        $node.removeAttr('height'); // 返回 true，表示执行完之后，隐藏 tooltip。否则不隐藏。
+
+        return true;
+      }
+    }, {
+      $elem: dom_core_1["default"]("<span>" + t('重置') + "</span>"),
+      onClick: function onClick(editor, $node) {
+        $node.removeAttr('width');
+        $node.removeAttr('height'); // 返回 true，表示执行完之后，隐藏 tooltip。否则不隐藏。
+
+        return true;
+      }
+    }];
+    tooltip = new Tooltip_1["default"](editor, $node, conf);
+    tooltip.create();
+  }
+  /**
+   * 隐藏 tooltip
+   */
+
+
+  function hideVideoTooltip() {
+    // 移除 tooltip
+    if (tooltip) {
+      tooltip.remove();
+      tooltip = null;
+    }
+  }
+
+  return {
+    showVideoTooltip: showVideoTooltip,
+    hideVideoTooltip: hideVideoTooltip
+  };
+}
+
+exports.createShowHideFn = createShowHideFn;
+/**
+ * 绑定 tooltip 事件
+ * @param editor 编辑器实例
+ */
+
+function bindTooltipEvent(editor) {
+  var _a = createShowHideFn(editor),
+      showVideoTooltip = _a.showVideoTooltip,
+      hideVideoTooltip = _a.hideVideoTooltip; // 点击视频元素是，显示 tooltip
+
+
+  editor.txt.eventHooks.videoClickEvents.push(showVideoTooltip); // 点击其他地方，或者滚动时，隐藏 tooltip
+
+  editor.txt.eventHooks.clickEvents.push(hideVideoTooltip);
+  editor.txt.eventHooks.keyupEvents.push(hideVideoTooltip);
+  editor.txt.eventHooks.toolbarClickEvents.push(hideVideoTooltip);
+  editor.txt.eventHooks.menuClickEvents.push(hideVideoTooltip);
+  editor.txt.eventHooks.textScrollEvents.push(hideVideoTooltip); // change 时隐藏
+
+  editor.txt.eventHooks.changeEvents.push(hideVideoTooltip);
+}
+
+exports["default"] = bindTooltipEvent;
+
+/***/ }),
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15497,11 +17434,15 @@ exports["default"] = default_1;
 
 var _interopRequireDefault = __webpack_require__(0);
 
+var _find = _interopRequireDefault(__webpack_require__(27));
+
+var _map = _interopRequireDefault(__webpack_require__(26));
+
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -15539,15 +17480,17 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var PanelMenu_1 = __importDefault(__webpack_require__(34));
+var const_1 = __webpack_require__(32);
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var create_panel_conf_1 = __importDefault(__webpack_require__(334));
+var Panel_1 = __importDefault(__webpack_require__(33));
 
-var Panel_1 = __importDefault(__webpack_require__(31));
+var PanelMenu_1 = __importDefault(__webpack_require__(35));
 
-var index_1 = __importDefault(__webpack_require__(341));
+var index_1 = __importDefault(__webpack_require__(359));
+
+var create_panel_conf_1 = __importDefault(__webpack_require__(371));
 
 var Image =
 /** @class */
@@ -15558,7 +17501,25 @@ function (_super) {
     var _this = this;
 
     var $elem = dom_core_1["default"]('<div class="w-e-menu" data-title="图片"><i class="w-e-icon-image"></i></div>');
-    _this = _super.call(this, $elem, editor) || this; // 绑定事件，如粘贴图片
+    var imgPanelConfig = create_panel_conf_1["default"](editor);
+
+    if (imgPanelConfig.onlyUploadConf) {
+      var _context;
+
+      $elem = imgPanelConfig.onlyUploadConf.$elem;
+      (0, _map["default"])(_context = imgPanelConfig.onlyUploadConf.events).call(_context, function (event) {
+        var selector = event.selector;
+        var type = event.type;
+        var fn = event.fn || const_1.EMPTY_FN;
+        (0, _find["default"])($elem).call($elem, selector).on(type, function (e) {
+          e.stopPropagation();
+          fn(e);
+        });
+      });
+    }
+
+    _this = _super.call(this, $elem, editor) || this;
+    _this.imgPanelConfig = imgPanelConfig; // 绑定事件，如粘贴图片
 
     index_1["default"](editor);
     return _this;
@@ -15569,7 +17530,9 @@ function (_super) {
 
 
   Image.prototype.clickHandler = function () {
-    this.createPanel();
+    if (!this.imgPanelConfig.onlyUploadConf) {
+      this.createPanel();
+    }
   };
   /**
    * 创建 panel
@@ -15577,8 +17540,9 @@ function (_super) {
 
 
   Image.prototype.createPanel = function () {
-    var conf = create_panel_conf_1["default"](this.editor);
+    var conf = this.imgPanelConfig;
     var panel = new Panel_1["default"](this, conf);
+    this.setPanel(panel);
     panel.create();
   };
   /**
@@ -15594,441 +17558,7 @@ function (_super) {
 exports["default"] = Image;
 
 /***/ }),
-/* 334 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * @description image 菜单 panel tab 配置
- * @author wangfupeng
- */
-
-var _interopRequireDefault = __webpack_require__(0);
-
-var _trim = _interopRequireDefault(__webpack_require__(19));
-
-var _map = _interopRequireDefault(__webpack_require__(29));
-
-var _defineProperty = _interopRequireDefault(__webpack_require__(1));
-
-var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-(0, _defineProperty["default"])(exports, "__esModule", {
-  value: true
-});
-
-var util_1 = __webpack_require__(7);
-
-var dom_core_1 = __importDefault(__webpack_require__(2));
-
-var upload_img_1 = __importDefault(__webpack_require__(97));
-
-var const_1 = __webpack_require__(26);
-
-function default_1(editor) {
-  var _context;
-
-  var config = editor.config;
-  var uploadImg = new upload_img_1["default"](editor); // panel 中需要用到的id
-
-  var upTriggerId = util_1.getRandom('up-trigger-id');
-  var upFileId = util_1.getRandom('up-file-id');
-  var linkUrlId = util_1.getRandom('input-link-url');
-  var linkBtnId = util_1.getRandom('btn-link');
-  var i18nPrefix = 'menus.panelMenus.image.';
-
-  var t = function t(text, prefix) {
-    if (prefix === void 0) {
-      prefix = i18nPrefix;
-    }
-
-    return editor.i18next.t(prefix + text);
-  };
-  /**
-   * 校验网络图片链接是否合法
-   * @param linkImg 网络图片链接
-   */
-
-
-  function checkLinkImg(src) {
-    //编辑器进行正常校验，图片合规则使指针为true，不合规为false
-    var flag = true;
-
-    if (!const_1.imgRegex.test(src)) {
-      flag = false;
-    } //查看开发者自定义配置的返回值
-
-
-    var check = config.linkImgCheck(src);
-
-    if (check === undefined) {
-      //用户未能通过开发者的校验，且开发者不希望编辑器提示用户
-      if (flag === false) console.log(t('您刚才插入的图片链接未通过编辑器校验', 'validate.'));
-    } else if (check === true) {
-      //用户通过了开发者的校验
-      if (flag === false) {
-        config.customAlert(t('您插入的网络图片无法识别', 'validate.') + "\uFF0C" + t('请替换为支持的图片类型', 'validate.') + "\uFF1Ajpg | png | gif ...", 'warning');
-      } else return true;
-    } else {
-      //用户未能通过开发者的校验，开发者希望我们提示这一字符串
-      config.customAlert(check, 'error');
-    }
-
-    return false;
-  } // tabs 配置 -----------------------------------------
-
-
-  var fileMultipleAttr = config.uploadImgMaxLength === 1 ? '' : 'multiple="multiple"';
-  var accepts = (0, _map["default"])(_context = config.uploadImgAccept).call(_context, function (item) {
-    return "image/" + item;
-  }).join(',');
-  var tabsConf = [// first tab
-  {
-    // 标题
-    title: t('上传图片'),
-    // 模板
-    tpl: "<div class=\"w-e-up-img-container\">\n                    <div id=\"" + upTriggerId + "\" class=\"w-e-up-btn\">\n                        <i class=\"w-e-icon-upload2\"></i>\n                    </div>\n                    <div style=\"display:none;\">\n                        <input id=\"" + upFileId + "\" type=\"file\" " + fileMultipleAttr + " accept=\"" + accepts + "\"/>\n                    </div>\n                </div>",
-    // 事件绑定
-    events: [// 触发选择图片
-    {
-      selector: '#' + upTriggerId,
-      type: 'click',
-      fn: function fn() {
-        var $file = dom_core_1["default"]('#' + upFileId);
-        var fileElem = $file.elems[0];
-
-        if (fileElem) {
-          fileElem.click();
-        } else {
-          // 返回 true 可关闭 panel
-          return true;
-        }
-      }
-    }, // 选择图片完毕
-    {
-      selector: '#' + upFileId,
-      type: 'change',
-      fn: function fn() {
-        var $file = dom_core_1["default"]('#' + upFileId);
-        var fileElem = $file.elems[0];
-
-        if (!fileElem) {
-          // 返回 true 可关闭 panel
-          return true;
-        } // 获取选中的 file 对象列表
-
-
-        var fileList = fileElem.files;
-
-        if (fileList.length) {
-          uploadImg.uploadImg(fileList);
-        } // 返回 true 可关闭 panel
-
-
-        return true;
-      }
-    }]
-  }, // second tab
-  {
-    title: t('网络图片'),
-    tpl: "<div>\n                    <input\n                        id=\"" + linkUrlId + "\"\n                        type=\"text\"\n                        class=\"block\"\n                        placeholder=\"" + t('图片链接') + "\"/>\n                    </td>\n                    <div class=\"w-e-button-container\">\n                        <button type=\"button\" id=\"" + linkBtnId + "\" class=\"right\">" + t('插入', '') + "</button>\n                    </div>\n                </div>",
-    events: [{
-      selector: '#' + linkBtnId,
-      type: 'click',
-      fn: function fn() {
-        var _context2;
-
-        var $linkUrl = dom_core_1["default"]('#' + linkUrlId);
-        var url = (0, _trim["default"])(_context2 = $linkUrl.val()).call(_context2); //如果url为空则直接返回
-
-        if (!url) return; //如果不能通过校验也直接返回
-
-        if (!checkLinkImg(url)) return; //插入图片url
-
-        uploadImg.insertImg(url); // 返回 true 表示函数执行结束之后关闭 panel
-
-        return true;
-      }
-    }]
-  }]; // tabs end
-  // 最终的配置 -----------------------------------------
-
-  var conf = {
-    width: 300,
-    height: 0,
-    tabs: []
-  }; // 显示“上传图片”
-
-  if (window.FileReader && (config.uploadImgShowBase64 || config.uploadImgServer || config.customUploadImg)) {
-    conf.tabs.push(tabsConf[0]);
-  } // 显示“插入网络图片”
-
-
-  if (config.showLinkImg) {
-    conf.tabs.push(tabsConf[1]);
-  }
-
-  return conf;
-}
-
-exports["default"] = default_1;
-
-/***/ }),
-/* 335 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * @description 上传的核心方法
- * @author wangfupeng
- */
-
-var _interopRequireDefault = __webpack_require__(0);
-
-var _typeof2 = _interopRequireDefault(__webpack_require__(94));
-
-var _forEach = _interopRequireDefault(__webpack_require__(5));
-
-var _defineProperty = _interopRequireDefault(__webpack_require__(1));
-
-(0, _defineProperty["default"])(exports, "__esModule", {
-  value: true
-});
-
-var util_1 = __webpack_require__(7);
-/**
- * 发送 post 请求（用于文件上传）
- * @param url url
- * @param option 配置项
- */
-
-
-function post(url, option) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', url); // 超时，默认 10s
-
-  xhr.timeout = option.timeout || 10 * 1000;
-
-  xhr.ontimeout = function () {
-    console.error('wangEditor - 请求超时');
-    option.onTimeout && option.onTimeout(xhr);
-  }; // 进度
-
-
-  if (xhr.upload) {
-    xhr.upload.onprogress = function (e) {
-      var percent = e.loaded / e.total;
-      option.onProgress && option.onProgress(percent, e);
-    };
-  } // 自定义 header
-
-
-  if (option.headers) {
-    (0, _forEach["default"])(util_1).call(util_1, option.headers, function (key, val) {
-      xhr.setRequestHeader(key, val);
-    });
-  } // 跨域传 cookie
-
-
-  xhr.withCredentials = !!option.withCredentials; // 上传之前的钩子函数，在 xhr.send() 之前执行
-
-  if (option.beforeSend) {
-    var beforeResult = option.beforeSend(xhr);
-
-    if (beforeResult && (0, _typeof2["default"])(beforeResult) === 'object') {
-      if (beforeResult.prevent) {
-        // 如果返回的结果是 {prevent: true, msg: 'xxxx'} 则表示用户放弃上传
-        return beforeResult.msg;
-      }
-    }
-  } // 服务端返回之后
-
-
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState !== 4) return;
-    var status = xhr.status;
-    if (status < 200) return; // 请求发送过程中，尚未返回
-
-    if (status >= 300 && status < 400) return; // 重定向
-
-    if (status >= 400) {
-      // 40x 50x 报错
-      console.error('wangEditor - XHR 报错，状态码 ' + status);
-      if (option.onError) option.onError(xhr); // 有，则执行 onError 函数即可
-
-      return;
-    } // status = 200 ，得到结果
-
-
-    var resultStr = xhr.responseText;
-    var result;
-
-    if ((0, _typeof2["default"])(resultStr) !== 'object') {
-      try {
-        result = JSON.parse(resultStr);
-      } catch (ex) {
-        console.error('wangEditor - 返回结果不是 JSON 格式', resultStr);
-        if (option.onFail) option.onFail(xhr, resultStr);
-        return;
-      }
-    } else {
-      result = resultStr;
-    }
-
-    option.onSuccess(xhr, result);
-  }; // 发送请求
-
-
-  xhr.send(option.formData || null);
-  return xhr;
-}
-
-exports["default"] = post;
-
-/***/ }),
-/* 336 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * @description 上传进度条
- * @author wangfupeng
- */
-
-var _interopRequireDefault = __webpack_require__(0);
-
-var _now = _interopRequireDefault(__webpack_require__(337));
-
-var _defineProperty = _interopRequireDefault(__webpack_require__(1));
-
-var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-(0, _defineProperty["default"])(exports, "__esModule", {
-  value: true
-});
-
-var dom_core_1 = __importDefault(__webpack_require__(2));
-
-var Progress =
-/** @class */
-function () {
-  function Progress(editor) {
-    this.editor = editor;
-    this.$textContainer = editor.$textContainerElem;
-    this.$bar = dom_core_1["default"]('<div class="w-e-progress"></div>');
-    this.isShow = false;
-    this.time = 0;
-    this.timeoutId = 0;
-  }
-  /**
-   * 显示进度条
-   * @param progress 进度百分比
-   */
-
-
-  Progress.prototype.show = function (progress) {
-    var _this = this; // 不要重新显示
-
-
-    if (this.isShow) {
-      return;
-    }
-
-    this.isShow = true; // 渲染 $bar
-
-    var $bar = this.$bar;
-    var $textContainer = this.$textContainer;
-    $textContainer.append($bar); // 改变进度条（防抖，100ms 渲染一次）
-
-    if ((0, _now["default"])() - this.time > 100) {
-      if (progress <= 1) {
-        $bar.css('width', progress * 100 + '%');
-        this.time = (0, _now["default"])();
-      }
-    } // 500ms 之后隐藏
-
-
-    var timeoutId = this.timeoutId;
-
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-
-    this.timeoutId = window.setTimeout(function () {
-      _this.hide();
-    }, 500);
-  };
-  /**
-   * 隐藏
-   */
-
-
-  Progress.prototype.hide = function () {
-    var $bar = this.$bar;
-    $bar.remove();
-    this.isShow = false;
-    this.time = 0;
-    this.timeoutId = 0;
-  };
-
-  return Progress;
-}();
-
-exports["default"] = Progress;
-
-/***/ }),
-/* 337 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(338);
-
-/***/ }),
-/* 338 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var parent = __webpack_require__(339);
-
-module.exports = parent;
-
-
-/***/ }),
-/* 339 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(340);
-var path = __webpack_require__(10);
-
-module.exports = path.Date.now;
-
-
-/***/ }),
-/* 340 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $ = __webpack_require__(4);
-
-// `Date.now` method
-// https://tc39.es/ecma262/#sec-date.now
-$({ target: 'Date', stat: true }, {
-  now: function now() {
-    return new Date().getTime();
-  }
-});
-
-
-/***/ }),
-/* 341 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16052,13 +17582,13 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var paste_img_1 = __importDefault(__webpack_require__(342));
+var paste_img_1 = __importDefault(__webpack_require__(360));
 
-var drop_img_1 = __importDefault(__webpack_require__(343));
+var drop_img_1 = __importDefault(__webpack_require__(361));
 
-var drag_size_1 = __importDefault(__webpack_require__(344));
+var drag_size_1 = __importDefault(__webpack_require__(362));
 
-var tooltip_event_1 = __importDefault(__webpack_require__(352));
+var tooltip_event_1 = __importDefault(__webpack_require__(370));
 /**
  * 绑定事件
  * @param editor 编辑器实例
@@ -16080,7 +17610,7 @@ function bindEvent(editor) {
 exports["default"] = bindEvent;
 
 /***/ }),
-/* 342 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16104,9 +17634,9 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var paste_event_1 = __webpack_require__(123);
+var paste_event_1 = __webpack_require__(129);
 
-var upload_img_1 = __importDefault(__webpack_require__(97));
+var upload_img_1 = __importDefault(__webpack_require__(99));
 /**
  * 剪切板是否有 text 或者 html ？
  * @param editor 编辑器对象
@@ -16165,7 +17695,7 @@ function bindPasteImg(editor) {
 exports["default"] = bindPasteImg;
 
 /***/ }),
-/* 343 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16189,7 +17719,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var upload_img_1 = __importDefault(__webpack_require__(97));
+var upload_img_1 = __importDefault(__webpack_require__(99));
 
 function bindDropImg(editor) {
   /**
@@ -16215,7 +17745,7 @@ function bindDropImg(editor) {
 exports["default"] = bindDropImg;
 
 /***/ }),
-/* 344 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16227,9 +17757,9 @@ exports["default"] = bindDropImg;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _parseFloat2 = _interopRequireDefault(__webpack_require__(345));
+var _parseFloat2 = _interopRequireDefault(__webpack_require__(363));
 
-var _find = _interopRequireDefault(__webpack_require__(30));
+var _find = _interopRequireDefault(__webpack_require__(27));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -16246,7 +17776,7 @@ exports.createShowHideFn = void 0;
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-__webpack_require__(350);
+__webpack_require__(368);
 
 var util_1 = __webpack_require__(7);
 /**
@@ -16418,36 +17948,36 @@ function bindDragImgSize(editor) {
 exports["default"] = bindDragImgSize;
 
 /***/ }),
-/* 345 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(346);
+module.exports = __webpack_require__(364);
 
 /***/ }),
-/* 346 */
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(347);
+var parent = __webpack_require__(365);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 347 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(348);
-var path = __webpack_require__(10);
+__webpack_require__(366);
+var path = __webpack_require__(9);
 
 module.exports = path.parseFloat;
 
 
 /***/ }),
-/* 348 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $ = __webpack_require__(4);
-var parseFloatImplementation = __webpack_require__(349);
+var $ = __webpack_require__(6);
+var parseFloatImplementation = __webpack_require__(367);
 
 // `parseFloat` method
 // https://tc39.es/ecma262/#sec-parsefloat-string
@@ -16457,12 +17987,12 @@ $({ global: true, forced: parseFloat != parseFloatImplementation }, {
 
 
 /***/ }),
-/* 349 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(8);
-var trim = __webpack_require__(92).trim;
-var whitespaces = __webpack_require__(67);
+var trim = __webpack_require__(94).trim;
+var whitespaces = __webpack_require__(72);
 
 var $parseFloat = global.parseFloat;
 var FORCED = 1 / $parseFloat(whitespaces + '-0') !== -Infinity;
@@ -16477,11 +18007,11 @@ module.exports = FORCED ? function parseFloat(string) {
 
 
 /***/ }),
-/* 350 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(20);
-            var content = __webpack_require__(351);
+            var content = __webpack_require__(369);
 
             content = content.__esModule ? content.default : content;
 
@@ -16501,7 +18031,7 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 351 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -16514,7 +18044,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 352 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16541,7 +18071,7 @@ exports.createShowHideFn = void 0;
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var Tooltip_1 = __importDefault(__webpack_require__(44));
+var Tooltip_1 = __importDefault(__webpack_require__(36));
 /**
  * 生成 Tooltip 的显示隐藏函数
  */
@@ -16598,7 +18128,8 @@ function createShowHideFn(editor) {
 
         return true;
       }
-    }, {
+    }];
+    conf.push({
       $elem: dom_core_1["default"]("<span>" + t('重置') + "</span>"),
       onClick: function onClick(editor, $node) {
         $node.removeAttr('width');
@@ -16606,7 +18137,25 @@ function createShowHideFn(editor) {
 
         return true;
       }
-    }];
+    });
+
+    if ($node.attr('data-href')) {
+      conf.push({
+        $elem: dom_core_1["default"]("<span>" + t('查看链接') + "</span>"),
+        onClick: function onClick(editor, $node) {
+          var link = $node.attr('data-href');
+
+          if (link) {
+            link = decodeURIComponent(link);
+            window.open(link, '_target');
+          } // 返回 true，表示执行完之后，隐藏 tooltip。否则不隐藏。
+
+
+          return true;
+        }
+      });
+    }
+
     tooltip = new Tooltip_1["default"](editor, $node, conf);
     tooltip.create();
   }
@@ -16656,7 +18205,216 @@ function bindTooltipEvent(editor) {
 exports["default"] = bindTooltipEvent;
 
 /***/ }),
-/* 353 */
+/* 371 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * @description image 菜单 panel tab 配置
+ * @author wangfupeng
+ */
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _trim = _interopRequireDefault(__webpack_require__(19));
+
+var _map = _interopRequireDefault(__webpack_require__(26));
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+
+var dom_core_1 = __importDefault(__webpack_require__(2));
+
+var util_1 = __webpack_require__(7);
+
+var upload_img_1 = __importDefault(__webpack_require__(99));
+
+function default_1(editor) {
+  var _context;
+
+  var config = editor.config;
+  var uploadImg = new upload_img_1["default"](editor); // panel 中需要用到的id
+
+  var upTriggerId = util_1.getRandom('up-trigger-id');
+  var upFileId = util_1.getRandom('up-file-id');
+  var linkUrlId = util_1.getRandom('input-link-url');
+  var linkUrlAltId = util_1.getRandom('input-link-url-alt');
+  var linkUrlHrefId = util_1.getRandom('input-link-url-href');
+  var linkBtnId = util_1.getRandom('btn-link');
+  var i18nPrefix = 'menus.panelMenus.image.';
+
+  var t = function t(text, prefix) {
+    if (prefix === void 0) {
+      prefix = i18nPrefix;
+    }
+
+    return editor.i18next.t(prefix + text);
+  };
+  /**
+   * 校验网络图片链接是否合法
+   * @param linkImg 网络图片链接
+   */
+
+
+  function checkLinkImg(src, linkUrlAltText, linkUrlHrefText) {
+    //查看开发者自定义配置的返回值
+    var check = config.linkImgCheck(src);
+
+    if (check === true) {
+      return true;
+    } else if (typeof check === 'string') {
+      //用户未能通过开发者的校验，开发者希望我们提示这一字符串
+      config.customAlert(check, 'error');
+    }
+
+    return false;
+  } // tabs 配置 -----------------------------------------
+
+
+  var fileMultipleAttr = config.uploadImgMaxLength === 1 ? '' : 'multiple="multiple"';
+  var accepts = (0, _map["default"])(_context = config.uploadImgAccept).call(_context, function (item) {
+    return "image/" + item;
+  }).join(',');
+
+  var getUploadImgTpl = function getUploadImgTpl(containerClass) {
+    return "<div class=\"" + containerClass + "\" data-title=\"\u56FE\u7247\">\n            <div id=\"" + upTriggerId + "\" class=\"w-e-up-btn\">\n                <i class=\"w-e-icon-image\"></i>\n            </div>\n            <div style=\"display:none;\">\n                <input id=\"" + upFileId + "\" type=\"file\" " + fileMultipleAttr + " accept=\"" + accepts + "\"/>\n            </div>\n        </div>";
+  };
+
+  var uploadEvents = [// 触发选择图片
+  {
+    selector: '#' + upTriggerId,
+    type: 'click',
+    fn: function fn() {
+      var $file = dom_core_1["default"]('#' + upFileId);
+      var fileElem = $file.elems[0];
+
+      if (fileElem) {
+        fileElem.click();
+      } else {
+        // 返回 true 可关闭 panel
+        return true;
+      }
+    }
+  }, // 选择图片完毕
+  {
+    selector: '#' + upFileId,
+    type: 'change',
+    fn: function fn() {
+      var $file = dom_core_1["default"]('#' + upFileId);
+      var fileElem = $file.elems[0];
+
+      if (!fileElem) {
+        // 返回 true 可关闭 panel
+        return true;
+      } // 获取选中的 file 对象列表
+
+
+      var fileList = fileElem.files;
+
+      if (fileList === null || fileList === void 0 ? void 0 : fileList.length) {
+        uploadImg.uploadImg(fileList);
+      } // 返回 true 可关闭 panel
+
+
+      return true;
+    }
+  }];
+  var linkImgInputs = ["<input\n            id=\"" + linkUrlId + "\"\n            type=\"text\"\n            class=\"block\"\n            placeholder=\"" + t('图片地址') + "\"/>"];
+
+  if (config.showLinkImgAlt) {
+    linkImgInputs.push("\n        <input\n            id=\"" + linkUrlAltId + "\"\n            type=\"text\"\n            class=\"block\"\n            placeholder=\"" + t('图片文字说明') + "\"/>");
+  }
+
+  if (config.showLinkImgHref) {
+    linkImgInputs.push("\n        <input\n            id=\"" + linkUrlHrefId + "\"\n            type=\"text\"\n            class=\"block\"\n            placeholder=\"" + t('跳转链接') + "\"/>");
+  }
+
+  var tabsConf = [// first tab
+  {
+    // 标题
+    title: t('上传图片'),
+    // 模板
+    tpl: getUploadImgTpl('w-e-up-img-container'),
+    // 事件绑定
+    events: uploadEvents
+  }, // second tab
+  {
+    title: t('网络图片'),
+    tpl: "<div>\n                    " + linkImgInputs.join('') + "\n                    <div class=\"w-e-button-container\">\n                        <button type=\"button\" id=\"" + linkBtnId + "\" class=\"right\">" + t('插入', '') + "</button>\n                    </div>\n                </div>",
+    events: [{
+      selector: '#' + linkBtnId,
+      type: 'click',
+      fn: function fn() {
+        var _context2;
+
+        var $linkUrl = dom_core_1["default"]('#' + linkUrlId);
+        var url = (0, _trim["default"])(_context2 = $linkUrl.val()).call(_context2); //如果url为空则直接返回
+
+        if (!url) return;
+        var linkUrlAltText;
+
+        if (config.showLinkImgAlt) {
+          var _context3;
+
+          linkUrlAltText = (0, _trim["default"])(_context3 = dom_core_1["default"]('#' + linkUrlAltId).val()).call(_context3);
+        }
+
+        var linkUrlHrefText;
+
+        if (config.showLinkImgHref) {
+          var _context4;
+
+          linkUrlHrefText = (0, _trim["default"])(_context4 = dom_core_1["default"]('#' + linkUrlHrefId).val()).call(_context4);
+        } //如果不能通过校验也直接返回
+
+
+        if (!checkLinkImg(url, linkUrlAltText, linkUrlHrefText)) return; //插入图片url
+
+        uploadImg.insertImg(url, linkUrlAltText, linkUrlHrefText); // 返回 true 表示函数执行结束之后关闭 panel
+
+        return true;
+      }
+    }]
+  }]; // tabs end
+  // 最终的配置 -----------------------------------------
+
+  var conf = {
+    width: 300,
+    height: 0,
+    tabs: [],
+    onlyUploadConf: {
+      $elem: dom_core_1["default"](getUploadImgTpl('w-e-menu')),
+      events: uploadEvents
+    }
+  }; // 显示“上传图片”
+
+  if (window.FileReader && (config.uploadImgShowBase64 || config.uploadImgServer || config.customUploadImg)) {
+    conf.tabs.push(tabsConf[0]);
+  } // 显示“插入网络图片”
+
+
+  if (config.showLinkImg) {
+    conf.tabs.push(tabsConf[1]);
+    conf.onlyUploadConf = undefined;
+  }
+
+  return conf;
+}
+
+exports["default"] = default_1;
+
+/***/ }),
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16668,13 +18426,13 @@ exports["default"] = bindTooltipEvent;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -16714,9 +18472,9 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var DropListMenu_1 = __importDefault(__webpack_require__(23));
+var DropListMenu_1 = __importDefault(__webpack_require__(24));
 
-var operate_element_1 = __importDefault(__webpack_require__(354));
+var operate_element_1 = __importDefault(__webpack_require__(373));
 
 var Indent =
 /** @class */
@@ -16759,7 +18517,7 @@ function (_super) {
     if ($selectionElem && editor.$textElem.equal($selectionElem)) {
       // 当 当前选区 等于 textElem 时
       // 代表 当前选区 可能是一个选择了一个完整的段落或者多个段落
-      var $elems = editor.selection.getSelectionRangeTopNodes(editor);
+      var $elems = editor.selection.getSelectionRangeTopNodes();
 
       if ($elems.length > 0) {
         (0, _forEach["default"])($elems).call($elems, function (item) {
@@ -16804,7 +18562,7 @@ function (_super) {
 exports["default"] = Indent;
 
 /***/ }),
-/* 354 */
+/* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16820,7 +18578,7 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _trim = _interopRequireDefault(__webpack_require__(19));
 
-var _slice = _interopRequireDefault(__webpack_require__(43));
+var _slice = _interopRequireDefault(__webpack_require__(45));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -16834,9 +18592,9 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var increase_indent_style_1 = __importDefault(__webpack_require__(355));
+var increase_indent_style_1 = __importDefault(__webpack_require__(374));
 
-var decrease_indent_style_1 = __importDefault(__webpack_require__(356));
+var decrease_indent_style_1 = __importDefault(__webpack_require__(375));
 
 var lengthRegex = /^(\d+)(\w+)$/;
 var percentRegex = /^(\d+)%$/;
@@ -16884,7 +18642,7 @@ function operateElement($node, type, editor) {
 exports["default"] = operateElement;
 
 /***/ }),
-/* 355 */
+/* 374 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16896,7 +18654,7 @@ exports["default"] = operateElement;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _slice = _interopRequireDefault(__webpack_require__(43));
+var _slice = _interopRequireDefault(__webpack_require__(45));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -16920,7 +18678,7 @@ function increaseIndentStyle($node, options) {
 exports["default"] = increaseIndentStyle;
 
 /***/ }),
-/* 356 */
+/* 375 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16932,7 +18690,7 @@ exports["default"] = increaseIndentStyle;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _slice = _interopRequireDefault(__webpack_require__(43));
+var _slice = _interopRequireDefault(__webpack_require__(45));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -16959,7 +18717,7 @@ function decreaseIndentStyle($node, options) {
 exports["default"] = decreaseIndentStyle;
 
 /***/ }),
-/* 357 */
+/* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16969,9 +18727,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -17015,11 +18773,11 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var PanelMenu_1 = __importDefault(__webpack_require__(34));
+var PanelMenu_1 = __importDefault(__webpack_require__(35));
 
-var Panel_1 = __importDefault(__webpack_require__(31));
+var Panel_1 = __importDefault(__webpack_require__(33));
 
-var create_panel_conf_1 = __importDefault(__webpack_require__(358));
+var create_panel_conf_1 = __importDefault(__webpack_require__(377));
 
 var Emoticon =
 /** @class */
@@ -17060,7 +18818,7 @@ function (_super) {
 exports["default"] = Emoticon;
 
 /***/ }),
-/* 358 */
+/* 377 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17074,9 +18832,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _trim = _interopRequireDefault(__webpack_require__(19));
 
-var _filter = _interopRequireDefault(__webpack_require__(66));
+var _filter = _interopRequireDefault(__webpack_require__(71));
 
-var _map = _interopRequireDefault(__webpack_require__(29));
+var _map = _interopRequireDefault(__webpack_require__(26));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -17107,7 +18865,7 @@ function default_1(editor) {
 
       res = (0, _map["default"])(_context = ele.content).call(_context, function (con) {
         if (typeof con == 'string') return '';
-        return "<span  title=\"" + con.alt + "\">\n                    <img class=\"eleImg\" style src=\"" + con.src + "\" alt=\"[" + con.alt + "]\">\n                </span>";
+        return "<span  title=\"" + con.alt + "\">\n                    <img class=\"eleImg\" data-emoji=\"" + con.alt + "\" style src=\"" + con.src + "\" alt=\"[" + con.alt + "]\">\n                </span>";
       });
       res = (0, _filter["default"])(res).call(res, function (s) {
         return s !== '';
@@ -17169,23 +18927,103 @@ function default_1(editor) {
 exports["default"] = default_1;
 
 /***/ }),
-/* 359 */
+/* 378 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-/**
- * @description 无序列表/有序列表
- * @author tonghan
- */
 
 var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+exports.createListHandle = exports.ClassType = void 0;
+
+var dom_core_1 = __importDefault(__webpack_require__(2));
+
+var WrapListHandle_1 = __importDefault(__webpack_require__(379));
+
+var JoinListHandle_1 = __importDefault(__webpack_require__(381));
+
+var StartJoinListHandle_1 = __importDefault(__webpack_require__(382));
+
+var EndJoinListHandle_1 = __importDefault(__webpack_require__(383));
+
+var OtherListHandle_1 = __importDefault(__webpack_require__(384));
+
+var ClassType;
+
+(function (ClassType) {
+  ClassType["Wrap"] = "WrapListHandle";
+  ClassType["Join"] = "JoinListHandle";
+  ClassType["StartJoin"] = "StartJoinListHandle";
+  ClassType["EndJoin"] = "EndJoinListHandle";
+  ClassType["Other"] = "OtherListHandle";
+})(ClassType = exports.ClassType || (exports.ClassType = {}));
+
+var handle = {
+  WrapListHandle: WrapListHandle_1["default"],
+  JoinListHandle: JoinListHandle_1["default"],
+  StartJoinListHandle: StartJoinListHandle_1["default"],
+  EndJoinListHandle: EndJoinListHandle_1["default"],
+  OtherListHandle: OtherListHandle_1["default"]
+};
+
+function createListHandle(classType, options, range) {
+  if (classType === ClassType.Other && range === undefined) {
+    throw new Error('other 类需要传入 range');
+  }
+
+  return classType !== ClassType.Other ? new handle[classType](options) : new handle[classType](options, range);
+}
+
+exports.createListHandle = createListHandle;
+/**
+ * 统一执行的接口
+ */
+
+var ListHandleCommand =
+/** @class */
+function () {
+  function ListHandleCommand(handle) {
+    this.handle = handle;
+    this.handle.exec();
+  }
+
+  ListHandleCommand.prototype.getSelectionRangeElem = function () {
+    return dom_core_1["default"](this.handle.selectionRangeElem.get());
+  };
+
+  return ListHandleCommand;
+}();
+
+exports["default"] = ListHandleCommand;
+
+/***/ }),
+/* 379 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _forEach = _interopRequireDefault(__webpack_require__(3));
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var _create = _interopRequireDefault(__webpack_require__(4));
+
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -17225,92 +19063,897 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var DropListMenu_1 = __importDefault(__webpack_require__(23));
+var ListHandle_1 = __webpack_require__(57);
 
-var List =
+var utils_1 = __webpack_require__(46);
+/**
+ * 选区在序列内的处理
+ */
+
+
+var WrapListHandle =
 /** @class */
 function (_super) {
-  __extends(List, _super);
+  __extends(WrapListHandle, _super);
 
-  function List(editor) {
-    var _this = this;
+  function WrapListHandle(options) {
+    return _super.call(this, options) || this;
+  }
 
-    var $elem = dom_core_1["default"]("<div class=\"w-e-menu\" data-title=\"\u5E8F\u5217\">\n                <i class=\"w-e-icon-list2\"></i>\n            </div>");
-    var dropListConf = {
-      width: 130,
-      title: '序列',
-      type: 'list',
-      list: [{
-        $elem: dom_core_1["default"]("\n                        <p>\n                            <i class=\"w-e-icon-list2 w-e-drop-list-item\"></i>\n                            " + editor.i18next.t('menus.dropListMenu.list.无序列表') + "\n                        <p>"),
-        value: 'insertUnorderedList'
-      }, {
-        $elem: dom_core_1["default"]("<p>\n                            <i class=\"w-e-icon-list-numbered w-e-drop-list-item\"></i>\n                            " + editor.i18next.t('menus.dropListMenu.list.有序列表') + "\n                        <p>"),
-        value: 'insertOrderedList'
-      }],
-      clickHandler: function clickHandler(value) {
-        // 注意 this 是指向当前的 List 对象
-        _this.command(value);
+  WrapListHandle.prototype.exec = function () {
+    var _a = this.options,
+        listType = _a.listType,
+        listTarget = _a.listTarget,
+        $selectionElem = _a.$selectionElem,
+        $startElem = _a.$startElem,
+        $endElem = _a.$endElem;
+    var $containerFragment; // 容器 - HTML 文档片段
+
+    var $nodes = []; // 获取选中的段落
+    // 获取 selectionElem 的标签名
+
+    var containerNodeName = $selectionElem === null || $selectionElem === void 0 ? void 0 : $selectionElem.getNodeName(); // 获取开始以及结束的 li 元素
+
+    var $start = $startElem.prior;
+    var $end = $endElem.prior; // =====================================
+    // 当 开始节点 和 结束节点 没有 prior
+    // 并且 开始节点 没有前一个兄弟节点
+    // 并且 结束节点 没有后一个兄弟节点
+    // 即代表 全选序列
+    // =====================================
+
+    if (!$startElem.prior && !$endElem.prior || !($start === null || $start === void 0 ? void 0 : $start.prev().length) && !($end === null || $end === void 0 ? void 0 : $end.next().length)) {
+      var _context;
+
+      // 获取当前序列下的所有 li 标签
+      ;
+      (0, _forEach["default"])(_context = $selectionElem === null || $selectionElem === void 0 ? void 0 : $selectionElem.children()).call(_context, function ($node) {
+        $nodes.push(dom_core_1["default"]($node));
+      }); // =====================================
+      // 当 selectionElem 的标签名和按钮类型 一致 的时候
+      // 代表着当前的操作是 取消 序列
+      // =====================================
+
+      if (containerNodeName === listType) {
+        // 生成对应的段落(p)并添加到文档片段中，然后删除掉无用的 li
+        $containerFragment = utils_1.createElementFragment($nodes, utils_1.createDocumentFragment(), // 创建 文档片段
+        'p');
+      } // =====================================
+      // 当 selectionElem 的标签名和按钮类型 不一致 的时候
+      // 代表着当前的操作是 转换 序列
+      // =====================================
+      else {
+          // 创建 序列节点
+          $containerFragment = utils_1.createElement(listTarget); // 因为是转换，所以 li 元素可以直接使用
+
+          (0, _forEach["default"])($nodes).call($nodes, function ($node) {
+            $containerFragment.append($node.elems[0]);
+          });
+        } // 把 文档片段 或 序列节点 插入到 selectionElem 的前面
+
+
+      this.selectionRangeElem.set($containerFragment); // 插入到 $selectionElem 之前
+
+      utils_1.insertBefore($selectionElem, $containerFragment, $selectionElem.elems[0]); // 删除无用的 selectionElem 因为它被掏空了
+
+      $selectionElem.remove();
+    } // =====================================
+    // 当不是全选序列的时候就代表是非全选序列(废话)
+    // 非全选序列的情况
+    // =====================================
+    else {
+        // 获取选中的内容
+        var $startDom = $start;
+
+        while ($startDom.length) {
+          $nodes.push($startDom);
+          ($end === null || $end === void 0 ? void 0 : $end.equal($startDom)) ? $startDom = dom_core_1["default"](undefined) : // 结束
+          $startDom = $startDom.next(); // 继续
+        } // 获取开始节点的上一个兄弟节点
+
+
+        var $prveDom = $start.prev(); // 获取结束节点的下一个兄弟节点
+
+        var $nextDom = $end.next(); // =====================================
+        // 当 selectionElem 的标签名和按钮类型一致的时候
+        // 代表着当前的操作是 取消 序列
+        // =====================================
+
+        if (containerNodeName === listType) {
+          // 生成对应的段落(p)并添加到文档片段中，然后删除掉无用的 li
+          $containerFragment = utils_1.createElementFragment($nodes, utils_1.createDocumentFragment(), // 创建 文档片段
+          'p');
+        } // =====================================
+        // 当 selectionElem 的标签名和按钮类型不一致的时候
+        // 代表着当前的操作是 转换 序列
+        // =====================================
+        else {
+            // 创建 文档片段
+            $containerFragment = utils_1.createElement(listTarget); // 因为是转换，所以 li 元素可以直接使用
+
+            (0, _forEach["default"])($nodes).call($nodes, function ($node) {
+              $containerFragment.append($node.elems[0]);
+            });
+          } // =====================================
+        // 当 prveDom 和 nextDom 都存在的时候
+        // 代表着当前选区是在序列的中间
+        // 所以要先把 下半部分 未选择的 li 元素独立出来生成一个 序列
+        // =====================================
+
+
+        if ($prveDom.length && $nextDom.length) {
+          // 获取尾部的元素
+          var $tailDomArr = [];
+
+          while ($nextDom.length) {
+            $tailDomArr.push($nextDom);
+            $nextDom = $nextDom.next();
+          } // 创建 尾部序列节点
+
+
+          var $tailDocFragment_1 = utils_1.createElement(containerNodeName); // 把尾部元素节点添加到尾部序列节点中
+
+          (0, _forEach["default"])($tailDomArr).call($tailDomArr, function ($node) {
+            $tailDocFragment_1.append($node.elems[0]);
+          }); // 把尾部序列节点插入到 selectionElem 的后面
+
+          dom_core_1["default"]($tailDocFragment_1).insertAfter($selectionElem); // =====================================
+          // 获取选区容器元素的父元素，一般就是编辑区域
+          // 然后判断 selectionElem 是否还有下一个兄弟节点
+          // 如果有，就把文档片段添加到 selectionElem 下一个兄弟节点前
+          // 如果没有，就把文档片段添加到 编辑区域 末尾
+          // =====================================
+
+          this.selectionRangeElem.set($containerFragment);
+          var $selectionNextDom = $selectionElem.next();
+          $selectionNextDom.length ? utils_1.insertBefore($selectionElem, $containerFragment, $selectionNextDom.elems[0]) : $selectionElem.parent().elems[0].append($containerFragment);
+        } // =====================================
+        // 不管是 取消 还是 转换 都需要重新插入节点
+        //
+        // prveDom.length 等于 0 即代表选区是 selectionElem 序列的上半部分
+        // 上半部分的 li 元素
+        // =====================================
+        else if (!$prveDom.length) {
+            // 文档片段插入到 selectionElem 之前
+            this.selectionRangeElem.set($containerFragment);
+            utils_1.insertBefore($selectionElem, $containerFragment, $selectionElem.elems[0]);
+          } // =====================================
+          // 不管是 取消 还是 转换 都需要重新插入节点
+          //
+          // nextDom.length 等于 0 即代表选区是 selectionElem 序列的下半部分
+          // 下半部分的 li 元素  if (!$nextDom.length)
+          // =====================================
+          else {
+              // 文档片段插入到 selectionElem 之后
+              this.selectionRangeElem.set($containerFragment);
+              var $selectionNextDom = $selectionElem.next();
+              $selectionNextDom.length ? utils_1.insertBefore($selectionElem, $containerFragment, $selectionNextDom.elems[0]) : $selectionElem.parent().elems[0].append($containerFragment);
+            }
+      }
+  };
+
+  return WrapListHandle;
+}(ListHandle_1.ListHandle);
+
+exports["default"] = WrapListHandle;
+
+/***/ }),
+/* 380 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _forEach = _interopRequireDefault(__webpack_require__(3));
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+/**
+ * @description 选区的 Element
+ * @author tonghan
+ */
+
+var SelectionRangeElem =
+/** @class */
+function () {
+  function SelectionRangeElem() {
+    this._element = null;
+  }
+  /**
+   * 设置 SelectionRangeElem 的值
+   * @param { SetSelectionRangeType } data
+   */
+
+
+  SelectionRangeElem.prototype.set = function (data) {
+    //
+    if (data instanceof DocumentFragment) {
+      var _context;
+
+      var childNode_1 = [];
+      (0, _forEach["default"])(_context = data.childNodes).call(_context, function ($node) {
+        childNode_1.push($node);
+      });
+      data = childNode_1;
+    }
+
+    this._element = data;
+  };
+  /**
+   * 获取 SelectionRangeElem 的值
+   * @returns { SelectionRangeType } Elem
+   */
+
+
+  SelectionRangeElem.prototype.get = function () {
+    return this._element;
+  };
+  /**
+   * 清除 SelectionRangeElem 的值
+   */
+
+
+  SelectionRangeElem.prototype.clear = function () {
+    this._element = null;
+  };
+
+  return SelectionRangeElem;
+}();
+
+exports["default"] = SelectionRangeElem;
+
+/***/ }),
+/* 381 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _forEach = _interopRequireDefault(__webpack_require__(3));
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var _create = _interopRequireDefault(__webpack_require__(4));
+
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
+
+var __extends = void 0 && (void 0).__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = _setPrototypeOf["default"] || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
       }
     };
-    _this = _super.call(this, $elem, editor, dropListConf) || this;
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? (0, _create["default"])(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+
+var dom_core_1 = __importDefault(__webpack_require__(2));
+
+var ListHandle_1 = __webpack_require__(57);
+
+var utils_1 = __webpack_require__(46);
+
+var JoinListHandle =
+/** @class */
+function (_super) {
+  __extends(JoinListHandle, _super);
+
+  function JoinListHandle(options) {
+    return _super.call(this, options) || this;
+  }
+
+  JoinListHandle.prototype.exec = function () {
+    var _a, _b, _c, _d, _e, _f, _g;
+
+    var _h = this.options,
+        editor = _h.editor,
+        listType = _h.listType,
+        listTarget = _h.listTarget,
+        $startElem = _h.$startElem,
+        $endElem = _h.$endElem; // 容器 - HTML 文档片段
+
+    var $containerFragment; // 获取选中的段落
+
+    var $nodes = editor.selection.getSelectionRangeTopNodes(); // 获取开始段落和结束段落 标签名
+
+    var startNodeName = $startElem === null || $startElem === void 0 ? void 0 : $startElem.getNodeName();
+    var endNodeName = $endElem === null || $endElem === void 0 ? void 0 : $endElem.getNodeName(); // =====================================
+    // 开头结尾都是序列的情况下
+    // 开头序列 和 结尾序列的标签名一致的时候
+    // =====================================
+
+    if (startNodeName === endNodeName) {
+      // =====================================
+      // 开头序列 和 结尾序列 中间还有其他的段落的时候
+      // =====================================
+      if ($nodes.length > 2) {
+        // 弹出 开头 和 结尾
+        $nodes.shift();
+        $nodes.pop(); // 把中间部分的节点元素转换成 li 元素并添加到文档片段后删除
+
+        $containerFragment = utils_1.createElementFragment(utils_1.filterSelectionNodes($nodes), // 过滤 $nodes 获取到符合要求的选中元素节点
+        utils_1.createDocumentFragment() // 创建 文档片段
+        ); // =====================================
+        // 由于开头序列 和 结尾序列的标签名一样，所以只判断了开头序列的
+        // 当开头序列的标签名和按钮类型 一致 的时候
+        // 代表着当前是一个 设置序列 的操作
+        // =====================================
+
+        if (startNodeName === listType) {
+          // 把结束序列的 li 元素添加到 文档片段中
+          (_a = $endElem.children()) === null || _a === void 0 ? void 0 : (0, _forEach["default"])(_a).call(_a, function ($list) {
+            $containerFragment.append($list);
+          }); // 下序列全选被掏空了，就卸磨杀驴吧
+
+          $endElem.remove(); // 在开始序列中添加 文档片段
+
+          this.selectionRangeElem.set($containerFragment);
+          $startElem.elems[0].append($containerFragment);
+        } // =====================================
+        // 由于开头序列 和 结尾序列的标签名一样，所以只判断了开头序列的
+        // 当开头序列的标签名和按钮类型 不一致 的时候
+        // 代表着当前是一个 转换序列 的操作
+        // =====================================
+        else {
+            // 创建 开始序列和结束序列的文档片段
+            var $startFragment = document.createDocumentFragment();
+            var $endFragment_1 = document.createDocumentFragment(); // 获取起点元素
+
+            var $startDom = utils_1.getStartPoint($startElem); // 获取上半序列中的选中内容，并添加到文档片段中
+
+            while ($startDom.length) {
+              var _element = $startDom.elems[0];
+              $startDom = $startDom.next();
+              $startFragment.append(_element);
+            } // 获取结束元素
+
+
+            var $endDom = utils_1.getEndPoint($endElem); // 获取下半序列中选中的内容
+
+            var domArr = [];
+
+            while ($endDom.length) {
+              domArr.unshift($endDom.elems[0]);
+              $endDom = $endDom.prev();
+            } // 添加到文档片段中
+
+
+            (0, _forEach["default"])(domArr).call(domArr, function ($node) {
+              $endFragment_1.append($node);
+            }); // 合并文档片段
+
+            var $orderFragment = utils_1.createElement(listTarget);
+            $orderFragment.append($startFragment);
+            $orderFragment.append($containerFragment);
+            $orderFragment.append($endFragment_1);
+            $containerFragment = $orderFragment; // 插入
+
+            this.selectionRangeElem.set($containerFragment);
+            dom_core_1["default"]($orderFragment).insertAfter($startElem); // 序列全选被掏空了后，就卸磨杀驴吧
+
+            !((_b = $startElem.children()) === null || _b === void 0 ? void 0 : _b.length) && $startElem.remove();
+            !((_c = $endElem.children()) === null || _c === void 0 ? void 0 : _c.length) && $endElem.remove();
+          }
+      } // =====================================
+      // 开头序列 和 结尾序列 中间没有其他的段落
+      // =====================================
+      else {
+          $nodes.length = 0; // 获取起点元素
+
+          var $startDom = utils_1.getStartPoint($startElem); // 获取上半序列中的选中内容
+
+          while ($startDom.length) {
+            $nodes.push($startDom);
+            $startDom = $startDom.next();
+          } // 获取结束元素
+
+
+          var $endDom = utils_1.getEndPoint($endElem); // 获取下半序列中选中的内容
+
+          var domArr = []; // 获取下半序列中的选中内容
+
+          while ($endDom.length) {
+            domArr.unshift($endDom);
+            $endDom = $endDom.prev();
+          } // 融合内容
+
+
+          $nodes.push.apply($nodes, domArr); // =====================================
+          // 由于开头序列 和 结尾序列的标签名一样，所以只判断了开头序列的
+          // 当开头序列的标签名和按钮类型 一致 的时候
+          // 代表着当前是一个 取消序列 的操作
+          // =====================================
+
+          if (startNodeName === listType) {
+            // 创建 文档片段
+            // 把 li 转换为 p 标签
+            $containerFragment = utils_1.createElementFragment($nodes, utils_1.createDocumentFragment(), 'p'); // 插入到 endElem 前
+
+            this.selectionRangeElem.set($containerFragment);
+            utils_1.insertBefore($startElem, $containerFragment, $endElem.elems[0]);
+          } // =====================================
+          // 由于开头序列 和 结尾序列的标签名一样，所以只判断了开头序列的
+          // 当开头序列的标签名和按钮类型 不一致 的时候
+          // 代表着当前是一个 设置序列 的操作
+          // =====================================
+          else {
+              // 创建 序列元素
+              $containerFragment = utils_1.createElement(listTarget); // li 元素添加到 序列元素 中
+
+              (0, _forEach["default"])($nodes).call($nodes, function ($list) {
+                $containerFragment.append($list.elems[0]);
+              }); // 插入到 startElem 之后
+
+              this.selectionRangeElem.set($containerFragment);
+              dom_core_1["default"]($containerFragment).insertAfter($startElem);
+            } // 序列全选被掏空了后，就卸磨杀驴吧
+
+
+          !((_d = $startElem.children()) === null || _d === void 0 ? void 0 : _d.length) && $endElem.remove();
+          !((_e = $endElem.children()) === null || _e === void 0 ? void 0 : _e.length) && $endElem.remove();
+        }
+    } // =====================================
+    // 由于开头序列 和 结尾序列的标签名不一样
+    // =====================================
+    else {
+        // 下序列元素数组
+        var lowerListElems = []; // 获取结束元素
+
+        var $endDom = utils_1.getEndPoint($endElem); // 获取下半序列中选中的内容
+
+        while ($endDom.length) {
+          lowerListElems.unshift($endDom);
+          $endDom = $endDom.prev();
+        } // 上序列元素数组
+
+
+        var upperListElems = []; // 获取起点元素
+
+        var $startDom = utils_1.getStartPoint($startElem); // 获取上半序列中的选中内容，并添加到文档片段中
+
+        while ($startDom.length) {
+          upperListElems.push($startDom);
+          $startDom = $startDom.next();
+        } // 创建 文档片段
+
+
+        $containerFragment = utils_1.createDocumentFragment(); // 弹出开头和结尾的序列
+
+        $nodes.shift();
+        $nodes.pop(); // 把头部序列的内容添加到文档片段当中
+
+        (0, _forEach["default"])(upperListElems).call(upperListElems, function ($list) {
+          return $containerFragment.append($list.elems[0]);
+        }); // 生成 li 标签，并且添加到 文档片段中，删除无用节点
+
+        $containerFragment = utils_1.createElementFragment(utils_1.filterSelectionNodes($nodes), // 序列中间的数据 - 进行数据过滤
+        $containerFragment); // 把尾部序列的内容添加到文档片段当中
+
+        (0, _forEach["default"])(lowerListElems).call(lowerListElems, function ($list) {
+          return $containerFragment.append($list.elems[0]);
+        }); // 记录
+
+        this.selectionRangeElem.set($containerFragment); // =====================================
+        // 开头序列 和 设置序列类型相同
+        // =====================================
+
+        if (startNodeName === listType) {
+          // 插入到 开始序列的尾部(作为子元素)
+          $startElem.elems[0].append($containerFragment); // 序列全选被掏空了后，就卸磨杀驴吧
+
+          !((_f = $endElem.children()) === null || _f === void 0 ? void 0 : _f.length) && $endElem.remove();
+        } // =====================================
+        // 结尾序列 和 设置序列类型相同
+        // =====================================
+        else {
+            // 插入到结束序列的顶部(作为子元素)
+            if ((_g = $endElem.children()) === null || _g === void 0 ? void 0 : _g.length) {
+              var $endElemChild = $endElem.children();
+              utils_1.insertBefore($endElemChild, $containerFragment, $endElemChild.elems[0]);
+            } else {
+              $endElem.elems[0].append($containerFragment);
+            }
+          }
+      }
+  };
+
+  return JoinListHandle;
+}(ListHandle_1.ListHandle);
+
+exports["default"] = JoinListHandle;
+
+/***/ }),
+/* 382 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _forEach = _interopRequireDefault(__webpack_require__(3));
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var _create = _interopRequireDefault(__webpack_require__(4));
+
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
+
+var __extends = void 0 && (void 0).__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = _setPrototypeOf["default"] || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? (0, _create["default"])(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+
+var dom_core_1 = __importDefault(__webpack_require__(2));
+
+var ListHandle_1 = __webpack_require__(57);
+
+var utils_1 = __webpack_require__(46);
+
+var StartJoinListHandle =
+/** @class */
+function (_super) {
+  __extends(StartJoinListHandle, _super);
+
+  function StartJoinListHandle(options) {
+    return _super.call(this, options) || this;
+  }
+
+  StartJoinListHandle.prototype.exec = function () {
+    var _a;
+
+    var _b = this.options,
+        editor = _b.editor,
+        listType = _b.listType,
+        listTarget = _b.listTarget,
+        $startElem = _b.$startElem; // 容器 - HTML 文档片段
+
+    var $containerFragment; // 获取选中的段落
+
+    var $nodes = editor.selection.getSelectionRangeTopNodes(); // 获取开始段落标签名
+
+    var startNodeName = $startElem === null || $startElem === void 0 ? void 0 : $startElem.getNodeName(); // 弹出 开头序列
+
+    $nodes.shift(); // 上序列元素数组
+
+    var upperListElems = []; // 获取起点元素
+
+    var $startDom = utils_1.getStartPoint($startElem); // 获取上半序列中的选中内容，并添加到文档片段中
+
+    while ($startDom.length) {
+      upperListElems.push($startDom);
+      $startDom = $startDom.next();
+    } // =====================================
+    // 当前序列类型和开头序列的类型 一致
+    // 代表当前是一个 融合(把其他段落加入到开头序列中) 的操作
+    // =====================================
+
+
+    if (startNodeName === listType) {
+      $containerFragment = utils_1.createDocumentFragment();
+      (0, _forEach["default"])(upperListElems).call(upperListElems, function ($list) {
+        return $containerFragment.append($list.elems[0]);
+      }); // 生成 li 元属，并删除
+
+      $containerFragment = utils_1.createElementFragment(utils_1.filterSelectionNodes($nodes), // 过滤元素节点数据
+      $containerFragment); // 插入到开始序列末尾
+
+      this.selectionRangeElem.set($containerFragment); // this.selectionRangeElem.set($startElem.elems[0])
+
+      $startElem.elems[0].append($containerFragment);
+    } // =====================================
+    // 当前序列类型和开头序列的类型 不一致
+    // 代表当前是一个 设置序列 的操作
+    // =====================================
+    else {
+        // 创建 序列节点
+        $containerFragment = utils_1.createElement(listTarget);
+        (0, _forEach["default"])(upperListElems).call(upperListElems, function ($list) {
+          return $containerFragment.append($list.elems[0]);
+        }); // 生成 li 元素，并添加到 序列节点 当中，删除无用节点
+
+        $containerFragment = utils_1.createElementFragment(utils_1.filterSelectionNodes($nodes), // 过滤普通节点
+        $containerFragment); // 插入到开始元素
+
+        this.selectionRangeElem.set($containerFragment);
+        dom_core_1["default"]($containerFragment).insertAfter($startElem); // 序列全选被掏空了后，就卸磨杀驴吧
+
+        !((_a = $startElem.children()) === null || _a === void 0 ? void 0 : _a.length) && $startElem.remove();
+      }
+  };
+
+  return StartJoinListHandle;
+}(ListHandle_1.ListHandle);
+
+exports["default"] = StartJoinListHandle;
+
+/***/ }),
+/* 383 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _forEach = _interopRequireDefault(__webpack_require__(3));
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var _create = _interopRequireDefault(__webpack_require__(4));
+
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
+
+var __extends = void 0 && (void 0).__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = _setPrototypeOf["default"] || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? (0, _create["default"])(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+
+var dom_core_1 = __importDefault(__webpack_require__(2));
+
+var ListHandle_1 = __webpack_require__(57);
+
+var utils_1 = __webpack_require__(46);
+
+var EndJoinListHandle =
+/** @class */
+function (_super) {
+  __extends(EndJoinListHandle, _super);
+
+  function EndJoinListHandle(options) {
+    return _super.call(this, options) || this;
+  }
+
+  EndJoinListHandle.prototype.exec = function () {
+    var _a, _b;
+
+    var _c = this.options,
+        editor = _c.editor,
+        listType = _c.listType,
+        listTarget = _c.listTarget,
+        $endElem = _c.$endElem; // 容器 - HTML 文档片段
+
+    var $containerFragment; // 获取选中的段落
+
+    var $nodes = editor.selection.getSelectionRangeTopNodes(); // 获取结束段落标签名
+
+    var endNodeName = $endElem === null || $endElem === void 0 ? void 0 : $endElem.getNodeName(); // 弹出 结束序列
+
+    $nodes.pop(); // 下序列元素数组
+
+    var lowerListElems = []; // 获取结束元素
+
+    var $endDom = utils_1.getEndPoint($endElem); // 获取下半序列中选中的内容
+
+    while ($endDom.length) {
+      lowerListElems.unshift($endDom);
+      $endDom = $endDom.prev();
+    } // =====================================
+    // 当前序列类型和结束序列的类型 一致
+    // 代表当前是一个 融合(把其他段落加入到结束序列中) 的操作
+    // =====================================
+
+
+    if (endNodeName === listType) {
+      // 生成 li 元属，并删除原来的 dom 元素
+      $containerFragment = utils_1.createElementFragment(utils_1.filterSelectionNodes($nodes), // 过滤元素节点数据
+      utils_1.createDocumentFragment() // 创建 文档片段
+      );
+      (0, _forEach["default"])(lowerListElems).call(lowerListElems, function ($list) {
+        return $containerFragment.append($list.elems[0]);
+      }); // 插入到结束序列之前
+
+      this.selectionRangeElem.set($containerFragment);
+
+      if ((_a = $endElem.children()) === null || _a === void 0 ? void 0 : _a.length) {
+        var $endElemChild = $endElem.children();
+        utils_1.insertBefore($endElemChild, $containerFragment, $endElemChild.elems[0]);
+      } else {
+        $endElem.elems[0].append($containerFragment);
+      }
+    } // =====================================
+    // 当前序列类型和结束序列的类型 不一致
+    // 代表当前是一个 设置序列 的操作
+    // =====================================
+    else {
+        // 过滤元素节点数据
+        var $selectionNodes = utils_1.filterSelectionNodes($nodes); // 把下序列的内容添加到过滤元素中
+
+        $selectionNodes.push.apply($selectionNodes, lowerListElems); // 生成 li 元素并且添加到序列节点后删除原节点
+
+        $containerFragment = utils_1.createElementFragment($selectionNodes, utils_1.createElement(listTarget) // 创建 序列节点
+        ); // 插入到结束序列之前
+
+        this.selectionRangeElem.set($containerFragment);
+        dom_core_1["default"]($containerFragment).insertBefore($endElem); // 序列全选被掏空了后，就卸磨杀驴吧
+
+        !((_b = $endElem.children()) === null || _b === void 0 ? void 0 : _b.length) && $endElem.remove();
+      }
+  };
+
+  return EndJoinListHandle;
+}(ListHandle_1.ListHandle);
+
+exports["default"] = EndJoinListHandle;
+
+/***/ }),
+/* 384 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var _create = _interopRequireDefault(__webpack_require__(4));
+
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
+
+var __extends = void 0 && (void 0).__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = _setPrototypeOf["default"] || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? (0, _create["default"])(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+
+var ListHandle_1 = __webpack_require__(57);
+
+var utils_1 = __webpack_require__(46);
+
+var OtherListHandle =
+/** @class */
+function (_super) {
+  __extends(OtherListHandle, _super);
+
+  function OtherListHandle(options, range) {
+    var _this = _super.call(this, options) || this;
+
+    _this.range = range;
     return _this;
   }
 
-  List.prototype.command = function (value) {
-    var editor = this.editor;
-    var $textElem = editor.$textElem;
-    editor.selection.restoreSelection(); // 判断是否已经执行了命令
+  OtherListHandle.prototype.exec = function () {
+    var _a = this.options,
+        editor = _a.editor,
+        listTarget = _a.listTarget; // 获取选中的段落
 
-    if (editor.cmd.queryCommandState(value)) {
-      return;
-    } //禁止在table中添加列表
+    var $nodes = editor.selection.getSelectionRangeTopNodes(); // 生成 li 元素并且添加到序列节点后删除原节点
 
+    var $containerFragment = utils_1.createElementFragment(utils_1.filterSelectionNodes($nodes), // 过滤选取的元素
+    utils_1.createElement(listTarget) // 创建 序列节点
+    ); // 插入节点到选区
 
-    var $selectionElem = dom_core_1["default"](editor.selection.getSelectionContainerElem());
-    var $dom = dom_core_1["default"]($selectionElem.elems[0]).parentUntil('TABLE', $selectionElem.elems[0]);
-
-    if ($dom && dom_core_1["default"]($dom.elems[0]).getNodeName() === 'TABLE') {
-      return;
-    }
-
-    editor.cmd["do"](value); // 验证列表是否被包裹在 <p> 之内
-
-    if ($selectionElem.getNodeName() === 'LI') {
-      $selectionElem = $selectionElem.parent();
-    }
-
-    if (/^ol|ul$/i.test($selectionElem.getNodeName()) === false) {
-      return;
-    }
-
-    if ($selectionElem.equal($textElem)) {
-      // 证明是顶级标签，没有被 <p> 包裹
-      return;
-    }
-
-    var $parent = $selectionElem.parent();
-
-    if ($parent.equal($textElem)) {
-      // $parent 是顶级标签，不能删除
-      return;
-    }
-
-    $selectionElem.insertAfter($parent);
-    $parent.remove(); // 恢复选区
-
-    editor.selection.restoreSelection();
-    this.tryChangeActive();
+    this.selectionRangeElem.set($containerFragment);
+    this.range.insertNode($containerFragment);
   };
 
-  List.prototype.tryChangeActive = function () {};
+  return OtherListHandle;
+}(ListHandle_1.ListHandle);
 
-  return List;
-}(DropListMenu_1["default"]);
-
-exports["default"] = List;
+exports["default"] = OtherListHandle;
 
 /***/ }),
-/* 360 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17323,15 +19966,15 @@ exports["default"] = List;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _indexOf = _interopRequireDefault(__webpack_require__(54));
+var _indexOf = _interopRequireDefault(__webpack_require__(31));
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -17369,11 +20012,11 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var DropListMenu_1 = __importDefault(__webpack_require__(23));
+var DropListMenu_1 = __importDefault(__webpack_require__(24));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var lineHeightList_1 = __importDefault(__webpack_require__(361));
+var lineHeightList_1 = __importDefault(__webpack_require__(386));
 
 var util_1 = __webpack_require__(7);
 
@@ -17421,6 +20064,7 @@ function (_super) {
 
     editor.selection.restoreSelection();
     var $selectionElem = dom_core_1["default"](editor.selection.getSelectionContainerElem());
+    if (!($selectionElem === null || $selectionElem === void 0 ? void 0 : $selectionElem.length)) return;
     var $selectionAll = dom_core_1["default"](editor.selection.getSelectionContainerElem()); // let dom:HTMLElement= $selectionElem.elems[0]
 
     var dom = dom_core_1["default"](editor.selection.getSelectionStartElem()).elems[0]; //获取元素的style
@@ -17651,7 +20295,9 @@ function (_super) {
       return;
     }
 
-    var dom = dom_core_1["default"](editor.selection.getSelectionStartElem());
+    var dom = dom_core_1["default"](editor.selection.getSelectionStartElem()); // 有些情况下 dom 可能为空，比如编辑器初始化
+
+    if (dom.length === 0) return;
     dom = this.getDom(dom.elems[0]);
     var style = dom.getAttribute('style') ? dom.getAttribute('style') : ''; //判断当前标签是否具有line-height属性
 
@@ -17668,7 +20314,7 @@ function (_super) {
 exports["default"] = LineHeight;
 
 /***/ }),
-/* 361 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17676,7 +20322,7 @@ exports["default"] = LineHeight;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -17724,7 +20370,7 @@ function () {
 exports["default"] = lineHeightList;
 
 /***/ }),
-/* 362 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17738,9 +20384,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -17780,7 +20426,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var BtnMenu_1 = __importDefault(__webpack_require__(22));
+var BtnMenu_1 = __importDefault(__webpack_require__(23));
 
 var Undo =
 /** @class */
@@ -17790,7 +20436,7 @@ function (_super) {
   function Undo(editor) {
     var _this = this;
 
-    var $elem = dom_core_1["default"]("<div class=\"w-e-menu\" data-title=\"\u6062\u590D\">\n                <i class=\"w-e-icon-undo\"></i>\n            </div>");
+    var $elem = dom_core_1["default"]("<div class=\"w-e-menu\" data-title=\"\u64A4\u9500\">\n                <i class=\"w-e-icon-undo\"></i>\n            </div>");
     _this = _super.call(this, $elem, editor) || this;
     return _this;
   }
@@ -17800,7 +20446,14 @@ function (_super) {
 
 
   Undo.prototype.clickHandler = function () {
-    this.editor.history.revoke();
+    var editor = this.editor;
+    editor.history.revoke(); // 重新创建 range，是处理当初始化编辑器，API插入内容后撤销，range 不在编辑器内部的问题
+
+    var children = editor.$textElem.children();
+    if (!(children === null || children === void 0 ? void 0 : children.length)) return;
+    var $last = children.last();
+    editor.selection.createRangeByElem($last, false, true);
+    editor.selection.restoreSelection();
   };
   /**
    * 尝试修改菜单激活状态
@@ -17824,7 +20477,7 @@ function (_super) {
 exports["default"] = Undo;
 
 /***/ }),
-/* 363 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17838,9 +20491,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -17880,7 +20533,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var BtnMenu_1 = __importDefault(__webpack_require__(22));
+var BtnMenu_1 = __importDefault(__webpack_require__(23));
 
 var Redo =
 /** @class */
@@ -17890,7 +20543,7 @@ function (_super) {
   function Redo(editor) {
     var _this = this;
 
-    var $elem = dom_core_1["default"]("<div class=\"w-e-menu\" data-title=\"\u64A4\u9500\">\n                <i class=\"w-e-icon-redo\"></i>\n            </div>");
+    var $elem = dom_core_1["default"]("<div class=\"w-e-menu\" data-title=\"\u6062\u590D\">\n                <i class=\"w-e-icon-redo\"></i>\n            </div>");
     _this = _super.call(this, $elem, editor) || this;
     return _this;
   }
@@ -17900,7 +20553,14 @@ function (_super) {
 
 
   Redo.prototype.clickHandler = function () {
-    this.editor.history.restore();
+    var editor = this.editor;
+    editor.history.restore(); // 重新创建 range，是处理当初始化编辑器，API插入内容后撤销，range 不在编辑器内部的问题
+
+    var children = editor.$textElem.children();
+    if (!(children === null || children === void 0 ? void 0 : children.length)) return;
+    var $last = children.last();
+    editor.selection.createRangeByElem($last, false, true);
+    editor.selection.restoreSelection();
   };
   /**
    * 尝试修改菜单激活状态
@@ -17924,7 +20584,7 @@ function (_super) {
 exports["default"] = Redo;
 
 /***/ }),
-/* 364 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17938,9 +20598,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -17978,15 +20638,15 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var PanelMenu_1 = __importDefault(__webpack_require__(34));
+var PanelMenu_1 = __importDefault(__webpack_require__(35));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var create_panel_conf_1 = __importDefault(__webpack_require__(365));
+var create_panel_conf_1 = __importDefault(__webpack_require__(390));
 
-var Panel_1 = __importDefault(__webpack_require__(31));
+var Panel_1 = __importDefault(__webpack_require__(33));
 
-var index_1 = __importDefault(__webpack_require__(369));
+var index_1 = __importDefault(__webpack_require__(399));
 
 var Table =
 /** @class */
@@ -18033,7 +20693,7 @@ function (_super) {
 exports["default"] = Table;
 
 /***/ }),
-/* 365 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18044,6 +20704,8 @@ exports["default"] = Table;
  */
 
 var _interopRequireDefault = __webpack_require__(0);
+
+var _isInteger = _interopRequireDefault(__webpack_require__(391));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -18061,9 +20723,19 @@ var util_1 = __webpack_require__(7);
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-__webpack_require__(366);
+__webpack_require__(396);
 
-var create_table_1 = __importDefault(__webpack_require__(368));
+var create_table_1 = __importDefault(__webpack_require__(398));
+/**
+ * 判断一个数值是否为正整数
+ * @param { number } n 被验证的值
+ */
+
+
+function isPositiveInteger(n) {
+  //是否为正整数
+  return n > 0 && (0, _isInteger["default"])(n);
+}
 
 function default_1(editor) {
   var createTable = new create_table_1["default"](editor); // panel 中需要用到的id
@@ -18088,12 +20760,14 @@ function default_1(editor) {
         var colValue = Number(dom_core_1["default"]('#' + colId).val());
         var rowValue = Number(dom_core_1["default"]('#' + rowId).val()); //校验是否传值
 
-        if (colValue && rowValue) {
+        if (isPositiveInteger(rowValue) && isPositiveInteger(colValue)) {
           createTable.createAction(rowValue, colValue);
+          return true;
+        } else {
+          editor.config.customAlert('表格行列请输入正整数', 'warning');
+          return false;
         } // 返回 true 表示函数执行结束之后关闭 panel
 
-
-        return true;
       }
     }]
   }]; // tabs end
@@ -18111,11 +20785,65 @@ function default_1(editor) {
 exports["default"] = default_1;
 
 /***/ }),
-/* 366 */
+/* 391 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(392);
+
+/***/ }),
+/* 392 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var parent = __webpack_require__(393);
+
+module.exports = parent;
+
+
+/***/ }),
+/* 393 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(394);
+var path = __webpack_require__(9);
+
+module.exports = path.Number.isInteger;
+
+
+/***/ }),
+/* 394 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__(6);
+var isInteger = __webpack_require__(395);
+
+// `Number.isInteger` method
+// https://tc39.es/ecma262/#sec-number.isinteger
+$({ target: 'Number', stat: true }, {
+  isInteger: isInteger
+});
+
+
+/***/ }),
+/* 395 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(13);
+
+var floor = Math.floor;
+
+// `Number.isInteger` method implementation
+// https://tc39.es/ecma262/#sec-number.isinteger
+module.exports = function isInteger(it) {
+  return !isObject(it) && isFinite(it) && floor(it) === it;
+};
+
+
+/***/ }),
+/* 396 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(20);
-            var content = __webpack_require__(367);
+            var content = __webpack_require__(397);
 
             content = content.__esModule ? content.default : content;
 
@@ -18135,7 +20863,7 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 367 */
+/* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -18148,7 +20876,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 368 */
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18191,8 +20919,8 @@ function () {
     var editor = this.editor; //不允许在有序列表中添加table
 
     var $selectionElem = dom_core_1["default"](editor.selection.getSelectionContainerElem());
-    var $ul = dom_core_1["default"]($selectionElem.elems[0]).parentUntil('UL', $selectionElem.elems[0]);
-    var $ol = dom_core_1["default"]($selectionElem.elems[0]).parentUntil('OL', $selectionElem.elems[0]);
+    var $ul = dom_core_1["default"]($selectionElem.elems[0]).parentUntilEditor('UL', editor);
+    var $ol = dom_core_1["default"]($selectionElem.elems[0]).parentUntilEditor('OL', editor);
 
     if ($ul || $ol) {
       return;
@@ -18236,7 +20964,7 @@ function () {
 exports["default"] = CreateTable;
 
 /***/ }),
-/* 369 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18260,7 +20988,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var tooltip_event_1 = __importDefault(__webpack_require__(370));
+var tooltip_event_1 = __importDefault(__webpack_require__(400));
 /**
  * 绑定事件
  * @param editor 编辑器实例
@@ -18275,7 +21003,7 @@ function bindEvent(editor) {
 exports["default"] = bindEvent;
 
 /***/ }),
-/* 370 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18301,12 +21029,12 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var Tooltip_1 = __importDefault(__webpack_require__(44)); //操作事件
+var Tooltip_1 = __importDefault(__webpack_require__(36)); //操作事件
 
 
-var operating_event_1 = __importDefault(__webpack_require__(371));
+var operating_event_1 = __importDefault(__webpack_require__(401));
 
-var getNode_1 = __importDefault(__webpack_require__(372));
+var getNode_1 = __importDefault(__webpack_require__(402));
 /**
  * 生成 Tooltip 的显示隐藏函数
  */
@@ -18598,7 +21326,7 @@ function bindTooltipEvent(editor) {
 exports["default"] = bindTooltipEvent;
 
 /***/ }),
-/* 371 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18606,11 +21334,11 @@ exports["default"] = bindTooltipEvent;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
-var _splice = _interopRequireDefault(__webpack_require__(90));
+var _splice = _interopRequireDefault(__webpack_require__(92));
 
-var _slice = _interopRequireDefault(__webpack_require__(43));
+var _slice = _interopRequireDefault(__webpack_require__(45));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -18841,7 +21569,7 @@ exports["default"] = {
 };
 
 /***/ }),
-/* 372 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18853,7 +21581,7 @@ exports["default"] = {
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -18953,7 +21681,7 @@ function () {
 exports["default"] = getNode;
 
 /***/ }),
-/* 373 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18965,13 +21693,13 @@ exports["default"] = getNode;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _map = _interopRequireDefault(__webpack_require__(29));
+var _map = _interopRequireDefault(__webpack_require__(26));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -19010,19 +21738,19 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 });
 exports.formatCodeHtml = void 0;
 
-var PanelMenu_1 = __importDefault(__webpack_require__(34));
+var PanelMenu_1 = __importDefault(__webpack_require__(35));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
 var util_1 = __webpack_require__(7);
 
-var create_panel_conf_1 = __importDefault(__webpack_require__(374));
+var create_panel_conf_1 = __importDefault(__webpack_require__(404));
 
-var is_active_1 = __importDefault(__webpack_require__(127));
+var is_active_1 = __importDefault(__webpack_require__(138));
 
-var Panel_1 = __importDefault(__webpack_require__(31));
+var Panel_1 = __importDefault(__webpack_require__(33));
 
-var index_1 = __importDefault(__webpack_require__(375));
+var index_1 = __importDefault(__webpack_require__(405));
 
 function formatCodeHtml(editor, html) {
   if (!html) return html;
@@ -19150,7 +21878,7 @@ function (_super) {
 exports["default"] = Code;
 
 /***/ }),
-/* 374 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19162,7 +21890,7 @@ exports["default"] = Code;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _map = _interopRequireDefault(__webpack_require__(29));
+var _map = _interopRequireDefault(__webpack_require__(26));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -19180,7 +21908,7 @@ var util_1 = __webpack_require__(7);
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var is_active_1 = __importDefault(__webpack_require__(127));
+var is_active_1 = __importDefault(__webpack_require__(138));
 
 function default_1(editor, text, languageType) {
   var _context;
@@ -19286,7 +22014,7 @@ function default_1(editor, text, languageType) {
 exports["default"] = default_1;
 
 /***/ }),
-/* 375 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19310,7 +22038,9 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var tooltip_event_1 = __importDefault(__webpack_require__(376));
+var tooltip_event_1 = __importDefault(__webpack_require__(406));
+
+var jump_code_block_down_1 = __importDefault(__webpack_require__(407));
 /**
  * 绑定事件
  * @param editor 编辑器实例
@@ -19319,13 +22049,15 @@ var tooltip_event_1 = __importDefault(__webpack_require__(376));
 
 function bindEvent(editor) {
   // tooltip 事件
-  tooltip_event_1["default"](editor);
+  tooltip_event_1["default"](editor); // 代码块为最后内容的跳出处理
+
+  jump_code_block_down_1["default"](editor);
 }
 
 exports["default"] = bindEvent;
 
 /***/ }),
-/* 376 */
+/* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19352,7 +22084,7 @@ exports.createShowHideFn = void 0;
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var Tooltip_1 = __importDefault(__webpack_require__(44));
+var Tooltip_1 = __importDefault(__webpack_require__(36));
 /**
  * 生成 Tooltip 的显示隐藏函数
  */
@@ -19457,7 +22189,7 @@ function bindTooltipEvent(editor) {
 exports["default"] = bindTooltipEvent;
 
 /***/ }),
-/* 377 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19467,9 +22199,60 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+(0, _defineProperty["default"])(exports, "__esModule", {
+  value: true
+});
+
+var dom_core_1 = __importDefault(__webpack_require__(2));
+/**
+ * 在代码块最后一行 按方向下键跳出代码块的处理
+ * @param editor 编辑器实例
+ */
+
+
+function bindEventJumpCodeBlock(editor) {
+  var $textElem = editor.$textElem,
+      selection = editor.selection,
+      txt = editor.txt;
+  var keydownEvents = txt.eventHooks.keydownEvents;
+  keydownEvents.push(function (e) {
+    var _a; // 40 是键盘中的下方向键
+
+
+    if (e.keyCode !== 40) return;
+    var node = selection.getSelectionContainerElem();
+    var $lastNode = (_a = $textElem.children()) === null || _a === void 0 ? void 0 : _a.last();
+
+    if ((node === null || node === void 0 ? void 0 : node.elems[0].tagName) === 'XMP' && ($lastNode === null || $lastNode === void 0 ? void 0 : $lastNode.elems[0].tagName) === 'PRE') {
+      // 就是最后一块是代码块的情况插入空p标签并光标移至p
+      var $emptyP = dom_core_1["default"]('<p><br></p>');
+      $textElem.append($emptyP);
+    }
+  });
+}
+
+exports["default"] = bindEventJumpCodeBlock;
+
+/***/ }),
+/* 408 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+var _defineProperty = _interopRequireDefault(__webpack_require__(1));
+
+var _create = _interopRequireDefault(__webpack_require__(4));
+
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -19511,11 +22294,11 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
  * @author wangqiaoling
  */
 
-var BtnMenu_1 = __importDefault(__webpack_require__(22));
+var BtnMenu_1 = __importDefault(__webpack_require__(23));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var index_1 = __importDefault(__webpack_require__(378));
+var index_1 = __importDefault(__webpack_require__(409));
 
 var splitLine =
 /** @class */
@@ -19540,7 +22323,7 @@ function (_super) {
     var editor = this.editor;
     var range = editor.selection.getRange();
     var $selectionElem = editor.selection.getSelectionContainerElem();
-    if (!$selectionElem) return;
+    if (!($selectionElem === null || $selectionElem === void 0 ? void 0 : $selectionElem.length)) return;
     var $DomElement = dom_core_1["default"]($selectionElem.elems[0]);
     var $tableDOM = $DomElement.parentUntil('TABLE', $selectionElem.elems[0]);
     var $imgDOM = $DomElement.children(); // 禁止在代码块中添加分割线
@@ -19578,7 +22361,7 @@ function (_super) {
 exports["default"] = splitLine;
 
 /***/ }),
-/* 378 */
+/* 409 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19598,7 +22381,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var tooltip_event_1 = __importDefault(__webpack_require__(379));
+var tooltip_event_1 = __importDefault(__webpack_require__(410));
 /**
  * 绑定事件
  * @param editor 编辑器实例
@@ -19613,7 +22396,7 @@ function bindEvent(editor) {
 exports["default"] = bindEvent;
 
 /***/ }),
-/* 379 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19639,7 +22422,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var Tooltip_1 = __importDefault(__webpack_require__(44));
+var Tooltip_1 = __importDefault(__webpack_require__(36));
 /**
  * 生成 Tooltip 的显示隐藏函数
  */
@@ -19706,7 +22489,7 @@ function bindTooltipEvent(editor) {
 exports["default"] = bindTooltipEvent;
 
 /***/ }),
-/* 380 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19714,13 +22497,13 @@ exports["default"] = bindTooltipEvent;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -19760,13 +22543,13 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var BtnMenu_1 = __importDefault(__webpack_require__(22));
+var BtnMenu_1 = __importDefault(__webpack_require__(23));
 
-var util_1 = __webpack_require__(98);
+var util_1 = __webpack_require__(100);
 
-var bind_event_1 = __importDefault(__webpack_require__(386));
+var bind_event_1 = __importDefault(__webpack_require__(417));
 
-var todo_1 = __importDefault(__webpack_require__(128));
+var todo_1 = __importDefault(__webpack_require__(139));
 
 var Todo =
 /** @class */
@@ -19776,7 +22559,7 @@ function (_super) {
   function Todo(editor) {
     var _this = this;
 
-    var $elem = dom_core_1["default"]("<div class=\"w-e-menu\" data-title=\"\u4EE3\u529E\u4E8B\u9879\">\n                    <i class=\"w-e-icon-checkbox-checked\"></i>\n                </div>");
+    var $elem = dom_core_1["default"]("<div class=\"w-e-menu\" data-title=\"\u5F85\u529E\u4E8B\u9879\">\n                    <i class=\"w-e-icon-checkbox-checked\"></i>\n                </div>");
     _this = _super.call(this, $elem, editor) || this;
     bind_event_1["default"](editor);
     return _this;
@@ -19813,7 +22596,7 @@ function (_super) {
 
   Todo.prototype.setTodo = function () {
     var editor = this.editor;
-    var topNodeElem = editor.selection.getSelectionRangeTopNodes(editor);
+    var topNodeElem = editor.selection.getSelectionRangeTopNodes();
     (0, _forEach["default"])(topNodeElem).call(topNodeElem, function ($node) {
       var _a;
 
@@ -19837,7 +22620,7 @@ function (_super) {
 
   Todo.prototype.cancelTodo = function () {
     var editor = this.editor;
-    var $topNodeElems = editor.selection.getSelectionRangeTopNodes(editor);
+    var $topNodeElems = editor.selection.getSelectionRangeTopNodes();
     (0, _forEach["default"])($topNodeElems).call($topNodeElems, function ($topNodeElem) {
       var _a, _b, _c;
 
@@ -19858,25 +22641,25 @@ function (_super) {
 exports["default"] = Todo;
 
 /***/ }),
-/* 381 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(382);
+module.exports = __webpack_require__(413);
 
 /***/ }),
-/* 382 */
+/* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parent = __webpack_require__(383);
+var parent = __webpack_require__(414);
 
 module.exports = parent;
 
 
 /***/ }),
-/* 383 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var every = __webpack_require__(384);
+var every = __webpack_require__(415);
 
 var ArrayPrototype = Array.prototype;
 
@@ -19887,25 +22670,25 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 384 */
+/* 415 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(385);
-var entryVirtual = __webpack_require__(16);
+__webpack_require__(416);
+var entryVirtual = __webpack_require__(15);
 
 module.exports = entryVirtual('Array').every;
 
 
 /***/ }),
-/* 385 */
+/* 416 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $ = __webpack_require__(4);
-var $every = __webpack_require__(33).every;
-var arrayMethodIsStrict = __webpack_require__(87);
-var arrayMethodUsesToLength = __webpack_require__(25);
+var $ = __webpack_require__(6);
+var $every = __webpack_require__(30).every;
+var arrayMethodIsStrict = __webpack_require__(69);
+var arrayMethodUsesToLength = __webpack_require__(22);
 
 var STRICT_METHOD = arrayMethodIsStrict('every');
 var USES_TO_LENGTH = arrayMethodUsesToLength('every');
@@ -19920,7 +22703,7 @@ $({ target: 'Array', proto: true, forced: !STRICT_METHOD || !USES_TO_LENGTH }, {
 
 
 /***/ }),
-/* 386 */
+/* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19928,7 +22711,7 @@ $({ target: 'Array', proto: true, forced: !STRICT_METHOD || !USES_TO_LENGTH }, {
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -19944,11 +22727,11 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-var util_1 = __webpack_require__(98);
+var util_1 = __webpack_require__(100);
 
-var todo_1 = __importDefault(__webpack_require__(128));
+var todo_1 = __importDefault(__webpack_require__(139));
 
-var util_2 = __webpack_require__(98);
+var util_2 = __webpack_require__(100);
 /**
  * todolist 内部逻辑
  * @param editor
@@ -19967,7 +22750,7 @@ function bindEvent(editor) {
     if (util_1.isAllTodo(editor)) {
       e.preventDefault();
       var selection = editor.selection;
-      var $topSelectElem = selection.getSelectionRangeTopNodes(editor)[0];
+      var $topSelectElem = selection.getSelectionRangeTopNodes()[0];
       var $li = (_a = $topSelectElem.childNodes()) === null || _a === void 0 ? void 0 : _a.get(0);
       var selectionNode = (_b = window.getSelection()) === null || _b === void 0 ? void 0 : _b.anchorNode;
       var range = selection.getRange();
@@ -20050,7 +22833,7 @@ function bindEvent(editor) {
 
     if (util_1.isAllTodo(editor)) {
       var selection = editor.selection;
-      var $topSelectElem = selection.getSelectionRangeTopNodes(editor)[0];
+      var $topSelectElem = selection.getSelectionRangeTopNodes()[0];
       var $li = (_a = $topSelectElem.childNodes()) === null || _a === void 0 ? void 0 : _a.getNode();
       var $p = dom_core_1["default"]("<p></p>");
       var p_1 = $p.getNode();
@@ -20088,9 +22871,9 @@ function bindEvent(editor) {
 
   function deleteUp() {
     var selection = editor.selection;
-    var $topSelectElem = selection.getSelectionRangeTopNodes(editor)[0];
+    var $topSelectElem = selection.getSelectionRangeTopNodes()[0];
 
-    if (util_2.isTodo($topSelectElem)) {
+    if (util_2.isTodo(dom_core_1["default"]($topSelectElem))) {
       if ($topSelectElem.text() === '') {
         dom_core_1["default"]("<p><br></p>").insertAfter($topSelectElem);
         $topSelectElem.remove();
@@ -20106,7 +22889,7 @@ function bindEvent(editor) {
 exports["default"] = bindEvent;
 
 /***/ }),
-/* 387 */
+/* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20147,33 +22930,25 @@ function default_1(editor) {
   var config = editor.config;
   var height = config.height;
   var i18next = editor.i18next;
-  var $toolbarElem;
-  var $textContainerElem;
+  var $toolbarElem = dom_core_1["default"]('<div></div>');
+  var $textContainerElem = dom_core_1["default"]('<div></div>');
   var $textElem;
   var $children;
-  var toolbarElemId;
 
   if (textSelector == null) {
-    // 只有 toolbarSelector ，即是容器的选择器或元素，toolbar 和 text 的元素自行创建
-    $toolbarElem = dom_core_1["default"]('<div></div>');
-    $textContainerElem = dom_core_1["default"]('<div></div>'); // 将编辑器区域原有的内容，暂存起来
-
+    // 将编辑器区域原有的内容，暂存起来
     $children = $toolbarSelector.children(); // 添加到 DOM 结构中
 
     $toolbarSelector.append($toolbarElem).append($textContainerElem); // 自行创建的，需要配置默认的样式
 
     $toolbarElem.css('background-color', styleSettings.toolbarBgColor).css('border', styleSettings.border).css('border-bottom', styleSettings.toolbarBottomBorder);
-    $textContainerElem.css('border', styleSettings.border).css('border-top', 'none').css('height', height + "px"); // 当只有 toolbarSelector 时，toolbarElemId 自行创建
-
-    toolbarElemId = util_1.getRandom('toolbar-elem');
+    $textContainerElem.css('border', styleSettings.border).css('border-top', 'none').css('height', height + "px");
   } else {
     // toolbarSelector 和 textSelector 都有
-    $toolbarElem = $toolbarSelector;
-    $textContainerElem = dom_core_1["default"](textSelector); // 将编辑器区域原有的内容，暂存起来
+    $toolbarSelector.append($toolbarElem);
+    dom_core_1["default"](textSelector).append($textContainerElem); // 将编辑器区域原有的内容，暂存起来
 
-    $children = $textContainerElem.children(); // 都有时，toolbarElemId 使用用户自定义的
-
-    toolbarElemId = $toolbarSelector.attr('id') || util_1.getRandom('toolbar-elem');
+    $children = $textContainerElem.children();
   } // 编辑区域
 
 
@@ -20201,6 +22976,7 @@ function default_1(editor) {
   $textContainerElem.css('z-index', editor.zIndex.get());
   $textElem.addClass('w-e-text'); // 添加 ID
 
+  var toolbarElemId = util_1.getRandom('toolbar-elem');
   $toolbarElem.attr('id', toolbarElemId);
   var textElemId = util_1.getRandom('text-elem');
   $textElem.attr('id', textElemId); // 判断编辑区与容器高度是否一致
@@ -20223,7 +22999,7 @@ function default_1(editor) {
 exports["default"] = default_1;
 
 /***/ }),
-/* 388 */
+/* 419 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20281,17 +23057,20 @@ function initSelection(editor, newLine) {
     }
   }
 
-  editor.selection.createRangeByElem($last, true, true);
+  editor.selection.createRangeByElem($last, false, true);
 
   if (editor.config.focus) {
     editor.selection.restoreSelection();
+  } else {
+    // 防止focus=false受其他因素影响
+    editor.selection.clearWindowSelectionRange();
   }
 }
 
 exports["default"] = initSelection;
 
 /***/ }),
-/* 389 */
+/* 420 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20302,6 +23081,8 @@ exports["default"] = initSelection;
  */
 
 var _interopRequireDefault = __webpack_require__(0);
+
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -20368,9 +23149,7 @@ function _bindFocusAndBlur(editor) {
         return;
       }
 
-      if (editor.isFocus) {
-        _blurHandler(editor);
-      }
+      _blurHandler(editor);
 
       editor.isFocus = false;
     } else {
@@ -20415,9 +23194,14 @@ function _bindInput(editor) {
 
 
 function _blurHandler(editor) {
+  var _context;
+
   var config = editor.config;
   var onblur = config.onblur;
   var currentHtml = editor.txt.html() || '';
+  (0, _forEach["default"])(_context = editor.txt.eventHooks.onBlurEvents).call(_context, function (fn) {
+    return fn();
+  });
   onblur(currentHtml);
 }
 /**
@@ -20436,7 +23220,7 @@ function _focusHandler(editor) {
 exports["default"] = bindEvent;
 
 /***/ }),
-/* 390 */
+/* 421 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20489,7 +23273,7 @@ function i18nextInit(editor) {
 exports["default"] = i18nextInit;
 
 /***/ }),
-/* 391 */
+/* 422 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20501,7 +23285,7 @@ exports["default"] = i18nextInit;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _find = _interopRequireDefault(__webpack_require__(30));
+var _find = _interopRequireDefault(__webpack_require__(27));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -20518,7 +23302,7 @@ exports.setUnFullScreen = exports.setFullScreen = void 0;
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-__webpack_require__(392);
+__webpack_require__(423);
 
 var iconFullScreenText = 'w-e-icon-fullscreen'; // 全屏icon class
 
@@ -20594,11 +23378,11 @@ var initFullScreen = function initFullScreen(editor) {
 exports["default"] = initFullScreen;
 
 /***/ }),
-/* 392 */
+/* 423 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(20);
-            var content = __webpack_require__(393);
+            var content = __webpack_require__(424);
 
             content = content.__esModule ? content.default : content;
 
@@ -20618,7 +23402,7 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 393 */
+/* 424 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -20631,7 +23415,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 394 */
+/* 425 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20643,7 +23427,7 @@ module.exports = exports;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _find = _interopRequireDefault(__webpack_require__(30));
+var _find = _interopRequireDefault(__webpack_require__(27));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -20666,7 +23450,7 @@ var scrollToHead = function scrollToHead(editor, id) {
 exports["default"] = scrollToHead;
 
 /***/ }),
-/* 395 */
+/* 426 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20686,7 +23470,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var style_1 = __importDefault(__webpack_require__(122));
+var style_1 = __importDefault(__webpack_require__(128));
 
 var tier = {
   menu: 2,
@@ -20728,7 +23512,7 @@ function () {
 exports["default"] = ZIndex;
 
 /***/ }),
-/* 396 */
+/* 427 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20740,15 +23524,15 @@ exports["default"] = ZIndex;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
-var _filter = _interopRequireDefault(__webpack_require__(66));
+var _filter = _interopRequireDefault(__webpack_require__(71));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -20786,11 +23570,11 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var mutation_1 = __importDefault(__webpack_require__(397));
+var mutation_1 = __importDefault(__webpack_require__(428));
 
 var util_1 = __webpack_require__(7);
 
-var const_1 = __webpack_require__(26);
+var const_1 = __webpack_require__(32);
 /**
  * 剔除编辑区容器的 attribute 变化中的非 contenteditable 变化
  * @param mutations MutationRecord[]
@@ -20904,7 +23688,7 @@ function (_super) {
 exports["default"] = Change;
 
 /***/ }),
-/* 397 */
+/* 428 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21005,7 +23789,7 @@ function () {
 exports["default"] = Mutation;
 
 /***/ }),
-/* 398 */
+/* 429 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21029,11 +23813,11 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var content_1 = __importDefault(__webpack_require__(399));
+var content_1 = __importDefault(__webpack_require__(430));
 
-var scroll_1 = __importDefault(__webpack_require__(411));
+var scroll_1 = __importDefault(__webpack_require__(437));
 
-var range_1 = __importDefault(__webpack_require__(412));
+var range_1 = __importDefault(__webpack_require__(438));
 /**
  * 历史记录（撤销、恢复）
  */
@@ -21133,7 +23917,7 @@ function () {
 exports["default"] = History;
 
 /***/ }),
-/* 399 */
+/* 430 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21157,9 +23941,9 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var node_1 = __importDefault(__webpack_require__(400));
+var node_1 = __importDefault(__webpack_require__(431));
 
-var html_1 = __importDefault(__webpack_require__(409));
+var html_1 = __importDefault(__webpack_require__(435));
 
 var ContentCache =
 /** @class */
@@ -21224,7 +24008,7 @@ function () {
 exports["default"] = ContentCache;
 
 /***/ }),
-/* 400 */
+/* 431 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21238,9 +24022,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -21278,11 +24062,11 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var cache_1 = __importDefault(__webpack_require__(99));
+var cache_1 = __importDefault(__webpack_require__(101));
 
-var compile_1 = __importDefault(__webpack_require__(402));
+var compile_1 = __importDefault(__webpack_require__(433));
 
-var decompilation_1 = __webpack_require__(403);
+var decompilation_1 = __webpack_require__(434);
 
 var NodeCache =
 /** @class */
@@ -21335,7 +24119,7 @@ function (_super) {
 exports["default"] = NodeCache;
 
 /***/ }),
-/* 401 */
+/* 432 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21446,7 +24230,7 @@ function () {
 exports.CeilStack = CeilStack;
 
 /***/ }),
-/* 402 */
+/* 433 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21458,9 +24242,9 @@ exports.CeilStack = CeilStack;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _indexOf = _interopRequireDefault(__webpack_require__(54));
+var _indexOf = _interopRequireDefault(__webpack_require__(31));
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -21653,7 +24437,7 @@ function contains(tar, childs) {
 }
 
 /***/ }),
-/* 403 */
+/* 434 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21661,9 +24445,9 @@ function contains(tar, childs) {
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _entries = _interopRequireDefault(__webpack_require__(404));
+var _entries = _interopRequireDefault(__webpack_require__(132));
 
-var _forEach = _interopRequireDefault(__webpack_require__(5));
+var _forEach = _interopRequireDefault(__webpack_require__(3));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -21828,86 +24612,7 @@ function restore(data) {
 exports.restore = restore;
 
 /***/ }),
-/* 404 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(405);
-
-/***/ }),
-/* 405 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var parent = __webpack_require__(406);
-
-module.exports = parent;
-
-
-/***/ }),
-/* 406 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(407);
-var path = __webpack_require__(10);
-
-module.exports = path.Object.entries;
-
-
-/***/ }),
-/* 407 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $ = __webpack_require__(4);
-var $entries = __webpack_require__(408).entries;
-
-// `Object.entries` method
-// https://tc39.es/ecma262/#sec-object.entries
-$({ target: 'Object', stat: true }, {
-  entries: function entries(O) {
-    return $entries(O);
-  }
-});
-
-
-/***/ }),
-/* 408 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var DESCRIPTORS = __webpack_require__(14);
-var objectKeys = __webpack_require__(57);
-var toIndexedObject = __webpack_require__(27);
-var propertyIsEnumerable = __webpack_require__(55).f;
-
-// `Object.{ entries, values }` methods implementation
-var createMethod = function (TO_ENTRIES) {
-  return function (it) {
-    var O = toIndexedObject(it);
-    var keys = objectKeys(O);
-    var length = keys.length;
-    var i = 0;
-    var result = [];
-    var key;
-    while (length > i) {
-      key = keys[i++];
-      if (!DESCRIPTORS || propertyIsEnumerable.call(O, key)) {
-        result.push(TO_ENTRIES ? [key, O[key]] : O[key]);
-      }
-    }
-    return result;
-  };
-};
-
-module.exports = {
-  // `Object.entries` method
-  // https://tc39.es/ecma262/#sec-object.entries
-  entries: createMethod(true),
-  // `Object.values` method
-  // https://tc39.es/ecma262/#sec-object.values
-  values: createMethod(false)
-};
-
-
-/***/ }),
-/* 409 */
+/* 435 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21921,7 +24626,7 @@ var _defineProperty = _interopRequireDefault(__webpack_require__(1));
   value: true
 });
 
-var chain_1 = __webpack_require__(410);
+var chain_1 = __webpack_require__(436);
 
 var HtmlCache =
 /** @class */
@@ -21986,7 +24691,7 @@ function () {
 exports["default"] = HtmlCache;
 
 /***/ }),
-/* 410 */
+/* 436 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21998,7 +24703,7 @@ exports["default"] = HtmlCache;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _splice = _interopRequireDefault(__webpack_require__(90));
+var _splice = _interopRequireDefault(__webpack_require__(92));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -22122,7 +24827,7 @@ function () {
 exports.TailChain = TailChain;
 
 /***/ }),
-/* 411 */
+/* 437 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22136,9 +24841,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -22176,7 +24881,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var cache_1 = __importDefault(__webpack_require__(99));
+var cache_1 = __importDefault(__webpack_require__(101));
 
 var ScrollCache =
 /** @class */
@@ -22250,7 +24955,7 @@ function (_super) {
 exports["default"] = ScrollCache;
 
 /***/ }),
-/* 412 */
+/* 438 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22264,9 +24969,9 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
-var _create = _interopRequireDefault(__webpack_require__(3));
+var _create = _interopRequireDefault(__webpack_require__(4));
 
-var _setPrototypeOf = _interopRequireDefault(__webpack_require__(6));
+var _setPrototypeOf = _interopRequireDefault(__webpack_require__(5));
 
 var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
@@ -22304,7 +25009,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
   value: true
 });
 
-var cache_1 = __importDefault(__webpack_require__(99));
+var cache_1 = __importDefault(__webpack_require__(101));
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
@@ -22414,12 +25119,16 @@ function (_super) {
 
 
   RangeCache.prototype.set = function (range) {
-    if (range) {
-      var handle = this.rangeHandle;
-      handle.setStart.apply(handle, range.start);
-      handle.setEnd.apply(handle, range.end);
-      this.editor.menus.changeActive();
-      return true;
+    try {
+      if (range) {
+        var handle = this.rangeHandle;
+        handle.setStart.apply(handle, range.start);
+        handle.setEnd.apply(handle, range.end);
+        this.editor.menus.changeActive();
+        return true;
+      }
+    } catch (err) {
+      return false;
     }
 
     return false;
@@ -22455,7 +25164,7 @@ function (_super) {
 exports["default"] = RangeCache;
 
 /***/ }),
-/* 413 */
+/* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22463,7 +25172,7 @@ exports["default"] = RangeCache;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _find = _interopRequireDefault(__webpack_require__(30));
+var _find = _interopRequireDefault(__webpack_require__(27));
 
 var _defineProperty = _interopRequireDefault(__webpack_require__(1));
 
@@ -22479,7 +25188,7 @@ var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
 
 var dom_core_1 = __importDefault(__webpack_require__(2));
 
-__webpack_require__(414);
+__webpack_require__(440);
 
 function disableInit(editor) {
   var isCurtain = false; // 避免重复生成幕布
@@ -22527,11 +25236,11 @@ function disableInit(editor) {
 exports["default"] = disableInit;
 
 /***/ }),
-/* 414 */
+/* 440 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(20);
-            var content = __webpack_require__(415);
+            var content = __webpack_require__(441);
 
             content = content.__esModule ? content.default : content;
 
@@ -22551,7 +25260,7 @@ var update = api(content, options);
 module.exports = content.locals || {};
 
 /***/ }),
-/* 415 */
+/* 441 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -22564,7 +25273,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 416 */
+/* 442 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

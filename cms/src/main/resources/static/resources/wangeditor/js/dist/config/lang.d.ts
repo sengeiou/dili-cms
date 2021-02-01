@@ -36,7 +36,7 @@ declare const _default: {
                         恢复: string;
                         撤销: string;
                         全屏: string;
-                        代办事项: string;
+                        待办事项: string;
                     };
                     dropListMenu: {
                         设置标题: string;
@@ -74,9 +74,11 @@ declare const _default: {
                             手势: string;
                         };
                         image: {
-                            图片链接: string;
                             上传图片: string;
                             网络图片: string;
+                            图片地址: string;
+                            图片文字说明: string;
+                            跳转链接: string;
                         };
                         link: {
                             链接: string;
@@ -86,6 +88,7 @@ declare const _default: {
                         };
                         video: {
                             插入视频: string;
+                            上传视频: string;
                         };
                         table: {
                             行: string;
@@ -126,6 +129,15 @@ declare const _default: {
                     请替换为支持的图片类型: string;
                     您插入的网络图片无法识别: string;
                     您刚才插入的图片链接未通过编辑器校验: string;
+                    插入视频错误: string;
+                    视频链接: string;
+                    不是视频: string;
+                    视频验证未通过: string;
+                    个视频: string;
+                    上传视频超时: string;
+                    上传视频错误: string;
+                    上传视频失败: string;
+                    上传视频返回结果错误: string;
                 };
             };
         };
@@ -164,7 +176,7 @@ declare const _default: {
                         恢复: string;
                         撤销: string;
                         全屏: string;
-                        代办事项: string;
+                        待办事项: string;
                     };
                     dropListMenu: {
                         设置标题: string;
@@ -202,9 +214,11 @@ declare const _default: {
                             手势: string;
                         };
                         image: {
-                            图片链接: string;
                             上传图片: string;
                             网络图片: string;
+                            图片地址: string;
+                            图片文字说明: string;
+                            跳转链接: string;
                         };
                         link: {
                             链接: string;
@@ -214,6 +228,7 @@ declare const _default: {
                         };
                         video: {
                             插入视频: string;
+                            上传视频: string;
                         };
                         table: {
                             行: string;
@@ -254,6 +269,15 @@ declare const _default: {
                     请替换为支持的图片类型: string;
                     您插入的网络图片无法识别: string;
                     您刚才插入的图片链接未通过编辑器校验: string;
+                    插入视频错误: string;
+                    视频链接: string;
+                    不是视频: string;
+                    视频验证未通过: string;
+                    个视频: string;
+                    上传视频超时: string;
+                    上传视频错误: string;
+                    上传视频失败: string;
+                    上传视频返回结果错误: string;
                 };
             };
         };

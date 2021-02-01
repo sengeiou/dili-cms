@@ -5,6 +5,7 @@
 import { EmotionsType, FontSizeConfType, IndentationType } from './menus';
 import { UploadImageHooksType } from './image';
 import langConfig from './lang';
+import { UploadVideoHooksType } from './video';
 export declare type DicType = {
     [key: string]: string;
 };
@@ -16,6 +17,7 @@ export declare type ConfigType = {
     excludeMenus: string[];
     fontNames: string[];
     lineHeights: string[];
+    showMenuTooltips: boolean;
     indentation: IndentationType;
     fontSizes: FontSizeConfType;
     colors: string[];
@@ -34,6 +36,8 @@ export declare type ConfigType = {
     zIndexFullScreen: number;
     showFullScreen: boolean;
     showLinkImg: boolean;
+    showLinkImgAlt: boolean;
+    showLinkImgHref: boolean;
     uploadImgAccept: string[];
     uploadImgServer: string;
     uploadImgShowBase64: boolean;
@@ -58,6 +62,19 @@ export declare type ConfigType = {
     focus: boolean;
     onlineVideoCheck: Function;
     onlineVideoCallback: Function;
+    showLinkVideo: Boolean;
+    uploadVideoAccept: string[];
+    uploadVideoServer: string;
+    uploadVideoMaxSize: number;
+    uploadVideoName: string;
+    uploadVideoParams: DicType;
+    uploadVideoParamsWithUrl: boolean;
+    uploadVideoHeaders: DicType;
+    uploadVideoHooks: UploadVideoHooksType;
+    uploadVideoTimeout: number;
+    withVideoCredentials: boolean;
+    customUploadVideo: Function | null;
+    customInsertVideo: Function | null;
 };
 export declare type Resource = {
     [language: string]: ResourceLanguage;

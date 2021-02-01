@@ -3,5 +3,12 @@
  * @author wangfupeng
  */
 import Editor from '../../editor/index';
-import { PanelConf } from '../menu-constructors/Panel';
-export default function (editor: Editor): PanelConf;
+import { DomElement } from '../../utils/dom-core';
+import { PanelConf, TabEventConf } from '../menu-constructors/Panel';
+export declare type ImgPanelConf = {
+    onlyUploadConf?: {
+        $elem: DomElement;
+        events: TabEventConf[];
+    };
+} & PanelConf;
+export default function (editor: Editor): ImgPanelConf;

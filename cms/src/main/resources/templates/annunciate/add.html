@@ -206,6 +206,41 @@
             }
         });
     }
+    editor.config.customUploadVideo = function (resultFiles, insertVideoFn) {
+        // resultFiles 是 input 中选中的文件列表
+        // insertVideoFn 是获取视频 url 后，插入到编辑器的方法
+
+        // 上传视频，返回结果，将视频地址插入到编辑器中
+        let formData=new FormData();
+        resultFiles.forEach((item)=>{
+            formData.append('file',item);
+        })
+        bui.loading.show('努力提交中，请稍候。。。');
+        $.ajax({
+            type: "POST",
+            url: "/uploadFile/doUploads.action",
+            data: formData,
+            dataType: "json",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                bui.loading.hide();
+                if (res.code == "200") {
+                    res.data.forEach((item)=>{
+                        insertVideoFn(item);
+                    });
+                } else {
+                    bs4pop.alert(res.message, {type: 'error'});
+                }
+            },
+            error: function (error) {
+                bui.loading.hide();
+                bs4pop.alert(error.message, {type: 'error'});
+            }
+        });
+    }
     editor.create();
     let _grid = $('#grid');
     var departmentAuthResult;

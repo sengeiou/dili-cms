@@ -27,6 +27,17 @@ declare class Head extends DropListMenu implements MenuActive {
      */
     private getCatalogs;
     /**
+     * 设置选中的多行标题
+     * @param value  需要执行的命令值
+     */
+    private setMultilineHead;
+    /**
+     * 是否含有某元素
+     * @param elem 需要检查的元素
+     * @param whiteList 白名单
+     */
+    private hasTag;
+    /**
      * 尝试改变菜单激活（高亮）状态
      */
     tryChangeActive(): void;

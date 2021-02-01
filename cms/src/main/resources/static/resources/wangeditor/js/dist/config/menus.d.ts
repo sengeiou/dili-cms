@@ -78,5 +78,6 @@ declare const _default: {
     lineHeights: string[];
     undoLimit: number;
     indentation: string;
+    showMenuTooltips: boolean;
 };
 export default _default;

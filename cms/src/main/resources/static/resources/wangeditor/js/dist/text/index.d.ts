@@ -8,11 +8,13 @@ import { NodeListType } from './getChildrenJSON';
 /** 按键函数 */
 declare type KeyBoardHandler = (event: KeyboardEvent) => unknown;
 /** 普通事件回调 */
-declare type EventHandler = (event: Event) => unknown;
+declare type EventHandler = (event?: Event) => unknown;
 declare type TextEventHooks = {
+    onBlurEvents: EventHandler[];
     changeEvents: (() => void)[];
     dropEvents: ((event: DragEvent) => unknown)[];
     clickEvents: EventHandler[];
+    keydownEvents: KeyBoardHandler[];
     keyupEvents: KeyBoardHandler[];
     /** tab 键（keyCode === ）Up 时 */
     tabUpEvents: KeyBoardHandler[];
@@ -48,6 +50,8 @@ declare type TextEventHooks = {
     dropListMenuHoverEvents: (() => void)[];
     /** 点击分割线时 */
     splitLineEvents: ((e: DomElement) => void)[];
+    /** 视频点击事件 */
+    videoClickEvents: ((e: DomElement) => void)[];
 };
 declare class Text {
     editor: Editor;
