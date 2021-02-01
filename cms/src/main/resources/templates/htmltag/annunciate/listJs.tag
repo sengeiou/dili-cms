@@ -62,7 +62,7 @@
             title: '新增通告信息',//对话框title
             className: 'dialog-center',
             content: '${contextPath}/annunciate/add.html', //对话框内容，可以是 string、element，$object
-            width: '50%',//宽度
+            width: '75%',//宽度
             height: '95%',//高度
             backdrop: 'static',
             isIframe: true//默认是页面层，非iframe
@@ -177,7 +177,7 @@
                 content: '/annunciate/add.html?id=' + selectDatas[0].id,
                 isIframe: true,
                 backdrop: 'static',
-                width: '50%',
+                width: '75%',
                 height: '95%'
             });
         }else{
@@ -220,7 +220,7 @@
             content: '/annunciate/view.html?id=' + id,
             isIframe: true,
             backdrop: 'static',
-            width: '50%',
+            width: '75%',
             height: '95%'
         });
     }
@@ -235,7 +235,18 @@
     /**
      * 查询处理
      */
-    function queryDataHandler() {
+    function queryDataHandler(flag) {
+        if(flag==0){
+            $("#sendState").val("");
+        }else if(flag==1){
+            $("#sendState").val("1");
+        }else if(flag==2){
+            $("#sendState").val("2");
+        }else if(flag==3){
+            $("#sendState").val("3");
+        }else if(flag==4){
+            $("#sendState").val("4");
+        }
         _grid.bootstrapTable('refresh');
     }
 

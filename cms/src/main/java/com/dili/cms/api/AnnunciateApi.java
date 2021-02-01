@@ -153,7 +153,7 @@ public class AnnunciateApi {
     @PostMapping(value = "/getListByTargetId")
     public BaseOutput<String> getListByTargetId(AnnunciateQueryDto annunciateQueryDto) {
         try{
-            PageOutput<List<AnnunciateVo>> output =annunciateService.getListByUserId(annunciateQueryDto);
+            PageOutput<List<AnnunciateVo>> output = annunciateService.getListByUserId(annunciateQueryDto);
             return BaseOutput.successData(new EasyuiPageOutput(output.getTotal(), ValueProviderUtils.buildDataByProvider(annunciateQueryDto, output.getData())).toString());
         }catch (Exception e) {
             return BaseOutput.failure(e.getMessage());
@@ -220,9 +220,9 @@ public class AnnunciateApi {
      * @date：2021/1/21 16:38
      */
     @PostMapping(value = "/getNoReadCountByTargetId")
-    public BaseOutput<Integer> getNoReadCountByTargetId(AnnunciateDto annunciateDto) {
+    public BaseOutput<Integer> getNoReadCountByTargetId(@RequestBody Long targetId) {
         try{
-            return annunciateItemService.getNoReadCountByTargetId(annunciateDto);
+            return annunciateItemService.getNoReadCountByTargetId(targetId);
         }catch (AppException e) {
             return BaseOutput.failure(e.getMessage());
         }
