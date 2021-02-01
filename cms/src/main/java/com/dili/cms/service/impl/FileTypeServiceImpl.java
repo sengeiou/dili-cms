@@ -26,6 +26,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * <pre>
@@ -42,9 +44,9 @@ import java.util.Objects;
  */
 @Service
 public class FileTypeServiceImpl extends BaseServiceImpl<IFileType, Long> implements FileTypeService {
-    public static final Long DEFAULT_PARENT_ID = 1L;
     public static final Integer DEFAULT_NODE_COUNT = 0;
     public static final Integer DEFAULT_VERSION = 0;
+    public static final Long FIRST_PARENT_ID = 0L;
 
     @Autowired
     private FileService fileService;
@@ -70,6 +72,9 @@ public class FileTypeServiceImpl extends BaseServiceImpl<IFileType, Long> implem
         IFileType iFileTypeByQuery = this.get(iFileType.getId());
         if (!Objects.nonNull(iFileTypeByQuery)) {
             throw new AppException("文档类型不存在或该文档类型已删除");
+        }
+        if (FIRST_PARENT_ID.equals(iFileTypeByQuery.getParentId())) {
+            throw new AppException("不能删除顶级节点");
         }
         //删除文档类型
         int deleteTypeResult = this.delete(iFileType.getId());
@@ -103,7 +108,12 @@ public class FileTypeServiceImpl extends BaseServiceImpl<IFileType, Long> implem
     @Transactional(rollbackFor = Exception.class)
     public void addFileType(IFileType iFileType) {
         UserTicket userTicket = SessionContext.getSessionContext().getUserTicket();
-        iFileType.setParentId(DEFAULT_PARENT_ID);
+        Optional<IFileType> firstNode = findFirstNode();
+        if (!firstNode.isPresent()) {
+            iFileType.setParentId(FIRST_PARENT_ID);
+        } else {
+            iFileType.setParentId(firstNode.get().getId());
+        }
         iFileType.setNodeFileCount(DEFAULT_NODE_COUNT);
         iFileType.setFirmCode(userTicket.getFirmCode());
         iFileType.setCreatorId(userTicket.getId());
@@ -142,6 +152,20 @@ public class FileTypeServiceImpl extends BaseServiceImpl<IFileType, Long> implem
         if (updateOrderResult <= 0) {
             throw new AppException("更新文档类型失败，当前文档类型或已被编辑");
         }
+    }
+
+    /*/**
+     * TODO 查询是否有一级节点
+     * @param null:
+     * @return：java.util.Optional
+     * @author：Ron.Peng
+     * @date：2021/2/1 15:47
+     */
+    public Optional<IFileType> findFirstNode() {
+        IFileType iFileType = DTOUtils.newDTO(IFileType.class);
+        iFileType.setParentId(FIRST_PARENT_ID);
+        List<IFileType> iFileTypes = listByExample(iFileType);
+        return iFileTypes.stream().filter(Objects::nonNull).findFirst();
     }
 
     /**
