@@ -8,7 +8,6 @@ package com.dili.cms.service.impl;
 import com.dili.cms.mapper.FileTypeMapper;
 import com.dili.cms.sdk.domain.IFile;
 import com.dili.cms.sdk.domain.IFileType;
-import com.dili.cms.sdk.glossary.IFileConstant;
 import com.dili.cms.service.FileService;
 import com.dili.cms.service.FileTypeService;
 import com.dili.ss.base.BaseServiceImpl;
@@ -22,12 +21,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
+
 
 /**
  * <pre>
@@ -154,9 +152,9 @@ public class FileTypeServiceImpl extends BaseServiceImpl<IFileType, Long> implem
         }
     }
 
-    /*/**
+    /**
      * TODO 查询是否有一级节点
-     * @param null:
+     *
      * @return：java.util.Optional
      * @author：Ron.Peng
      * @date：2021/2/1 15:47
