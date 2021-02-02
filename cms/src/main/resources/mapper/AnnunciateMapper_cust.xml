@@ -4,7 +4,9 @@
   <select id="listByQueryParams" resultType="com.dili.cms.sdk.dto.AnnunciateVo">
     select * from (
       SELECT
-      t.*,GROUP_CONCAT(d.target_range) AS target_range,
+    t.id,t.firm_id,t.title,t.publish_type,t.send_state,t.stick_state,t.type
+    ,t.start_time,t.end_time,t.notes,t.creator_id,t.modifier_id,t.create_time
+    ,t.modify_time,t.read_count,t.version,GROUP_CONCAT(d.target_range) AS target_range,
       GROUP_CONCAT(d.target_type) AS target_type
       FROM annunciate t
       LEFT JOIN annunciate_target d ON t.id=d.`annunciate_id`
