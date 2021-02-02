@@ -32,8 +32,6 @@
             $('[data-toggle="tooltip"]').tooltip()
         })
     });
-
-
     /******************************驱动执行区 end****************************/
 
     /*****************************************函数区 begin************************************/
@@ -47,6 +45,11 @@
             $('#download_btn').prop('disabled', true);
         }
     });
+
+    //刷新select下拉框
+    function refreshSelect() {
+        $("#fileType").triggerHandler("refreshSelect");
+    }
 
     /**
      * 树初始化
@@ -258,6 +261,7 @@
                     bs4pop.alert(res.message, {
                         width: '350px', height: "200px", type: 'success', onHideStart: () => {
                             $("#fileType").val(null);
+                            refreshSelect();
                             treeInit();
                             queryDataHandler();
                         }
@@ -266,7 +270,9 @@
                     bs4pop.alert(res.message, {
                         onHideStart: () => {
                             $("#fileType").val(null);
+                            refreshSelect();
                             treeInit();
+                            queryDataHandler();
                         }
                     });
                 }
@@ -302,6 +308,7 @@
                     bs4pop.alert(res.message, {
                         width: '350px', height: "200px", type: 'success', onHideStart: () => {
                             $("#fileType").val(null);
+                            refreshSelect();
                             treeInit();
                             queryDataHandler();
                         }

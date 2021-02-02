@@ -4,7 +4,7 @@
 <script>
     <% }%>
     $(document).ready(function () {
-        $.ajax({
+        var configAjax = {
             <% if( isNotEmpty(_provider) ) {%>
             type: "post",
             url: '/provider/getLookupList.action',
@@ -43,6 +43,11 @@
                 ${_callbackFunc}
                 <% } %>
             }
+        }
+        $.ajax(configAjax);
+        $("#fileType").on("refreshSelect", function () {
+            $("#fileType").empty();
+            $.ajax(configAjax);
         });
     })
     <% if(isNotEmpty(_escape) && _escape == "true") {%>
