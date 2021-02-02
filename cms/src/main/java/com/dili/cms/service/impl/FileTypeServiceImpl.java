@@ -154,9 +154,9 @@ public class FileTypeServiceImpl extends BaseServiceImpl<IFileType, Long> implem
         }
     }
 
-    /*/**
+    /**
      * TODO 查询是否有一级节点
-     * @param null:
+     * 
      * @return：java.util.Optional
      * @author：Ron.Peng
      * @date：2021/2/1 15:47
