@@ -60,7 +60,6 @@
             view: {
                 selectedMulti: false,
                 showIcon: true,
-                selectedMulti: false,
             },
             edit: {
                 enable: true,

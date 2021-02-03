@@ -479,7 +479,7 @@ public class AnnunciateServiceImpl extends BaseServiceImpl<Annunciate, Long> imp
                 CharacterType characterType=new CharacterType();
                 characterType.setCharacterType(customerType);
                 customerQueryInput.setCharacterType(characterType);
-                customerQueryInput.setMarketId(8L);
+                customerQueryInput.setMarketId(annunciateDto.getFirmId());
                 BaseOutput<List<CustomerSimpleExtendDto>> customerResult= customerRpc.listSimple(customerQueryInput);
                 if (!customerResult.isSuccess()) {
                     throw new AppException("查询其他客户类型失败");
