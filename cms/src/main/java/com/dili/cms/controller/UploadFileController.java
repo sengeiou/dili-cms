@@ -47,6 +47,8 @@ public class UploadFileController extends BaseController {
 
     @Value("${upload.config.baseUrl}")
     private String baseUrl;
+    @Value("${file.show.baseUrl}")
+    private String fileShowBaseUrl;
     /**
      * 图片暂存路径
      */
@@ -70,7 +72,7 @@ public class UploadFileController extends BaseController {
                 logger.info("====>>>upload result:" + JSON.toJSONString(resultUrl));
             }
             if (resultUrl.isSuccess()) {
-                resultUrl.setData("https://dfs.diligrp.com/file/download/" + resultUrl.getData());
+                resultUrl.setData(fileShowBaseUrl + resultUrl.getData());
                 return resultUrl;
             }
         } catch (Exception e) {
@@ -93,18 +95,18 @@ public class UploadFileController extends BaseController {
     @ResponseBody
     public BaseOutput<List<String>> doUploads(@RequestParam("file") MultipartFile[] file) {
         try {
-            List<String> fileAdress=new ArrayList<>();
-            if(file!=null&&file.length>0){
-                for (MultipartFile multipartFile:file) {
+            List<String> fileAdress = new ArrayList<>();
+            if (file != null && file.length > 0) {
+                for (MultipartFile multipartFile : file) {
                     BaseOutput resultUrl = doUploadFileToDFS(multipartFile);
                     if (logger.isInfoEnabled()) {
                         logger.info("====>>>upload result:" + resultUrl);
                     }
                     if (resultUrl.isSuccess()) {
-                        fileAdress.add("https://dfs.diligrp.com/file/download/" + resultUrl.getData());
+                        fileAdress.add(fileShowBaseUrl + resultUrl.getData());
                     }
                 }
-                if(fileAdress.size()==0){
+                if (fileAdress.size() == 0) {
                     return BaseOutput.failure();
                 }
             }
